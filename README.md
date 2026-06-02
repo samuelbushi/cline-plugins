@@ -44,3 +44,7 @@ See `CONTRIBUTING.md`. Run validation before opening a PR:
 ```bash
 npm run validate
 ```
+
+## License
+
+[Apache 2.0 © 2026 Cline Bot Inc.](./LICENSE)
