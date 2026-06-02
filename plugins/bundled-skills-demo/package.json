@@ -1,0 +1,16 @@
+{
+  "name": "cline-internal-bundled-skills-demo",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Internal Cline plugin example that bundles skills alongside a package plugin.",
+  "cline": {
+    "plugins": [
+      {
+        "paths": [
+          "./index.ts"
+        ]
+      }
+    ]
+  }
+}
