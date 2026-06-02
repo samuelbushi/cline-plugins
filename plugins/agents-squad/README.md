@@ -1,8 +1,5 @@
 # agents-squad
 
-Status: demo
-Source: Cline SDK examples
-
 Background subagents for Cline sessions.
 
 ## What It Does

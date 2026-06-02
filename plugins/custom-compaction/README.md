@@ -1,8 +1,5 @@
 # custom-compaction
 
-Status: demo
-Source: Cline SDK examples
-
 Compacts provider-bound message history through a plugin message builder.
 
 ## What It Does

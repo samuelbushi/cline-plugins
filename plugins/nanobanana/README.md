@@ -1,8 +1,5 @@
 # nanobanana
 
-Status: internal example
-Source: Cline internal examples
-
 Generates images through OpenRouter and saves them into the workspace.
 
 ## What It Does

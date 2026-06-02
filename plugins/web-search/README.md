@@ -1,8 +1,5 @@
 # web-search
 
-Status: demo
-Source: Cline SDK examples
-
 Adds Exa-backed web search as a Cline tool.
 
 ## What It Does

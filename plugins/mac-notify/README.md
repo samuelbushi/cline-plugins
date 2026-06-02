@@ -1,8 +1,5 @@
 # mac-notify
 
-Status: demo
-Source: Cline SDK examples
-
 Sends a macOS notification when a Cline run completes.
 
 ## What It Does

@@ -1,8 +1,5 @@
 # automation-events
 
-Status: demo
-Source: Cline SDK examples
-
 Shows how plugins can register and emit automation events.
 
 ## What It Does

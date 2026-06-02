@@ -1,8 +1,5 @@
 # gitignore-read-files-guard
 
-Status: demo
-Source: Cline SDK examples
-
 Blocks Cline file access to paths ignored by `.gitignore`.
 
 ## What It Does

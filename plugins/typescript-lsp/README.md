@@ -1,8 +1,5 @@
 # typescript-lsp
 
-Status: demo
-Source: Cline SDK examples
-
 Adds TypeScript language service definition lookup.
 
 ## What It Does

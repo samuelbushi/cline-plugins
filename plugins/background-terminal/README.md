@@ -1,8 +1,5 @@
 # background-terminal
 
-Status: demo
-Source: Cline SDK examples
-
 Runs long-lived shell commands in the background.
 
 ## What It Does

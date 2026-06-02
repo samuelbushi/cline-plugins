@@ -1,8 +1,5 @@
 # branch-protector
 
-Status: internal example
-Source: Cline internal examples
-
 Blocks accidental `git push` commands on protected branches.
 
 ## What It Does

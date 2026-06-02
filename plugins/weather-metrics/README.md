@@ -1,8 +1,5 @@
 # weather-metrics
 
-Status: demo
-Source: Cline SDK examples
-
 Demonstrates tool registration and runtime metrics hooks.
 
 ## What It Does

@@ -1,8 +1,5 @@
 # env-blocker
 
-Status: demo
-Source: Cline SDK examples
-
 Blocks reads of secret `.env` files.
 
 ## What It Does

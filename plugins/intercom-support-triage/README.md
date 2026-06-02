@@ -1,8 +1,5 @@
 # intercom-support-triage
 
-Status: internal example
-Source: Cline internal examples
-
 Fetches Intercom support conversations and posts triage summaries to Slack.
 
 ## What It Does

@@ -1,8 +1,5 @@
 # bundled-skills-demo
 
-Status: demo
-Source: Cline internal examples
-
 Package plugin used to verify bundled skill discovery.
 
 ## What It Does
