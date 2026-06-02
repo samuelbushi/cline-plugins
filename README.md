@@ -1,7 +1,10 @@
 <img width="1774" height="887" alt="image" src="https://github.com/user-attachments/assets/063c98fa-0067-40fb-af96-3714d8e017a5" />
 
 
-Official curated plugins for Cline. This repository is the default collection behind Cline CLI slug installs, e.g. `cline plugin install web-search`.
+Official curated plugins for Cline. This repository is the default collection behind Cline CLI slug installs, e.g.:
+```
+cline plugin install nanobanana
+```
 
 Each plugin lives in `plugins/<slug>`. The directory name is the install keyword, so `plugins/web-search` installs with `cline plugin install web-search`.
 
