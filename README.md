@@ -19,7 +19,7 @@ Each plugin lives in `plugins/<slug>`. The directory name is the install keyword
 | `env-blocker` | A hook that blocks reads of secret `.env` files. |
 | `gitignore-read-files-guard` | A hook that blocks file access to `.gitignore` ignored paths. |
 | `intercom-support-triage` | Intercom conversation triage tools for support workflows. |
-| `linear-sdk-scripting` | Linear SDK scripting skill for issue, project, team, cycle, and comment workflows. |
+| `linear` | Linear SDK scripting skill for issue, project, team, cycle, and comment workflows. |
 | `mac-notify` | macOS notifications when a Cline run completes. |
 | `nanobanana` | Image generation through OpenRouter and Gemini image models. |
 | `typescript-lsp` | TypeScript language service `goto_definition` support. |

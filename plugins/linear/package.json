@@ -1,5 +1,5 @@
 {
-  "name": "cline-linear-sdk-scripting-plugin",
+  "name": "cline-linear-plugin",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -17,4 +17,3 @@
     ]
   }
 }
-

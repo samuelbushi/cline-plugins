@@ -1,4 +1,4 @@
-# linear-sdk-scripting
+# linear
 
 Bundle the Linear SDK scripting skill as an installable Cline plugin.
 
@@ -9,13 +9,13 @@ Installs the `linear-sdk-scripting` skill. The skill guides agents through Linea
 ## Install
 
 ```bash
-cline plugin install linear-sdk-scripting
+cline plugin install linear
 ```
 
 For local development from this repository:
 
 ```bash
-cline plugin install ./plugins/linear-sdk-scripting --cwd .
+cline plugin install ./plugins/linear --cwd .
 ```
 
 ## Requirements
@@ -27,4 +27,3 @@ cline plugin install ./plugins/linear-sdk-scripting --cwd .
 ## Security Notes
 
 Linear API keys are secrets. The bundled skill tells agents not to print, commit, or persist keys without explicit user approval.
-
