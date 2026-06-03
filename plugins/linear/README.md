@@ -18,6 +18,16 @@ For local development from this repository:
 cline plugin install ./plugins/linear --cwd .
 ```
 
+## Example Usage
+
+After installation, ask Cline:
+
+```text
+Find my open Linear issues, summarize the blockers, and add a comment to the highest-priority issue with the next step.
+```
+
+Cline automatically uses the `linear-sdk-scripting` skill to write and run small Node scripts against `@linear/sdk`, then returns the Linear result in the conversation.
+
 ## Requirements
 
 - Node 18 or newer for the scripts the skill creates.

@@ -18,6 +18,16 @@ For local development from this repository:
 cline plugin install ./plugins/background-terminal --cwd .
 ```
 
+## Example Usage
+
+After installation, ask Cline:
+
+```text
+Run npm test in the background, keep working while it runs, and check the result before you finish.
+```
+
+Cline can use `start_background_command` to launch the process, `get_background_command` to poll logs, and `delete_background_command` to clean up stored job metadata.
+
 ## Requirements
 
 - A shell environment.
@@ -26,4 +36,3 @@ cline plugin install ./plugins/background-terminal --cwd .
 ## Security Notes
 
 This plugin runs shell commands. Review requested commands carefully and use host tool approval policies in sensitive workspaces.
-

@@ -18,6 +18,16 @@ For local development from this repository:
 cline plugin install ./plugins/intercom-support-triage --cwd .
 ```
 
+## Example Usage
+
+After installation, ask Cline:
+
+```text
+Fetch today's open Intercom conversations, group them by refund, account deletion, product support, and spam, then post the summary to Slack.
+```
+
+Cline can use `fetch_intercom_conversations` to retrieve support threads and `post_slack_summary` to publish the grouped triage summary.
+
 ## Requirements
 
 - `INTERCOM_API_TOKEN`
@@ -27,4 +37,3 @@ cline plugin install ./plugins/intercom-support-triage --cwd .
 ## Security Notes
 
 This plugin reads support content from Intercom and posts summaries to Slack. Only enable it in workspaces authorized for customer support data.
-

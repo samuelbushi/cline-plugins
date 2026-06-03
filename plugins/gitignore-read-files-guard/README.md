@@ -18,6 +18,16 @@ For local development from this repository:
 cline plugin install ./plugins/gitignore-read-files-guard --cwd .
 ```
 
+## Example Usage
+
+After installation, ask Cline:
+
+```text
+Review this repository for build and test setup issues without inspecting ignored artifacts.
+```
+
+If Cline tries to read or edit a path ignored by `.gitignore`, `gitignore-read-files-guard` blocks that file tool call.
+
 ## Requirements
 
 - A git workspace with `.gitignore` rules.
@@ -25,4 +35,3 @@ cline plugin install ./plugins/gitignore-read-files-guard --cwd .
 ## Security Notes
 
 This only applies to Cline tool calls. It does not change filesystem permissions or git behavior.
-

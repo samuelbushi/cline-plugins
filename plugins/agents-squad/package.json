@@ -1,5 +1,5 @@
 {
-	"name": "cline-agent-squad-plugin",
+	"name": "agents-squad",
 	"version": "0.1.0",
 	"private": true,
 	"description": "Background Subagents Plugin for Cline",

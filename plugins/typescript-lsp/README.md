@@ -18,6 +18,16 @@ For local development from this repository:
 cline plugin install ./plugins/typescript-lsp --cwd .
 ```
 
+## Example Usage
+
+After installation, ask Cline:
+
+```text
+Find the implementation behind this TypeScript symbol and explain how it is used.
+```
+
+Cline can call `goto_definition` when it needs precise TypeScript definition lookup instead of relying only on text search.
+
 ## Requirements
 
 - A JavaScript or TypeScript workspace.
@@ -26,4 +36,3 @@ cline plugin install ./plugins/typescript-lsp --cwd .
 ## Security Notes
 
 The tool reads project files through the language service. Use normal workspace trust rules before enabling it on untrusted projects.
-

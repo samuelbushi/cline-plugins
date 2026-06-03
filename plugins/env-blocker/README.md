@@ -18,6 +18,16 @@ For local development from this repository:
 cline plugin install ./plugins/env-blocker --cwd .
 ```
 
+## Example Usage
+
+After installation, ask Cline:
+
+```text
+Review the app configuration and tell me whether the required environment variables are documented.
+```
+
+If Cline tries to read a secret `.env` file during that work, `env-blocker` skips the tool call while still allowing safe template files such as `.env.example`.
+
 ## Requirements
 
 - No API keys or external services.
@@ -25,4 +35,3 @@ cline plugin install ./plugins/env-blocker --cwd .
 ## Security Notes
 
 This is a deterministic local guard for common secret file names. It does not detect every possible secret path or prevent access outside Cline.
-

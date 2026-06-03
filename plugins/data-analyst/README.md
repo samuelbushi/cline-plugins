@@ -20,6 +20,16 @@ For local development from this repository:
 cline plugin install ./plugins/data-analyst --cwd .
 ```
 
+## Example Usage
+
+After installation, ask Cline:
+
+```text
+Analyze last week's signup funnel in ClickHouse, show drop-off by step, and create a chart of the result.
+```
+
+Cline automatically uses the `data-analyst` skill and its supporting ClickHouse sub-skills to gather connection details, inspect the data dictionary, run safe queries, and produce analysis artifacts.
+
 ## Requirements
 
 - `clickhousectl` for ClickHouse server and Cloud workflows.
@@ -33,4 +43,3 @@ The bundled skill instructs agents to use `clickhousectl` instead of ClickHouse 
 ## Attribution
 
 Several bundled ClickHouse sub-skills are derived from `ClickHouse/agent-skills`, licensed under Apache-2.0. See `LICENSE.clickhouse-agent-skills` and `NOTICE.clickhouse-agent-skills`.
-
