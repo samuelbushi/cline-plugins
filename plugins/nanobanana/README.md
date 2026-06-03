@@ -18,6 +18,16 @@ For local development from this repository:
 cline plugin install ./plugins/nanobanana --cwd .
 ```
 
+## Example Usage
+
+After installation, ask Cline:
+
+```text
+Generate a 16:9 product mockup image for our release notes and save it to assets/release-hero.png.
+```
+
+Cline can call `generate_image` with the requested prompt, aspect ratio, output path, and image size, then save the generated image inside the workspace.
+
 ## Requirements
 
 - `OPENROUTER_API_KEY`
@@ -26,4 +36,3 @@ cline plugin install ./plugins/nanobanana --cwd .
 ## Security Notes
 
 Output paths are resolved inside the workspace root. The plugin refuses paths that escape the workspace.
-

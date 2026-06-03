@@ -18,6 +18,16 @@ For local development from this repository:
 cline plugin install ./plugins/web-search --cwd .
 ```
 
+## Example Usage
+
+After installation, ask Cline:
+
+```text
+Search the web for current Cline plugin package manifest examples and summarize the most relevant results.
+```
+
+Cline can call `web_search` to retrieve Exa-backed web results before deciding which public pages to inspect.
+
 ## Requirements
 
 - `EXA_API_KEY`
@@ -25,4 +35,3 @@ cline plugin install ./plugins/web-search --cwd .
 ## Security Notes
 
 Queries are sent to Exa. Do not include private code, secrets, customer data, or other confidential text in search queries.
-

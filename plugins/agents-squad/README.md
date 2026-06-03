@@ -18,6 +18,16 @@ For local development from this repository:
 cline plugin install ./plugins/agents-squad --cwd .
 ```
 
+## Example Usage
+
+After installation, ask Cline:
+
+```text
+Start a code review subagent for this branch, have it focus on correctness and missing tests, then report back with findings.
+```
+
+Cline can use the `start_subagent`, `get_subagent`, and handoff tools from `agents-squad` to run the subagent in the background and bring the result back into the parent session.
+
 ## Requirements
 
 - A Cline host with plugin package support.
@@ -26,4 +36,3 @@ cline plugin install ./plugins/agents-squad --cwd .
 ## Security Notes
 
 Subagents run normal Cline SDK sessions and can use whatever tools the host exposes to them. Review presets before using this in a sensitive workspace.
-

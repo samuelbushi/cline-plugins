@@ -18,6 +18,16 @@ For local development from this repository:
 cline plugin install ./plugins/mac-notify --cwd .
 ```
 
+## Example Usage
+
+After installation, ask Cline:
+
+```text
+Run the test suite and let me know when the task is complete.
+```
+
+When the Cline run completes on macOS, `mac-notify` sends a native notification with a short completion summary.
+
 ## Requirements
 
 - macOS for notifications.
@@ -26,4 +36,3 @@ cline plugin install ./plugins/mac-notify --cwd .
 ## Security Notes
 
 Notification text can include task output. Avoid enabling it if completion summaries may contain sensitive information.
-

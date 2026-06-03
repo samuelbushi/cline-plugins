@@ -18,6 +18,16 @@ For local development from this repository:
 cline plugin install ./plugins/branch-protector --cwd .
 ```
 
+## Example Usage
+
+After installation, use Cline normally:
+
+```text
+Commit this change and push the feature branch.
+```
+
+If Cline attempts a protected-branch `git push`, `branch-protector` blocks the command before it runs unless the command explicitly includes `--force-allow`.
+
 ## Requirements
 
 - A git workspace.
@@ -26,4 +36,3 @@ cline plugin install ./plugins/branch-protector --cwd .
 ## Security Notes
 
 This is a guardrail, not a replacement for protected branches in your git host. It only applies to shell commands executed through Cline tools.
-
