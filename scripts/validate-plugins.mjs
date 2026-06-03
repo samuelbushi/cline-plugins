@@ -92,6 +92,9 @@ if (!existsSync(pluginsRoot)) {
       if (!hasPluginManifest(packageJson)) {
         errors.push(`plugins/${entry.name}/package.json needs cline.plugins`);
       }
+      if (packageJson?.name !== entry.name) {
+        errors.push(`plugins/${entry.name}/package.json name must be ${entry.name}`);
+      }
     }
     if (statSync(pluginRoot).isDirectory()) {
       walk(pluginRoot);

@@ -1,5 +1,5 @@
 {
-  "name": "cline-data-analyst-plugin",
+  "name": "data-analyst",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -17,4 +17,3 @@
     ]
   }
 }
-
