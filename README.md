@@ -19,6 +19,7 @@ Each plugin lives in `plugins/<slug>`. The directory name is the install keyword
 | `bundled-skills-demo` | A package plugin that proves bundled skill discovery works. |
 | `custom-compaction` | Provider message compaction through a plugin message builder. |
 | `data-analyst` | ClickHouse data analyst skill with supporting analysis and ClickHouse sub-skills. |
+| `elevenlabs-voice-responses` | Speaks completed Cline replies with ElevenLabs text to speech. |
 | `env-blocker` | A hook that blocks reads of secret `.env` files. |
 | `gitignore-read-files-guard` | A hook that blocks file access to `.gitignore` ignored paths. |
 | `intercom-support-triage` | Intercom conversation triage tools for support workflows. |
