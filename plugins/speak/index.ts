@@ -5,7 +5,7 @@ import { basename, delimiter, join } from "node:path";
 import { spawn } from "node:child_process";
 import type { AgentPlugin } from "@cline/sdk";
 
-const PLUGIN_NAME = "elevenlabs-voice-responses";
+const PLUGIN_NAME = "speak";
 const ELEVENLABS_TTS_URL = "https://api.elevenlabs.io/v1/text-to-speech";
 const DEFAULT_VOICE_ID = "XB0fDUnXU5powFXDhCwa";
 const DEFAULT_MODEL_ID = "eleven_flash_v2_5";

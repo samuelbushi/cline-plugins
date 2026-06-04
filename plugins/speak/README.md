@@ -1,4 +1,4 @@
-# elevenlabs-voice-responses
+# speak
 
 Speaks Cline replies out loud with ElevenLabs text to speech.
 
@@ -11,13 +11,13 @@ The only required configuration is `ELEVENLABS_API_KEY`. Voice, model, output fo
 ## Install
 
 ```bash
-cline plugin install elevenlabs-voice-responses
+cline plugin install speak
 ```
 
 For local development from this repository:
 
 ```bash
-cline plugin install ./plugins/elevenlabs-voice-responses --cwd .
+cline plugin install ./plugins/speak --cwd .
 ```
 
 ## Setup
