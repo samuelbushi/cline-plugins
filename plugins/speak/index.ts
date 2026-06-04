@@ -15,6 +15,7 @@ const DEFAULT_PLAYERS = ["afplay", "ffplay", "mpg123", "mpg321", "play"];
 const CONTINUATION_NOTICE = "Response continues in the terminal.";
 
 let playbackQueue: Promise<void> = Promise.resolve();
+let missingApiKeyWarningShown = false;
 
 function env(name: string): string | undefined {
 	const value = process.env[name]?.trim();
@@ -32,6 +33,22 @@ function envPositiveInt(name: string, fallback: number): number {
 
 function log(message: string): void {
 	console.warn(`[${PLUGIN_NAME}] ${message}`);
+}
+
+function warnMissingApiKeyOnce(): void {
+	if (missingApiKeyWarningShown) {
+		return;
+	}
+	missingApiKeyWarningShown = true;
+	log(
+		[
+			"ELEVENLABS_API_KEY is not set, so spoken replies are disabled.",
+			"Create a key at https://elevenlabs.io/app/settings/api-keys, then run:",
+			`echo 'export ELEVENLABS_API_KEY="your-api-key"' >> ~/.zshrc`,
+			"source ~/.zshrc",
+			"Restart Cline CLI after updating your shell.",
+		].join("\n"),
+	);
 }
 
 function normalizeForSpeech(text: string): string {
@@ -147,9 +164,8 @@ function playFile(player: string, filePath: string): Promise<void> {
 async function synthesizeSpeech(text: string): Promise<Buffer> {
 	const apiKey = env("ELEVENLABS_API_KEY");
 	if (!apiKey) {
-		throw new Error(
-			"ELEVENLABS_API_KEY is not set. Add it to your shell environment to enable spoken replies.",
-		);
+		warnMissingApiKeyOnce();
+		return Buffer.alloc(0);
 	}
 
 	const voiceId = env("ELEVENLABS_VOICE_ID") ?? DEFAULT_VOICE_ID;
@@ -186,9 +202,8 @@ async function synthesizeSpeech(text: string): Promise<Buffer> {
 
 async function speakText(text: string): Promise<void> {
 	if (!env("ELEVENLABS_API_KEY")) {
-		throw new Error(
-			"ELEVENLABS_API_KEY is not set. Add it to your shell environment to enable spoken replies.",
-		);
+		warnMissingApiKeyOnce();
+		return;
 	}
 
 	const player = await resolvePlayer();
@@ -200,6 +215,9 @@ async function speakText(text: string): Promise<void> {
 	}
 
 	const audio = await synthesizeSpeech(text);
+	if (audio.length === 0) {
+		return;
+	}
 	const tempDir = await mkdtemp(join(tmpdir(), "cline-elevenlabs-"));
 	const audioPath = join(tempDir, "response.mp3");
 	try {
