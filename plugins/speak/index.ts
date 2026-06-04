@@ -7,7 +7,7 @@ import type { AgentPlugin } from "@cline/sdk";
 
 const PLUGIN_NAME = "speak";
 const ELEVENLABS_TTS_URL = "https://api.elevenlabs.io/v1/text-to-speech";
-const DEFAULT_VOICE_ID = "XB0fDUnXU5powFXDhCwa";
+const DEFAULT_VOICE_ID = "bIHbv24MWmeRgasZH58o";
 const DEFAULT_MODEL_ID = "eleven_flash_v2_5";
 const DEFAULT_OUTPUT_FORMAT = "mp3_44100_128";
 const DEFAULT_MAX_CHARS = 3000;

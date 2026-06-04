@@ -39,7 +39,7 @@ Restart Cline CLI after updating your shell environment so the plugin process ca
 
 ## Defaults
 
-- Voice: Charlotte, `XB0fDUnXU5powFXDhCwa`
+- Voice: Will, `bIHbv24MWmeRgasZH58o`
 - Model: `eleven_flash_v2_5`
 - Output format: `mp3_44100_128`
 - Max spoken text: `3000` characters per reply
@@ -50,7 +50,7 @@ If no supported player is installed, the agent run still completes and the plugi
 ## Optional Overrides
 
 ```bash
-export ELEVENLABS_VOICE_ID="XB0fDUnXU5powFXDhCwa"
+export ELEVENLABS_VOICE_ID="bIHbv24MWmeRgasZH58o"
 export ELEVENLABS_MODEL_ID="eleven_flash_v2_5"
 export ELEVENLABS_TTS_MAX_CHARS="3000"
 export ELEVENLABS_TTS_PLAYER="ffplay"
