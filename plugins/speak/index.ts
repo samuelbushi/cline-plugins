@@ -251,9 +251,10 @@ const plugin: AgentPlugin = {
 			id: `${PLUGIN_NAME}:conversational-output`,
 			source: PLUGIN_NAME,
 			content: [
-				"When producing user-facing text, respond in a natural conversational style that sounds good when read aloud.",
-				"Prefer concise, direct sentences and avoid stiff report-like phrasing unless the user asks for it.",
-				"Keep structure useful, but do not over-format simple replies.",
+				"Speak is active, so every normal user-facing response should sound like a brief spoken reply.",
+				"Keep normal replies to at most three sentences total.",
+				"Do not use bullet lists, numbered lists, tables, headings, or report-like summaries unless the user explicitly asks for that format or the task cannot be answered clearly without it.",
+				"Prefer casual, direct prose with contractions where natural.",
 			].join("\n"),
 		});
 	},

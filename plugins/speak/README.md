@@ -43,6 +43,7 @@ Restart Cline CLI after updating your shell environment so the plugin process ca
 - Model: `eleven_flash_v2_5`
 - Output format: `mp3_44100_128`
 - Max spoken text: `3000` characters per reply
+- Response style: conversational prose, max three sentences, no lists unless requested
 - Audio players checked in order: `afplay`, `ffplay`, `mpg123`, `mpg321`, `play`
 
 If no supported player is installed, the agent run still completes and the plugin logs setup guidance.
