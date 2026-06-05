@@ -1,13 +1,8 @@
-import {
-	accessSync,
-	constants,
-	mkdtempSync,
-	rmSync,
-	writeFileSync,
-} from "node:fs";
+import { constants } from "node:fs";
+import { access } from "node:fs/promises";
+import { spawn, type ChildProcess } from "node:child_process";
 import { tmpdir } from "node:os";
-import { delimiter, join } from "node:path";
-import { spawn } from "node:child_process";
+import { basename, delimiter, join } from "node:path";
 import type { AgentPlugin } from "@cline/sdk";
 
 const PLUGIN_NAME = "speak";
@@ -18,20 +13,72 @@ const DEFAULT_OUTPUT_FORMAT = "mp3_44100_128";
 const DEFAULT_MAX_CHARS = 3000;
 const DEFAULT_PLAYERS = ["afplay", "ffplay", "mpg123", "mpg321", "play"];
 const CONTINUATION_NOTICE = "Response continues in the terminal.";
+const DETACHED_WORKER_STDIO: ["pipe", "ignore", "ignore"] = [
+	"pipe",
+	"ignore",
+	"ignore",
+];
 
 let missingApiKeyWarningShown = false;
 
+interface SpeechWorkerPayload {
+	text: string;
+	player: string;
+	voiceId: string;
+	modelId: string;
+	outputFormat: string;
+	ttsUrl: string;
+}
+
 const SPEECH_WORKER_SCRIPT = String.raw`
-const { mkdir, readFile, rm, stat, writeFile } = require("node:fs/promises");
+const { mkdir, mkdtemp, rm, stat, writeFile } = require("node:fs/promises");
 const { tmpdir } = require("node:os");
-const { basename, dirname, join } = require("node:path");
+const { basename, join } = require("node:path");
 const { spawn } = require("node:child_process");
 
 const LOCK_STALE_MS = 10 * 60 * 1000;
 const LOCK_RETRY_MS = 200;
 
 function delay(ms) {
-	return new Promise((resolve) => setTimeout(resolve, ms));
+	return new Promise((resolveDelay) => setTimeout(resolveDelay, ms));
+}
+
+function readStdin() {
+	return new Promise((resolveRead, rejectRead) => {
+		let body = "";
+		process.stdin.setEncoding("utf8");
+		process.stdin.on("data", (chunk) => {
+			body += chunk;
+		});
+		process.stdin.on("error", rejectRead);
+		process.stdin.on("end", () => resolveRead(body));
+	});
+}
+
+function isObject(value) {
+	return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+
+function requiredString(value, field) {
+	if (typeof value !== "string" || value.length === 0) {
+		throw new Error(field + " must be a non-empty string");
+	}
+	return value;
+}
+
+function parsePayload(raw) {
+	const parsed = JSON.parse(raw);
+	if (!isObject(parsed)) {
+		throw new Error("payload must be an object");
+	}
+	return {
+		text: requiredString(parsed.text, "text"),
+		player: requiredString(parsed.player, "player"),
+		voiceId: requiredString(parsed.voiceId, "voiceId"),
+		modelId: requiredString(parsed.modelId, "modelId"),
+		outputFormat: requiredString(parsed.outputFormat, "outputFormat"),
+		ttsUrl: requiredString(parsed.ttsUrl, "ttsUrl"),
+	};
 }
 
 async function acquireLock() {
@@ -53,7 +100,6 @@ async function acquireLock() {
 					continue;
 				}
 			} catch {
-				// Ignore stale lock cleanup races.
 			}
 			await delay(LOCK_RETRY_MS);
 		}
@@ -69,17 +115,17 @@ function playerArgs(player, filePath) {
 }
 
 function playFile(player, filePath) {
-	return new Promise((resolve, reject) => {
+	return new Promise((resolvePlay, rejectPlay) => {
 		const child = spawn(player, playerArgs(player, filePath), {
 			stdio: "ignore",
 		});
-		child.on("error", reject);
+		child.on("error", rejectPlay);
 		child.on("close", (code) => {
 			if (code === 0) {
-				resolve();
+				resolvePlay();
 				return;
 			}
-			reject(new Error("audio player exited with code " + (code ?? "unknown")));
+			rejectPlay(new Error("audio player exited with code " + (code ?? "unknown")));
 		});
 	});
 }
@@ -90,7 +136,12 @@ async function synthesizeSpeech(payload) {
 		return Buffer.alloc(0);
 	}
 
-	const url = payload.ttsUrl + "/" + encodeURIComponent(payload.voiceId) + "?output_format=" + encodeURIComponent(payload.outputFormat);
+	const url =
+		payload.ttsUrl +
+		"/" +
+		encodeURIComponent(payload.voiceId) +
+		"?output_format=" +
+		encodeURIComponent(payload.outputFormat);
 	const response = await fetch(url, {
 		method: "POST",
 		headers: {
@@ -112,53 +163,45 @@ async function synthesizeSpeech(payload) {
 	});
 
 	if (!response.ok) {
-		const body = (await response.text()).replace(/\s+/g, " ").trim();
-		const detail = body ? ": " + body.slice(0, 300) : "";
-		throw new Error("ElevenLabs returned HTTP " + response.status + detail);
+		throw new Error("ElevenLabs returned HTTP " + response.status);
 	}
 
 	return Buffer.from(await response.arrayBuffer());
 }
 
 async function main() {
-	const payloadPath = process.argv[2];
-	if (!payloadPath) {
+	let payload;
+	try {
+		payload = parsePayload(await readStdin());
+	} catch {
+		process.exitCode = 1;
 		return;
 	}
 
-	const workerDir = dirname(payloadPath);
 	let releaseLock = async () => {};
+	let tempDir;
 	try {
-		const payload = JSON.parse(await readFile(payloadPath, "utf8"));
-		if (
-			typeof payload.text !== "string" ||
-			typeof payload.player !== "string" ||
-			typeof payload.voiceId !== "string" ||
-			typeof payload.modelId !== "string" ||
-			typeof payload.outputFormat !== "string" ||
-			typeof payload.ttsUrl !== "string"
-		) {
-			return;
-		}
-
 		releaseLock = await acquireLock();
 		const audio = await synthesizeSpeech(payload);
 		if (audio.length === 0) {
 			return;
 		}
 
-		const audioPath = join(workerDir, "response.mp3");
+		tempDir = await mkdtemp(join(tmpdir(), "cline-speak-audio-"));
+		const audioPath = join(tempDir, "response.mp3");
 		await writeFile(audioPath, audio);
 		await playFile(payload.player, audioPath);
+	} catch {
+		process.exitCode = 1;
 	} finally {
 		await releaseLock().catch(() => undefined);
-		await rm(workerDir, { recursive: true, force: true }).catch(() => undefined);
+		if (tempDir) {
+			await rm(tempDir, { recursive: true, force: true }).catch(() => undefined);
+		}
 	}
 }
 
-main().catch(() => {
-	process.exitCode = 1;
-});
+main();
 `;
 
 function env(name: string): string | undefined {
@@ -214,26 +257,24 @@ function getTtsText(outputText: string): string | undefined {
 	if (!normalized) {
 		return undefined;
 	}
-	return limitText(
-		normalized,
-		envPositiveInt("ELEVENLABS_TTS_MAX_CHARS", DEFAULT_MAX_CHARS),
-	);
+	const maxChars = envPositiveInt("ELEVENLABS_TTS_MAX_CHARS", DEFAULT_MAX_CHARS);
+	return limitText(normalized, maxChars);
 }
 
 function isExplicitPath(command: string): boolean {
 	return command.includes("/") || command.includes("\\");
 }
 
-function canExecute(path: string): boolean {
+async function canExecute(path: string): Promise<boolean> {
 	try {
-		accessSync(path, constants.X_OK);
+		await access(path, constants.X_OK);
 		return true;
 	} catch {
 		return false;
 	}
 }
 
-function commandExists(command: string): boolean {
+async function commandExists(command: string): Promise<boolean> {
 	if (isExplicitPath(command)) {
 		return canExecute(command);
 	}
@@ -253,7 +294,7 @@ function commandExists(command: string): boolean {
 			continue;
 		}
 		for (const extension of extensions) {
-			if (canExecute(join(directory, `${command}${extension}`))) {
+			if (await canExecute(join(directory, `${command}${extension}`))) {
 				return true;
 			}
 		}
@@ -262,17 +303,17 @@ function commandExists(command: string): boolean {
 	return false;
 }
 
-function resolvePlayer(): string | undefined {
+async function resolvePlayer(): Promise<string | undefined> {
 	const configured = env("ELEVENLABS_TTS_PLAYER");
 	if (configured) {
-		if (commandExists(configured)) {
+		if (await commandExists(configured)) {
 			return configured;
 		}
 		log(`configured player was not found or is not executable: ${configured}`);
 	}
 
 	for (const player of DEFAULT_PLAYERS) {
-		if (commandExists(player)) {
+		if (await commandExists(player)) {
 			return player;
 		}
 	}
@@ -280,17 +321,98 @@ function resolvePlayer(): string | undefined {
 	return undefined;
 }
 
-function cleanupWorkerDir(workerDir: string): void {
-	rmSync(workerDir, { recursive: true, force: true });
+function isNodeRuntime(value: string | undefined): boolean {
+	const trimmed = value?.trim();
+	if (!trimmed) {
+		return false;
+	}
+	const name = basename(trimmed).toLowerCase();
+	return (
+		name === "node" ||
+		name === "node.exe" ||
+		name === "bun" ||
+		name === "bun.exe"
+	);
 }
 
-function launchSpeechWorker(text: string): void {
+function resolveWorkerRuntime(): string {
+	for (const candidate of [
+		env("CLINE_JS_RUNTIME_PATH"),
+		process.execPath,
+		env("BUN_EXEC_PATH"),
+		env("npm_node_execpath"),
+		env("NODE"),
+	]) {
+		if (isNodeRuntime(candidate)) {
+			return candidate;
+		}
+	}
+	return "node";
+}
+
+function errorCode(error: unknown): string | undefined {
+	if (!error || typeof error !== "object" || !("code" in error)) {
+		return undefined;
+	}
+	const code = (error as { code?: unknown }).code;
+	return typeof code === "string" ? code : undefined;
+}
+
+function writeToChildStdin(child: ChildProcess, payload: string): Promise<void> {
+	const stdin = child.stdin;
+	if (!stdin) {
+		return Promise.resolve();
+	}
+	return new Promise((resolveWrite, rejectWrite) => {
+		const onError = (error: Error) => {
+			stdin.off("error", onError);
+			const code = errorCode(error);
+			if (code === "EPIPE" || code === "ERR_STREAM_DESTROYED") {
+				resolveWrite();
+				return;
+			}
+			rejectWrite(error);
+		};
+		stdin.once("error", onError);
+		stdin.end(payload, (error?: Error | null) => {
+			stdin.off("error", onError);
+			if (!error) {
+				resolveWrite();
+				return;
+			}
+			const code = errorCode(error);
+			if (code === "EPIPE" || code === "ERR_STREAM_DESTROYED") {
+				resolveWrite();
+				return;
+			}
+			rejectWrite(error);
+		});
+	});
+}
+
+async function spawnSpeechWorker(payload: SpeechWorkerPayload): Promise<void> {
+	const child = spawn(resolveWorkerRuntime(), ["-e", SPEECH_WORKER_SCRIPT], {
+		cwd: process.cwd(),
+		detached: true,
+		env: process.env,
+		stdio: DETACHED_WORKER_STDIO,
+	});
+
+	await new Promise<void>((resolveSpawn, rejectSpawn) => {
+		child.once("spawn", () => resolveSpawn());
+		child.once("error", rejectSpawn);
+	});
+	await writeToChildStdin(child, JSON.stringify(payload));
+	child.unref();
+}
+
+async function launchSpeechWorker(text: string): Promise<void> {
 	if (!env("ELEVENLABS_API_KEY")) {
 		warnMissingApiKeyOnce();
 		return;
 	}
 
-	const player = resolvePlayer();
+	const player = await resolvePlayer();
 	if (!player) {
 		log(
 			"no supported audio player found. Install afplay, ffplay, mpg123, mpg321, or play, or set ELEVENLABS_TTS_PLAYER.",
@@ -298,41 +420,14 @@ function launchSpeechWorker(text: string): void {
 		return;
 	}
 
-	const workerDir = mkdtempSync(join(tmpdir(), "cline-speak-worker-"));
-	const workerPath = join(workerDir, "worker.cjs");
-	const payloadPath = join(workerDir, "payload.json");
-
-	try {
-		writeFileSync(workerPath, SPEECH_WORKER_SCRIPT, { mode: 0o700 });
-		writeFileSync(
-			payloadPath,
-			JSON.stringify({
-				text,
-				player,
-				voiceId: env("ELEVENLABS_VOICE_ID") ?? DEFAULT_VOICE_ID,
-				modelId: env("ELEVENLABS_MODEL_ID") ?? DEFAULT_MODEL_ID,
-				outputFormat: DEFAULT_OUTPUT_FORMAT,
-				ttsUrl: ELEVENLABS_TTS_URL,
-			}),
-			{ mode: 0o600 },
-		);
-
-		const child = spawn(process.execPath, [workerPath, payloadPath], {
-			detached: true,
-			stdio: "ignore",
-			env: process.env,
-		});
-		child.on("error", (error: unknown) => {
-			cleanupWorkerDir(workerDir);
-			const message = error instanceof Error ? error.message : String(error);
-			log(`failed to start speech worker: ${message}`);
-		});
-		child.unref();
-	} catch (error) {
-		cleanupWorkerDir(workerDir);
-		const message = error instanceof Error ? error.message : String(error);
-		log(`failed to prepare speech worker: ${message}`);
-	}
+	await spawnSpeechWorker({
+		text,
+		player,
+		voiceId: env("ELEVENLABS_VOICE_ID") ?? DEFAULT_VOICE_ID,
+		modelId: env("ELEVENLABS_MODEL_ID") ?? DEFAULT_MODEL_ID,
+		outputFormat: DEFAULT_OUTPUT_FORMAT,
+		ttsUrl: ELEVENLABS_TTS_URL,
+	});
 }
 
 const plugin: AgentPlugin = {
@@ -365,8 +460,10 @@ const plugin: AgentPlugin = {
 				return undefined;
 			}
 
-			launchSpeechWorker(text);
-			return undefined;
+			return launchSpeechWorker(text).catch((error: unknown) => {
+				const message = error instanceof Error ? error.message : String(error);
+				log(`failed to start speech worker: ${message}`);
+			});
 		},
 	},
 };
