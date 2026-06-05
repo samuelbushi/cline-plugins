@@ -9,11 +9,8 @@
  * at runtime, so it has zero dependencies beyond Node builtins.
  *
  * CLI usage:
- *   cline plugin install https://github.com/cline/cline/blob/main/sdk/examples/plugins/typescript-lsp/index.ts
+ *   cline plugin install typescript-lsp
  *   cline -i "Find where createTool is defined"
- *
- * Direct demo usage:
- *   ANTHROPIC_API_KEY=sk-... bun run examples/plugins/typescript-lsp/index.ts
  */
 
 import { existsSync } from "node:fs";

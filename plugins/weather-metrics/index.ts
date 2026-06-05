@@ -9,11 +9,8 @@
  *   - hooks.beforeRun / beforeTool / afterTool / afterRun - lifecycle metrics
  *
  * CLI usage:
- *   cline plugin install https://github.com/cline/cline/blob/main/sdk/examples/plugins/weather-metrics.ts --cwd .
+ *   cline plugin install weather-metrics
  *   cline -i "What's the weather like in Tokyo and Paris?"
- *
- * Direct demo usage:
- *   ANTHROPIC_API_KEY=sk-... bun run examples/plugins/weather-metrics.ts
  */
 
 import { type AgentPlugin, createTool } from "@cline/core";
