@@ -4,9 +4,9 @@ Speaks Cline replies out loud with ElevenLabs text to speech.
 
 ## What It Does
 
-Registers a conversational response rule and an `afterRun` hook. When a Cline turn completes successfully, the plugin queues the final assistant reply for ElevenLabs speech generation, saves the returned MP3 to a temporary file, plays it with a local audio player, then removes the temporary file.
+Registers a conversational response rule and an `afterRun` hook. When a Cline turn completes successfully, the plugin starts a detached local worker that sends the final assistant reply to ElevenLabs, saves the returned MP3 to a temporary file, plays it with a local audio player, then removes the temporary file.
 
-Speech work runs in the background after the hook returns so Cline does not wait for audio generation or playback before accepting the next message.
+Speech work runs outside the plugin sandbox after the hook returns, so Cline does not wait for audio generation or playback before accepting the next message. The worker uses a temporary lock to avoid overlapping playback from back-to-back replies.
 
 The only required configuration is `ELEVENLABS_API_KEY`. Voice, model, output format, playback detection, and reply length limits have defaults.
 
