@@ -228,7 +228,7 @@ async function speakText(text: string): Promise<void> {
 	}
 }
 
-function enqueueSpeech(text: string): Promise<void> {
+function enqueueSpeech(text: string): void {
 	const next = playbackQueue
 		.catch(() => undefined)
 		.then(() => speakText(text))
@@ -237,7 +237,6 @@ function enqueueSpeech(text: string): Promise<void> {
 			log(message);
 		});
 	playbackQueue = next;
-	return next;
 }
 
 const plugin: AgentPlugin = {
@@ -270,7 +269,8 @@ const plugin: AgentPlugin = {
 				return undefined;
 			}
 
-			return enqueueSpeech(text);
+			enqueueSpeech(text);
+			return undefined;
 		},
 	},
 };
