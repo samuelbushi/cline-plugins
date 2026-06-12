@@ -4,9 +4,9 @@ Bundle the agent-browser web and Electron automation skill as an installable Cli
 
 ## What It Does
 
-Installs the `agent-browser` skill. The skill guides agents to drive a real browser (and Electron apps) from the terminal with the `agent-browser` CLI: navigate pages, snapshot the accessibility tree into stable refs, click and type against those refs, extract DOM data, take screenshots, and do visual QA.
+Installs the official `agent-browser` skill so agents can drive a real browser (and Electron apps) from the terminal with the [`agent-browser`](https://github.com/vercel-labs/agent-browser) CLI: navigate pages, snapshot the accessibility tree into stable refs, click and type against those refs, extract DOM data, take screenshots, and do visual QA.
 
-The skill is reactive about setup. If the `agent-browser` CLI is not installed, it installs the package globally with npm. If the browser binary has not been downloaded yet, it runs `agent-browser install` once and retries. For command details it defers to the version-matched docs the CLI ships via `agent-browser skills get core --full`.
+The bundled `SKILL.md` is the upstream discovery stub. It intentionally keeps almost no command reference of its own and instead points the agent at the version-matched docs the CLI serves via `agent-browser skills get core` (and specialized guides like `agent-browser skills get electron`), so instructions never drift from the installed version. If the CLI is not installed, the skill tells the agent to install it globally (`npm i -g agent-browser`) and download Chrome once (`agent-browser install`).
 
 ## Install
 
