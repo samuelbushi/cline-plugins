@@ -1,0 +1,19 @@
+{
+  "name": "context7",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Cline plugin that registers the Context7 documentation MCP server.",
+  "cline": {
+    "plugins": [
+      {
+        "paths": [
+          "./index.ts"
+        ],
+        "capabilities": [
+          "mcp"
+        ]
+      }
+    ]
+  }
+}
