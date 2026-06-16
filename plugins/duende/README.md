@@ -1,12 +1,20 @@
-# duende
+# Duende
 
 Bundle Duende IdentityServer, OAuth, OIDC, BFF, and ASP.NET Core security workflow skills as an installable Cline plugin.
 
-## What It Does
+## Cline Primitives
 
-Installs skills for designing, implementing, reviewing, and troubleshooting Duende IdentityServer and ASP.NET Core authentication systems. The skills cover client and resource configuration, OAuth and OIDC protocol flows, ASP.NET Core authentication and authorization, BFF patterns, token security, deployment hardening, migration planning, and enterprise features such as SAML and dynamic client registration.
+This is a skills-only package plugin. It registers no MCP servers, tools, commands, hooks, or background processes.
 
-This plugin is guidance-only. It does not register MCP servers, run migrations, mutate identity settings, create clients, or write secrets on install.
+The bundled skill pack covers:
+
+- ASP.NET Core authentication and authorization.
+- Claims transformation and authorization.
+- Duende BFF, token management, and API protection.
+- IdentityServer hosting, configuration, stores, sessions, UI flows, user management, and deployment.
+- Security hardening, key management, token lifecycle, token security, testing, and Aspire orchestration.
+- IdentityServer4 migration and IdentityServer v7 to v8 upgrade planning.
+- Enterprise features including SAML and Dynamic Client Registration.
 
 ## Install
 
