@@ -19,7 +19,7 @@ To follow this guide along, you need:
 
 ## Beta: integration via LLM
 
-Install PostHog for Next.js in seconds with our wizard by running this prompt with [LLM coding agents](/blog/envoy-wizard-llm-agent.md) like Cursor and Bolt, or by running it in your terminal.
+Install PostHog for Next.js in seconds with our wizard by running this prompt with Cline or another LLM coding agent, or by running it in your terminal.
 
 `npx @posthog/wizard@latest`
 

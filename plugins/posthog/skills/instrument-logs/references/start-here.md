@@ -83,7 +83,7 @@ Configure alerting rules in your project settings to stay on top of issues as th
 
 ## Use MCP and AI to debug
 
-Connect the PostHog MCP server and your AI agent can query logs directly. Use Cursor, Claude Code, or any MCP-compatible tool.
+Connect the PostHog MCP server and your AI agent can query logs directly. Use Cline or another MCP-compatible tool.
 
 Your coding agent pulls the relevant logs it needs to debug and build faster without switching workflows.
 

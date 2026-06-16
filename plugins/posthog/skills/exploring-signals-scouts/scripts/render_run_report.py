@@ -147,8 +147,13 @@ def reconstruct(log: list[dict]) -> list[dict]:
                 rec = {"t": ts, "type": "tool", "id": cid, "name": None, "input": None, "output": None, "status": None}
                 calls[cid] = rec
                 timeline.append(rec)
-            # the tool name shows up on some events as _meta.claudeCode.toolName, on others as title
-            name = (((upd.get("_meta") or {}).get("claudeCode") or {}).get("toolName")) or upd.get("title")
+            # Tool names may be nested in client-specific metadata or exposed as a title.
+            meta = upd.get("_meta") or {}
+            name = (
+                ((meta.get("cline") or {}).get("toolName"))
+                or ((meta.get("claudeCode") or {}).get("toolName"))
+                or upd.get("title")
+            )
             if name:
                 rec["name"] = name
             ri = upd.get("rawInput")

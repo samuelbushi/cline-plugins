@@ -218,30 +218,15 @@ To move a skill from a local SKILL.md directory (e.g. a local skills folder with
 
 The skill is then available to the whole team via `posthog:llma-skill-get`.
 
-## Quick access: local bridge skill
+## Quick access in Cline
 
-Most coding agents support local skills or slash commands. A local bridge skill gives you a shortcut (e.g. `/phs my-github`) that routes straight to the PostHog skills API  --  faster and more deterministic than asking the agent to "use the PostHog skills store to load my-github".
+This plugin already acts as the local bridge to the PostHog Skills Store. Use this skill when the user asks to list, run, save, update, duplicate, or manage team skills stored in PostHog, or when they reference "ph skills" or "posthog skills".
 
-Create a local skill in your agent's skills directory with these instructions:
-
-```markdown
----
-name: phs
-description: >-
-  Access and run shared team skills stored in PostHog.
-  Use when the user asks to list, run, or manage PostHog skills,
-  or references /phs, "ph skills", or "posthog skills".
-user-invocable: true
-allowed-tools: mcp__posthog__llma-skill-list, mcp__posthog__llma-skill-get, mcp__posthog__llma-skill-create, mcp__posthog__llma-skill-update, mcp__posthog__llma-skill-file-get, mcp__posthog__llma-skill-file-create, mcp__posthog__llma-skill-file-delete, mcp__posthog__llma-skill-file-rename, mcp__posthog__llma-skill-duplicate
----
-
-# PostHog Skills Store
-
-Local bridge to the PostHog Skills Store.
+Do not create a second local bridge skill unless the user explicitly wants a custom shortcut. Route through the PostHog MCP skill tools exposed by this plugin.
 
 ## Load and run a skill
 
-When the user says `/phs <skill-name>`:
+When the user asks for a skill by name:
 
 1. `llma-skill-get(skill_name="<skill-name>")` to fetch body + file manifest
 2. Read the `body` field  --  follow it as system instructions for this task
@@ -249,6 +234,7 @@ When the user says `/phs <skill-name>`:
 
 ## List skills
 
+```text
 llma-skill-list # all skills
 llma-skill-list(search="llma") # filter by keyword
 
@@ -267,8 +253,6 @@ llma-skill-get → note version → pick the smallest primitive:
 ```
 
 The bridge is intentionally minimal  --  it just routes to the MCP tools. The real instructions live in PostHog and update without touching local files.
-
-> Agent-specific setup: Where to save this depends on your agent. For Cline, install this plugin and use the bundled skill from the PostHog plugin. For other agents, consult the agent's docs on local skill or slash command configuration.
 
 ## Default behavior
 

@@ -6,7 +6,7 @@ If your source maps are not publicly hosted, you will need to upload them during
 
 ## AI wizard
 
-If you're using a JavaScript or TypeScript framework, set up source map uploading automatically with our wizard by running this command in your project directory with your terminal (it also works for [LLM coding agents](/blog/envoy-wizard-llm-agent.md) like Cursor and Bolt):
+If you're using a JavaScript or TypeScript framework, set up source map uploading automatically with our wizard by running this command in your project directory with your terminal or from Cline:
 
 `npx @posthog/wizard@latest upload-source-maps`
 

@@ -6,7 +6,7 @@ This guide walks you through integrating PostHog into your Astro app using the [
 
 ## Beta: integration via LLM
 
-Install PostHog for Astro in seconds with our wizard by running this prompt with [LLM coding agents](/blog/envoy-wizard-llm-agent.md) like Cursor and Bolt, or by running it in your terminal.
+Install PostHog for Astro in seconds with our wizard by running this prompt with Cline or another LLM coding agent, or by running it in your terminal.
 
 `npx @posthog/wizard@latest`
 
