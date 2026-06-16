@@ -1,0 +1,20 @@
+{
+  "name": "shopify-liquid",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Cline plugin for Shopify Liquid theme development.",
+  "cline": {
+    "plugins": [
+      {
+        "paths": [
+          "./index.ts"
+        ],
+        "capabilities": [
+          "tools",
+          "skills"
+        ]
+      }
+    ]
+  }
+}
