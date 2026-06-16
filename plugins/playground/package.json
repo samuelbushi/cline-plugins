@@ -1,0 +1,30 @@
+{
+	"name": "playground",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"description": "Cline plugin that bundles the interactive HTML playground builder skill.",
+	"exports": {
+		".": "./index.ts"
+	},
+	"cline": {
+		"plugins": [
+			{
+				"paths": [
+					"./index.ts"
+				],
+				"capabilities": [
+					"skills"
+				]
+			}
+		]
+	},
+	"peerDependencies": {
+		"@cline/sdk": "*"
+	},
+	"peerDependenciesMeta": {
+		"@cline/sdk": {
+			"optional": true
+		}
+	}
+}
