@@ -90,12 +90,8 @@ gcloud beta orchestration-pipelines init <ORCHESTRATION_PIPELINE_NAME> --environ
 Reference to file `references/orchestration-pipelines-schema.md`.
 
 Required Tags (Top-Level): You MUST add a `tags` field to the top-level
-of the orchestration pipeline YAML definition. The value of this field depends
-on the IDE environment:
-
--   For Antigravity, use `["job:datacloud:antigravity"]`.
--   For VS Code, use `["job:datacloud:vscode"]`.
--   For any other environment, use `["job:datacloud:other"]`.
+of the orchestration pipeline YAML definition. In Cline, use
+`["job:datacloud:cline"]`.
 
 #### Deployment yaml structure and syntax instruction.
 

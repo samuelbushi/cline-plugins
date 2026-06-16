@@ -29,12 +29,8 @@ configuration files MUST be maintained together in the repository root.
 >
 > Whenever you generate resource definitions in `deployment.yaml`, you MUST
 > directly populate the `datacloud` label under `definition.labels` for every
-> resource to track the source of creation. Determine the value based on your
-> current IDE environment:
->
-> -   For Antigravity, set `datacloud: "antigravity"`
-> -   For VS Code, set `datacloud: "vscode"`
-> -   For any other environment, set `datacloud: "other"`
+> resource to track the source of creation. In Cline, set
+> `datacloud: "cline"`.
 >
 > Do not use a variable substitution for this label; hardcode the appropriate
 > string value directly into each resource definition (e.g., replacing
@@ -152,7 +148,11 @@ gcloud beta orchestration-pipelines validate --environment=<ENV_NAME>
 
 ### Step 5: Deployment
 
-Run the following command to deploy the resources to the target environment.
+Before deployment, summarize the resources that will be created or modified,
+the target project, the target environment, and likely cost/risk boundaries.
+Ask for explicit user approval immediately before running the deploy command.
+If approval is not granted, stop after validation and leave `deployment.yaml`
+ready for review.
 
 ```
 gcloud beta orchestration-pipelines deploy --environment=<ENV_NAME> --local
@@ -167,5 +167,7 @@ gcloud beta orchestration-pipelines deploy --environment=<ENV_NAME> --local
 
 -   `deployment.yaml` exists in the repository root with actual discovered
     values (no placeholders) and correct resource definitions.
--   The agent runs the deployment command to perform the deployment, and it
-    executes successfully (exit code 0).
+-   The configuration validates successfully.
+-   If the user explicitly approved deployment, the deployment command executes
+    successfully (exit code 0). If the user did not approve deployment, the
+    validated file is left ready for review without provisioning resources.

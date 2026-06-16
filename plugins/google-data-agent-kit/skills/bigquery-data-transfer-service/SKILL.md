@@ -152,7 +152,11 @@ ensure there is at least a single successful run before proceeding with the rest
 of the tasks.
 
 1.  Trigger a Manual Run: If no successful runs or ongoing runs are found,
-    or the transfer was just created, trigger a manual run for the current time.
+    or the transfer was just created, summarize the source, destination,
+    project, schedule, expected volume, and cost/risk boundaries. Ask for
+    explicit user approval immediately before triggering a manual run for the
+    current time. If approval is not granted, stop and leave the transfer
+    configuration ready for review.
 
     ```bash
     bq mk --transfer_run \
@@ -189,6 +193,9 @@ of the tasks.
     `deployment.yaml`).
 -   Mandatory datasource parameters have been identified and confirmed with the
     user.
--   A manual transfer run has been triggered and monitored.
+-   If the user explicitly approved a manual transfer run, it has been
+    triggered and monitored.
 -   The transfer run has completed successfully OR the user has provided
-    "proceed guidance" for a long-running transfer.
+    "proceed guidance" for a long-running transfer. If the user did not approve
+    a manual run, the transfer configuration is ready for review without moving
+    data.

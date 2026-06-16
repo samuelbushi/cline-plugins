@@ -20,22 +20,30 @@ const plugin: AgentPlugin = {
 	},
 
 	setup(api, ctx) {
-		api.registerMcpServer({
-			name: "google-data-notebook",
-			transport: {
-				type: "stdio",
-				command: "node",
-				args: ["./mcp/bundle/index.js", "--mode=notebook"],
-				cwd: pluginDir,
-				env: {
-					CLINE_WORKSPACE_ROOT: ctx.workspaceInfo?.rootPath ?? "",
+		const workspaceRoot = ctx.workspaceInfo?.rootPath
+
+		if (!workspaceRoot) {
+			ctx.logger?.log(
+				"Skipping google-data-notebook MCP registration because no workspace root was provided",
+			)
+		} else {
+			api.registerMcpServer({
+				name: "google-data-notebook",
+				transport: {
+					type: "stdio",
+					command: "node",
+					args: ["./mcp/bundle/index.js", "--mode=notebook"],
+					cwd: pluginDir,
+					env: {
+						CLINE_WORKSPACE_ROOT: workspaceRoot,
+					},
 				},
-			},
-			metadata: {
-				description:
-					"Create, inspect, search, edit, and read outputs from Jupyter notebooks used for data analysis workflows.",
-			},
-		})
+				metadata: {
+					description:
+						"Create, inspect, search, edit, and read outputs from Jupyter notebooks used for data analysis workflows.",
+				},
+			})
+		}
 
 		api.registerRule({
 			id: "google-data-agent-kit:safety-guardrails",

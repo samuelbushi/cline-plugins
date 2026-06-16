@@ -130,10 +130,11 @@ If the user requests or agrees to the chat interface:
 
 > [!CAUTION]
 >
-> If available, you MUST use browser testing capabilities (such as
-> `browser_subagent`, Puppeteer, Playwright, or an equivalent available tool) to
-> visually verify the frontend application is working correctly *before*
-> notifying the user that the task is complete.
+> If available and appropriate for the user's environment, use Cline browser
+> automation, Playwright, or another approved browser testing workflow to
+> visually verify the frontend application is working correctly before
+> notifying the user that the task is complete. Do not start browser automation
+> servers or install browser tooling just to prove the app exists.
 
 > [!IMPORTANT]
 >
