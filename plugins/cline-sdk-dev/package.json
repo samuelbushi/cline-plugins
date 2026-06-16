@@ -1,0 +1,20 @@
+{
+  "name": "cline-sdk-dev",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Cline plugin with a Cline SDK app scaffolding command and verifier skills.",
+  "cline": {
+    "plugins": [
+      {
+        "paths": [
+          "./index.ts"
+        ],
+        "capabilities": [
+          "commands",
+          "skills"
+        ]
+      }
+    ]
+  }
+}
