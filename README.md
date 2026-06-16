@@ -25,6 +25,7 @@ Each plugin lives in `plugins/<slug>`. The directory name is the install keyword
 | `clickhouse-data-analyst` | ClickHouse data analyst skill with supporting analysis and ClickHouse sub-skills. |
 | `env-blocker` | A hook that blocks reads of secret `.env` files. |
 | `gitignore-read-files-guard` | A hook that blocks file access to `.gitignore` ignored paths. |
+| `github` | GitHub remote MCP plus safety guidance for repository, issue, PR, and Actions workflows. |
 | `goal` | Completion nudges for active goals with a slash command and completion tool. |
 | `intercom-support-triage-slack` | Intercom conversation triage tools for support workflows. |
 | `linear` | Linear SDK scripting skill for issue, project, team, cycle, and comment workflows. |
