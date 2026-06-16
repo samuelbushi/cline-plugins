@@ -1,0 +1,8 @@
+Cloudflare skills for Cline
+
+This plugin includes adapted guidance from the Cloudflare skills project:
+- https://github.com/cloudflare/skills
+
+The adapted skill guidance is distributed under Apache-2.0. See LICENSE.cloudflare-skills in this directory.
+
+The Cline plugin files are modified from the original guidance to remove bundled helper-script execution, reduce the reference corpus to Cline-sized skills, and fit Cline's plugin, MCP, rule, and command model.

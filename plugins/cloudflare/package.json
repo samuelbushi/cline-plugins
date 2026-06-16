@@ -1,0 +1,22 @@
+{
+  "name": "cloudflare",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Cline plugin for Cloudflare MCP servers, Workers guidance, Agents SDK, Wrangler, Durable Objects, Turnstile, and web performance skills.",
+  "cline": {
+    "plugins": [
+      {
+        "paths": [
+          "./index.ts"
+        ],
+        "capabilities": [
+          "mcp",
+          "commands",
+          "rules",
+          "skills"
+        ]
+      }
+    ]
+  }
+}
