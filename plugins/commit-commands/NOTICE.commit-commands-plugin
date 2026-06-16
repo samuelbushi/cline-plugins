@@ -1,0 +1,9 @@
+Commit command guidance
+
+Portions of the git workflow guidance are adapted from a public commit commands plugin by Anthropic.
+
+Original author metadata: Anthropic.
+
+Modified for Cline's plugin model as user-invoked slash commands with safer git staging, push, PR, and branch-cleanup guidance.
+
+License: Apache-2.0
