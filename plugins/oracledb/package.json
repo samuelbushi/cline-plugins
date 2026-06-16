@@ -1,0 +1,24 @@
+{
+  "name": "oracledb",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Cline plugin for Oracle Database query, schema, and diagnostics workflows.",
+  "dependencies": {
+    "@toolbox-sdk/server": "1.1.0"
+  },
+  "cline": {
+    "plugins": [
+      {
+        "paths": [
+          "./index.ts"
+        ],
+        "capabilities": [
+          "tools",
+          "skills",
+          "rules"
+        ]
+      }
+    ]
+  }
+}
