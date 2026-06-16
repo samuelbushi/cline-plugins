@@ -1,0 +1,28 @@
+{
+	"name": "plugin-dev",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"description": "Cline plugin development toolkit with skills for authoring plugins, skills, commands, hooks, MCP integrations, settings, and subagent presets.",
+	"cline": {
+		"plugins": [
+			{
+				"paths": [
+					"./index.ts"
+				],
+				"capabilities": [
+					"commands",
+					"skills"
+				]
+			}
+		]
+	},
+	"peerDependencies": {
+		"@cline/sdk": "*"
+	},
+	"peerDependenciesMeta": {
+		"@cline/sdk": {
+			"optional": true
+		}
+	}
+}
