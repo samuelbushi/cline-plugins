@@ -1,0 +1,24 @@
+{
+  "name": "resend",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Cline plugin that bundles Resend email skills and a Resend MCP server.",
+  "cline": {
+    "plugins": [
+      {
+        "paths": [
+          "./index.ts"
+        ],
+        "capabilities": [
+          "mcp",
+          "rules",
+          "skills"
+        ]
+      }
+    ]
+  },
+  "dependencies": {
+    "resend-mcp": "2.6.1"
+  }
+}
