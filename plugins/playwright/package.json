@@ -1,0 +1,22 @@
+{
+  "name": "playwright",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Cline plugin that registers the Playwright MCP server.",
+  "dependencies": {
+    "@playwright/mcp": "0.0.76"
+  },
+  "cline": {
+    "plugins": [
+      {
+        "paths": [
+          "./index.ts"
+        ],
+        "capabilities": [
+          "mcp"
+        ]
+      }
+    ]
+  }
+}
