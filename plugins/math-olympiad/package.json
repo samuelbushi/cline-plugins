@@ -1,0 +1,20 @@
+{
+  "name": "math-olympiad",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Cline plugin for competition math solving and adversarial proof verification.",
+  "cline": {
+    "plugins": [
+      {
+        "paths": [
+          "./index.ts"
+        ],
+        "capabilities": [
+          "rules",
+          "skills"
+        ]
+      }
+    ]
+  }
+}
