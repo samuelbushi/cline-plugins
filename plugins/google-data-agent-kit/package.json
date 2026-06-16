@@ -1,0 +1,32 @@
+{
+  "name": "google-data-agent-kit",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Cline plugin for Google Cloud data engineering, analytics, and notebook workflows.",
+  "cline": {
+    "plugins": [
+      {
+        "paths": [
+          "./index.ts"
+        ],
+        "capabilities": [
+          "mcp",
+          "rules",
+          "skills"
+        ]
+      }
+    ]
+  },
+  "peerDependencies": {
+    "@cline/sdk": "*"
+  },
+  "peerDependenciesMeta": {
+    "@cline/sdk": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "cross-spawn": "^7.0.3"
+  }
+}
