@@ -1,0 +1,21 @@
+{
+	"name": "sentry-cli",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"description": "Sentry CLI guidance and reference lookup for Cline.",
+	"cline": {
+		"plugins": [
+			{
+				"paths": [
+					"./index.ts"
+				],
+				"capabilities": [
+					"skills",
+					"tools",
+					"rules"
+				]
+			}
+		]
+	}
+}
