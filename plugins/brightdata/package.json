@@ -1,0 +1,20 @@
+{
+  "name": "brightdata",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Cline plugin with Bright Data workflow skills and web data collection guardrails.",
+  "cline": {
+    "plugins": [
+      {
+        "paths": [
+          "./index.ts"
+        ],
+        "capabilities": [
+          "skills",
+          "rules"
+        ]
+      }
+    ]
+  }
+}
