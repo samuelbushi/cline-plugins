@@ -1,0 +1,20 @@
+{
+  "name": "appwrite",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Appwrite MCP and skills for SDK, CLI, TablesDB, and deployment workflows.",
+  "cline": {
+    "plugins": [
+      {
+        "paths": [
+          "./index.ts"
+        ],
+        "capabilities": [
+          "mcp",
+          "skills"
+        ]
+      }
+    ]
+  }
+}
