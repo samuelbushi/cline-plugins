@@ -1,36 +1,204 @@
 ---
 name: aws-serverless-durable-functions
-description: Build and review AWS Lambda durable functions for resilient, replay-safe, long-running workflows with checkpoints, retries, waits, callbacks, and compensation.
+description: >
+  Build resilient, long-running, multi-step applications with AWS Lambda durable functions with automatic state persistence, retry logic, and orchestration for long-running executions. Covers the critical replay model, step operations, wait/callback patterns, error handling with saga pattern, testing with LocalDurableTestRunner. Triggers on phrases like: lambda durable functions, workflow orchestration, state machines, retry/checkpoint patterns, long-running stateful Lambda functions, saga pattern, human-in-the-loop callbacks, and reliable serverless applications.
 ---
 
-# AWS Serverless Durable Functions
+# AWS Lambda durable functions
 
-Use this skill when the user mentions Lambda durable functions, checkpointed Lambda workflows, replay safety, saga patterns, human callbacks, long-running stateful Lambda executions, retry orchestration, or durable testing.
+Build resilient multi-step applications and AI workflows that can execute for up to 1 year while maintaining reliable progress despite interruptions.
 
-## Workflow
+## Onboarding
 
-1. Confirm language and framework. Prefer TypeScript unless the project or user chooses Python or JavaScript.
-2. Confirm whether the task is architecture, code generation, local tests, cloud tests, or deployment.
-3. Model the workflow as deterministic orchestration plus side-effecting steps. Put non-deterministic code inside named steps.
-4. Treat calls to APIs, databases, queues, email, payments, time, random values, and generated IDs as side effects that need step boundaries or idempotency.
-5. Use explicit retry and timeout behavior for every external dependency.
-6. Add compensation steps for workflows that partially mutate external systems.
-7. Design callback and wait patterns with expiration, correlation IDs, and safe retry behavior.
-8. Add local tests for replay behavior and step failure behavior before suggesting deployment.
+### Step 1: Validate Prerequisites
 
-## Replay Rules
+Before using AWS Lambda durable functions, verify:
 
-- Do not use `Date.now`, random values, network calls, database writes, file writes, or mutable global state directly in the orchestrating path.
-- Do not rely on closure mutations surviving replay.
-- Return values from steps and pass explicit state between steps.
-- Make every step idempotent or guarded by a durable external id.
+1. AWS CLI is installed (2.33.22 or higher) and configured:
 
-## MCP Use
+   ```bash
+   aws --version
+   aws sts get-caller-identity
+   ```
 
-Use `aws-serverless-mcp` for serverless guidance, deployment helpers, and examples only when it materially improves the answer. Keep inputs sanitized and limited to the workflow shape, code snippets, or approved resource identifiers.
+2. Runtime environment is ready:
+   - For TypeScript/JavaScript: Node.js 22+ (`node --version`)
+   - For Python: Python 3.11+ (`python --version`. Note that currently only Lambda runtime environments 3.13+ come with the Durable Execution SDK pre-installed. 3.11 is the min supported Python version by the Durable SDK itself, however, you could use OCI to bring your own container image with your own Python runtime + Durable SDK.)
 
-## Safety
+3. Deployment capability exists (one of):
+   - AWS SAM CLI (`sam --version`) 1.153.1 or higher
+   - AWS CDK (`cdk --version`) v2.237.1 or higher
+   - Direct Lambda deployment access
 
-Ask before installing SDKs, modifying infrastructure, deploying workflows, invoking live executions, reading execution history, reading logs, changing IAM, or touching production resources.
+### Step 2: Select language and IaC framework
 
-For human-in-the-loop or callback workflows, avoid exposing personal data, tokens, callback URLs, or payloads in chat unless the user explicitly provides sanitized examples.
+### Language Selection
+
+Default: TypeScript
+
+Override syntax:
+
+- "use Python" -> Generate Python code
+- "use JavaScript" -> Generate JavaScript code
+
+When not specified, ALWAYS use TypeScript
+
+### IaC framework selection
+
+Default: CDK
+
+Override syntax:
+
+- "use CloudFormation" -> Generate YAML templates
+- "use SAM" -> Generate YAML templates
+
+When not specified, ALWAYS use CDK
+
+### Error Scenarios
+
+#### Unsupported Language
+
+- List detected language
+- State: "Durable Execution SDK is not yet available for [framework]"
+- Suggest supported languages as alternatives
+
+#### Unsupported IaC Framework
+
+- List detected framework
+- State: "[framework] might not support Lambda durable functions yet"
+- Suggest supported frameworks as alternatives
+
+### Serverless MCP Server Unavailable
+
+- Inform user: "AWS Serverless MCP not responding"
+- Ask: "Proceed without MCP support?"
+- DO NOT continue without user confirmation
+
+### Step 3: Install SDK
+
+For TypeScript/JavaScript:
+
+```bash
+npm install @aws/durable-execution-sdk-js
+npm install --save-dev @aws/durable-execution-sdk-js-testing
+```
+
+For Python:
+
+```bash
+pip install aws-durable-execution-sdk-python
+pip install aws-durable-execution-sdk-python-testing
+```
+
+## When to Load Reference Files
+
+Load the appropriate reference file based on what the user is working on:
+
+- Getting started, basic setup, example, ESLint, or Jest setup -> see [getting-started.md](references/getting-started.md)
+- Understanding replay model, determinism, or non-deterministic errors -> see [replay-model-rules.md](references/replay-model-rules.md)
+- Creating steps, atomic operations, or retry logic -> see [step-operations.md](references/step-operations.md)
+- Waiting, delays, callbacks, external systems, or polling -> see [wait-operations.md](references/wait-operations.md)
+- Parallel execution, map operations, batch processing, or concurrency -> see [concurrent-operations.md](references/concurrent-operations.md)
+- Error handling, retry strategies, saga pattern, or compensating transactions -> see [error-handling.md](references/error-handling.md)
+- Advanced error handling, timeout handling, circuit breakers, or conditional retries -> see [advanced-error-handling.md](references/advanced-error-handling.md)
+- Testing, local testing, cloud testing, test runner, or flaky tests -> see [testing-patterns.md](references/testing-patterns.md)
+- Deployment, CloudFormation, CDK, SAM, log groups, deploy, or infrastructure -> see [deployment-iac.md](references/deployment-iac.md)
+- Advanced patterns, GenAI agents, completion policies, step semantics, or custom serialization -> see [advanced-patterns.md](references/advanced-patterns.md)
+- troubleshooting, stuck execution, failed execution, debug execution ID, execution history, execution error, why did my execution fail, execution timed out, callback not received, diagnose execution, or root cause execution -> see [troubleshooting-executions.md](references/troubleshooting-executions.md)
+
+## Quick Reference
+
+### Basic Handler Pattern
+
+TypeScript:
+
+```typescript
+import { withDurableExecution, DurableContext } from '@aws/durable-execution-sdk-js';
+
+export const handler = withDurableExecution(async (event, context: DurableContext) => {
+  const result = await context.step('process', async () => processData(event));
+  return result;
+});
+```
+
+Python:
+
+```python
+from aws_durable_execution_sdk_python import durable_execution, DurableContext
+
+@durable_execution
+def handler(event: dict, context: DurableContext) -> dict:
+    result = context.step(lambda _: process_data(event), name='process')
+    return result
+```
+
+### Critical Rules
+
+1. All non-deterministic code MUST be in steps (Date.now, Math.random, API calls)
+2. Cannot nest durable operations - use `runInChildContext` to group operations
+3. Closure mutations are lost on replay - return values from steps
+4. Side effects outside steps repeat - use `context.logger` (replay-aware)
+
+### Python API Differences
+
+The Python SDK differs from TypeScript in several key areas:
+
+- Steps: Use `@durable_step` decorator + `context.step(my_step(args))`, or inline `context.step(lambda _: ..., name='...')`. Prefer the decorator for automatic step naming.
+- Wait: `context.wait(duration=Duration.from_seconds(n), name='...')`
+- Exceptions: `ExecutionError` (permanent), `InvocationError` (transient), `CallbackError` (callback failures)
+- Testing: Use `DurableFunctionTestRunner` class directly - instantiate with handler, use context manager, call `run(input=...)`
+
+### Invocation Requirements
+
+Durable functions require qualified ARNs (version, alias, or `$LATEST`):
+
+```bash
+# Valid
+aws lambda invoke --function-name my-function:1 output.json
+aws lambda invoke --function-name my-function:prod output.json
+
+# Invalid - will fail
+aws lambda invoke --function-name my-function output.json
+```
+
+## IAM Permissions
+
+Your Lambda execution role MUST have the `AWSLambdaBasicDurableExecutionRolePolicy` managed policy attached. This includes:
+
+- `lambda:CheckpointDurableExecution` - Persist execution state
+- `lambda:GetDurableExecutionState` - Retrieve execution state
+- CloudWatch Logs permissions
+
+Additional permissions needed for:
+
+- Durable invokes: `lambda:InvokeFunction` on target function ARNs
+- External callbacks: Systems need `lambda:SendDurableExecutionCallbackSuccess` and `lambda:SendDurableExecutionCallbackFailure`
+
+## Validation Guidelines
+
+When writing or reviewing durable function code, ALWAYS check for these replay model violations:
+
+1. Non-deterministic code outside steps: `Date.now()`, `Math.random()`, UUID generation, API calls, database queries must all be inside steps
+2. Nested durable operations in step functions: Cannot call `context.step()`, `context.wait()`, or `context.invoke()` inside a step function -- use `context.runInChildContext()` instead
+3. Closure mutations that won't persist: Variables mutated inside steps are NOT preserved across replays -- return values from steps instead
+4. Side effects outside steps that repeat on replay: Use `context.logger` for logging (it is replay-aware and deduplicates automatically)
+
+When implementing or modifying tests for durable functions, ALWAYS verify:
+
+1. All operations have descriptive names
+2. Tests get operations by NAME, never by index
+3. Replay behavior is tested with multiple invocations
+4. Use `LocalDurableTestRunner` for local testing
+
+### MCP Server Configuration
+
+The Cline plugin registers `aws-serverless-mcp` with `--allow-write`, so the MCP server can create projects, generate IaC, and deploy when Cline uses its tools. Ask for explicit approval before any MCP tool or shell command that writes files, deploys, mutates AWS resources, changes IAM/DNS/certificates, reads logs, invokes functions, or incurs cost.
+
+Sensitive-data access is not enabled by this plugin. It does not pass `--allow-sensitive-data-access`; users who need log-reading MCP tools should configure that intentionally in their own MCP settings.
+
+## Resources
+
+- [AWS Lambda durable functions Documentation](https://docs.aws.amazon.com/lambda/latest/dg/durable-functions.html)
+- [JavaScript SDK Repository](https://github.com/aws/aws-durable-execution-sdk-js)
+- [Python SDK Repository](https://github.com/aws/aws-durable-execution-sdk-python)
+- [IAM Policy Reference](https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AWSLambdaBasicDurableExecutionRolePolicy.html)

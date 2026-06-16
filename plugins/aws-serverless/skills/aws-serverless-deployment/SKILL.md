@@ -1,46 +1,108 @@
 ---
 name: aws-serverless-deployment
-description: Plan, review, validate, and deploy AWS serverless applications with SAM, CDK, CloudFormation, and serverless CI/CD workflows.
+description: "AWS SAM and AWS CDK deployment for serverless applications. Triggers on phrases like: use SAM, SAM template, SAM init, SAM deploy, CDK serverless, CDK Lambda construct, NodejsFunction, PythonFunction, SAM and CDK together, serverless CI/CD pipeline. For general app deployment with service selection, use deploy-on-aws plugin instead."
+argument-hint: "[what are you deploying?]"
 ---
 
 # AWS Serverless Deployment
 
-Use this skill for SAM templates, CDK serverless stacks, CloudFormation review, serverless CI/CD, local Lambda testing, deployment troubleshooting, and production readiness checks.
+Deploy serverless applications to AWS using SAM or CDK. This skill covers project scaffolding, IaC templates, CDK constructs and patterns, deployment workflows, CI/CD pipelines, and SAM/CDK coexistence.
 
-## Workflow
+For Lambda runtime behavior, event sources, orchestration, observability, and optimization, see the [aws-serverless-lambda skill](../aws-serverless-lambda/).
 
-1. Detect the IaC framework from the repository. Look for `template.yaml`, `template.yml`, `samconfig.toml`, `cdk.json`, `lib/`, `stacks/`, `bin/`, and CI pipeline files.
-2. Keep the existing framework unless the user asks to migrate.
-3. For new projects, prefer CDK TypeScript when the user wants a larger typed app and SAM when the user wants a compact Lambda-first project.
-4. Separate stateful and stateless resources. Add deletion protection, retention policies, backups, or termination protection when appropriate.
-5. Require least-privilege IAM, explicit regions, deterministic names where needed, tagged resources, log retention, and environment-specific config.
-6. Before any deployment, produce a short deployment plan with expected resources, IAM impact, public endpoints, data stores, estimated cost drivers, and rollback path.
-7. Prefer local checks such as `cdk synth`, `sam validate --lint`, `sam build`, or unit tests before deployment. Treat `cdk diff` as a live-account read: ask first and confirm the target account, region, and profile.
+## When to Load Reference Files
 
-## Explicit Validation
+Load the appropriate reference file based on what the user is working on:
 
-Do not run validation automatically after file edits. When the user asks for validation or approves it, use the smallest relevant command:
+- SAM project setup, templates, deployment workflow, local testing, or container images -> see [references/sam-project-setup.md](references/sam-project-setup.md)
+- CDK project setup, constructs, CDK testing, or CDK pipelines -> see [references/cdk-project-setup.md](references/cdk-project-setup.md)
+- CDK Lambda constructs, NodejsFunction, PythonFunction, or CDK Function -> see [references/cdk-lambda-constructs.md](references/cdk-lambda-constructs.md)
+- CDK serverless patterns, API Gateway CDK, Function URL CDK, EventBridge CDK, DynamoDB CDK, or SQS CDK -> see [references/cdk-serverless-patterns.md](references/cdk-serverless-patterns.md)
+- SAM and CDK coexistence, migrating from SAM to CDK, or using sam build with CDK -> see [references/sam-cdk-coexistence.md](references/sam-cdk-coexistence.md)
 
-```bash
-sam validate --template template.yaml --lint
-```
+## Best Practices
 
-For CDK projects, prefer:
+### SAM
 
-```bash
-cdk synth
-```
+- Do: Use `sam_init` with an appropriate template for your use case
+- Do: Set global defaults for timeout, memory, runtime, and tracing in the `Globals` section
+- Do: Use `samconfig.toml` environment-specific sections for multi-environment deployments
+- Do: Use `sam build --use-container` when native dependencies are involved
+- Don't: Copy-paste templates from the internet without understanding the resource configuration
+- Don't: Hardcode resource ARNs or account IDs in templates -- use `!Ref`, `!GetAtt`, and `!Sub`
 
-Only run commands in the user's workspace after explaining what they do. Ask before `cdk diff` because it can use live AWS account context.
+### CDK
 
-## MCP Use
+- Do: Use TypeScript -- type checking catches errors at synthesis time, before any AWS API calls
+- Do: Prefer L2 constructs and `grant*` methods over L1 and raw IAM statements
+- Do: Separate stateful and stateless resources into different stacks; enable termination protection on stateful stacks
+- Do: Commit `cdk.context.json` to version control -- it caches VPC/AZ lookups for deterministic synthesis
+- Do: Write unit tests with `aws-cdk-lib/assertions`; assert logical IDs of stateful resources to detect accidental replacements
+- Do: Use `cdk diff` in CI before every deployment to review changes
+- Don't: Hardcode account IDs or region strings -- use `this.account` and `this.region`
+- Don't: Use `cdk deploy` directly in production without a pipeline
+- Don't: Skip `cdk bootstrap` -- deployments will fail without the CDK toolkit stack
 
-Use `aws-serverless-mcp` for SAM project initialization, generated serverless templates, deployment helpers, EventBridge schema workflows, and serverless troubleshooting when it is more precise than general shell commands.
+## Configuration
 
-Because the MCP server is registered with write access, ask before every MCP operation that can create files, deploy stacks, change domains, update assets, mutate AWS resources, or incur cost.
+### AWS CLI Setup
 
-## Safety
+This skill requires that AWS credentials are configured on the host machine:
 
-Never deploy, delete, update, or roll back infrastructure without explicit approval. Ask before reading logs, invoking live functions, accessing production accounts, changing DNS, creating certificates, updating IAM, creating public endpoints, or invalidating CloudFront caches.
+Verify access: Run `aws sts get-caller-identity` to confirm credentials are valid
 
-Do not print or commit credentials. Do not include secrets in CloudFormation, CDK context, SAM config, Lambda environment variables, build logs, or chat output.
+### SAM CLI Setup
+
+Verify: Run `sam --version`
+
+### Container Runtime Setup
+
+1. Install a Docker compatible container runtime: Required for `sam_local_invoke` and container-based builds
+2. Verify: Use an appropriate command such as `docker --version` or `finch --version`
+
+### AWS Serverless MCP Server
+
+The Cline plugin registers `aws-serverless-mcp` with `--allow-write`, so the MCP server can create projects, generate IaC, and deploy when Cline uses its tools. Ask for explicit approval before any MCP tool or shell command that writes files, deploys, mutates AWS resources, changes IAM/DNS/certificates, reads logs, invokes functions, or incurs cost.
+
+Sensitive-data access is not enabled by this plugin. It does not pass `--allow-sensitive-data-access`; users who need log-reading MCP tools should configure that intentionally in their own MCP settings.
+
+### SAM Template Validation Hook
+
+This Cline plugin does not install the source automatic validation hook. Treat SAM template validation as an explicit workflow step: after editing `template.yaml` or `template.yml`, ask before running `sam validate --template <path> --lint`.
+
+
+## IaC framework selection
+
+Default: CDK
+
+Override syntax:
+
+- "use CloudFormation" -> Generate YAML templates
+- "use SAM" -> Generate YAML templates
+
+When not specified, ALWAYS use CDK
+
+### Language selection for CDK
+
+Default: TypeScript
+
+Override syntax:
+
+- "use Python" -> Generate Python code
+- "use JavaScript" -> Generate JavaScript code
+
+When not specified, ALWAYS use TypeScript
+
+## Error Scenarios
+
+### Serverless MCP Server Unavailable
+
+- Inform user: "AWS Serverless MCP not responding"
+- Ask: "Proceed without MCP support?"
+- DO NOT continue without user confirmation
+
+## Resources
+
+- [AWS SAM Documentation](https://docs.aws.amazon.com/serverless-application-model/)
+- [AWS CDK Documentation](https://docs.aws.amazon.com/cdk/)
+- [AWS Serverless MCP Server](https://github.com/awslabs/mcp/tree/main/src/aws-serverless-mcp-server)
