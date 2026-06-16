@@ -1,15 +1,14 @@
 # clickhouse
 
-Adds ClickHouse Cloud MCP access plus focused setup and best-practice skills.
+Adds ClickHouse Cloud MCP access plus focused setup guidance.
 
 ## What It Does
 
 Registers the plugin-managed `clickhouse-cloud` MCP server at `https://mcp.clickhouse.cloud/mcp`. The server gives Cline read-only ClickHouse Cloud tools for organization and service discovery, database and table inspection, SELECT queries, ClickPipes, backups, and cost information.
 
-Bundles two skills:
+Bundles one skill:
 
 - `clickhouse-mcp-setup` helps users connect the remote MCP server, understand OAuth requirements, and troubleshoot connection issues.
-- `clickhouse-best-practices` gives Cline concise ClickHouse guidance for schema design, query review, ingestion, materialized views, and safe MCP query workflow.
 
 ## Install
 
@@ -28,13 +27,13 @@ cline plugin install ./plugins/clickhouse --cwd .
 After installation, ask Cline:
 
 ```text
-Use ClickHouse best practices to review this table schema.
+Help me connect the ClickHouse MCP server.
 ```
 
 Or:
 
 ```text
-Help me connect the ClickHouse MCP server.
+What can the ClickHouse Cloud MCP server inspect?
 ```
 
 ## Requirements
