@@ -1,0 +1,21 @@
+{
+  "name": "deploy-on-aws",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Cline plugin for AWS deployment planning, cost-aware IaC generation, and AWS architecture diagrams.",
+  "cline": {
+    "plugins": [
+      {
+        "paths": [
+          "./index.ts"
+        ],
+        "capabilities": [
+          "skills",
+          "mcp",
+          "tools"
+        ]
+      }
+    ]
+  }
+}
