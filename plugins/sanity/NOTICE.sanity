@@ -1,0 +1,11 @@
+Sanity plugin
+
+This plugin includes Sanity workflow skill materials originally published by
+Sanity as part of the Sanity agent toolkit.
+
+Upstream metadata:
+- Package name: sanity
+- Version: 1.0.0
+- Author: Sanity
+- Repository: https://github.com/sanity-io/agent-toolkit
+- License: MIT
