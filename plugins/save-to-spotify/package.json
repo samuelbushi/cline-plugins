@@ -1,0 +1,19 @@
+{
+  "name": "save-to-spotify",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Cline plugin that bundles the Save to Spotify audio production skill.",
+  "cline": {
+    "plugins": [
+      {
+        "paths": [
+          "./index.ts"
+        ],
+        "capabilities": [
+          "skills"
+        ]
+      }
+    ]
+  }
+}
