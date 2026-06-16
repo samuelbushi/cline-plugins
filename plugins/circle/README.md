@@ -5,7 +5,7 @@ Circle adds the Circle MCP server plus Cline skills for building USDC, wallet, G
 ## Cline Primitives
 
 - `mcp`: registers Circle's codegen and documentation MCP server as `circle-codegen` at `https://api.circle.com/v1/codegen/mcp`. Interactive Cline sessions may prompt for MCP OAuth authorization before live access.
-- `skills`: nine compact workflow skills cover Circle setup, USDC and CCTP, wallet selection, agent-wallet CLI flows, x402 paid services, Gateway, swaps, smart contracts, and Arc.
+- `skills`: 16 workflow skills cover Circle setup, USDC, CCTP, wallet selection, developer-controlled wallets, user-controlled wallets, modular wallets, agent-wallet CLI flows, x402 paid services, Gateway, unified balance, swaps, smart contracts, and Arc. Several skills include bundled reference files for implementation-specific flows.
 - `rules`: a funds and credentials guardrail asks Cline to confirm money-moving actions, protect secrets, avoid accepting legal terms for the user, and check status before retrying authorized operations.
 
 ## Install
