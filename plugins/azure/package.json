@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "Cline plugin for Azure MCP tools and Azure workflow skills.",
+  "description": "Cline plugin for Azure MCP tools and detailed Azure workflow skills.",
   "cline": {
     "plugins": [
       {
