@@ -1,16 +1,26 @@
 # Domino
 
-Domino adds Cline support for Domino Data Lab work across jobs, DFS project files, environments, experiment tracking, Flows, data connectivity, and NetApp Volumes.
+Domino adds Cline support for building, operating, and deploying Domino Data Lab projects. It covers project files and jobs through MCP, plus workflow guidance for apps, environments, datasets, MLflow, Flows, model endpoints, GenAI tracing, governance, taxonomy, workspaces, and Domino SDK usage.
 
 ## Cline Primitives
 
-This plugin registers the `domino` MCP server. The server runs locally through `uv` and exposes tools to:
+This plugin registers the local `domino` MCP server. The server runs through `uv` and exposes tools to detect Domino workspace context, run jobs, inspect job status and output, and transfer explicit file content for DFS-based Domino projects.
 
-- Detect whether Cline is running inside a Domino workspace.
-- Run Domino jobs and check job status or stdout.
-- List, download, upload explicit content, and conflict-check files in DFS-based Domino projects.
+It bundles 23 Domino skills with their supporting references and templates. The skills cover:
 
-It also bundles Cline skills for setup, safe MCP usage, compute environments, MLflow experiment tracking, Domino Flows, external data connectivity, and NetApp Volumes.
+- Domino project, job, launcher, workspace, and environment workflows.
+- Data connectivity, datasets, Domino Data SDK, NetApp Volumes, and distributed computing.
+- MLflow experiment tracking, GenAI tracing, model endpoints, model monitoring, governance, and taxonomy workflows.
+- Domino-ready web app bootstrap, app deployment, UI design, AI Gateway, and modeling assistant setup.
+
+The plugin also adds slash commands for common Domino setup flows:
+
+- `/domino-app-init` for Domino-ready web app scaffolding.
+- `/domino-debug-proxy` for app proxy, port, host binding, and asset path diagnosis.
+- `/domino-experiment-setup` for MLflow experiment tracking setup.
+- `/domino-trace-setup` for GenAI tracing setup.
+
+A Domino safety rule reminds Cline to ask before remote job runs, DFS uploads, forced overwrites, app or model deployments, governance/taxonomy writes, cloud changes, and secret setup.
 
 ## Requirements
 
@@ -20,4 +30,4 @@ It also bundles Cline skills for setup, safe MCP usage, compute environments, ML
 - Inside a Domino workspace, Domino-provided environment variables and the local token endpoint are used automatically.
 - Outside Domino, start Cline with `DOMINO_HOST` and `DOMINO_API_KEY` set in the environment.
 
-The MCP can launch remote jobs and write project files. Treat job runs, uploads, and forced overwrites as user-confirmed operations. Read local files through normal Cline file tools before passing explicit content to the Domino MCP. Do not use the file sync tools for Git-backed projects; use normal Git workflows there.
+The MCP can launch remote jobs and write project files. Treat job runs, uploads, and forced overwrites as user-confirmed operations. Read local files through normal Cline file tools before passing explicit content to the Domino MCP. For Git-backed Domino projects, use normal Git workflows instead of DFS file sync tools.

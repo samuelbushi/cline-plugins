@@ -4,11 +4,22 @@
   "private": true,
   "type": "module",
   "description": "Domino Data Lab MCP and workflow skills for Cline.",
+  "files": [
+    "index.ts",
+    "README.md",
+    "LICENSE.domino",
+    "NOTICE.domino",
+    "mcp-servers/",
+    "skills/",
+    "templates/"
+  ],
   "cline": {
     "plugins": [
       {
         "capabilities": [
+          "commands",
           "mcp",
+          "rules",
           "skills"
         ],
         "paths": [
