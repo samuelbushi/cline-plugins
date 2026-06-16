@@ -1,0 +1,22 @@
+{
+  "name": "firebase",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Cline plugin that registers the Firebase MCP server.",
+  "dependencies": {
+    "firebase-tools": "15.20.0"
+  },
+  "cline": {
+    "plugins": [
+      {
+        "paths": [
+          "./index.ts"
+        ],
+        "capabilities": [
+          "mcp"
+        ]
+      }
+    ]
+  }
+}
