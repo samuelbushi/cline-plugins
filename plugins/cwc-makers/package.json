@@ -1,0 +1,20 @@
+{
+	"name": "cwc-makers",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"description": "Cline plugin for onboarding and iterating on Code-with-Claude Makers Cardputer-class projects.",
+	"cline": {
+		"plugins": [
+			{
+				"paths": [
+					"./index.ts"
+				],
+				"capabilities": [
+					"commands",
+					"skills"
+				]
+			}
+		]
+	}
+}
