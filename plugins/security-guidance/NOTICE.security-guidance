@@ -1,0 +1,4 @@
+This plugin includes adapted pattern guidance from the security-guidance plugin.
+
+Source: https://github.com/anthropics/claude-plugins-official/tree/main/plugins/security-guidance
+License: Apache-2.0
