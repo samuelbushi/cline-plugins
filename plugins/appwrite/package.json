@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "Appwrite MCP and skills for SDK, CLI, TablesDB, and deployment workflows.",
+  "description": "Appwrite MCP, commands, rules, and skills for SDK, CLI, TablesDB, and deployment workflows.",
   "cline": {
     "plugins": [
       {
@@ -12,7 +12,9 @@
         ],
         "capabilities": [
           "mcp",
-          "skills"
+          "skills",
+          "commands",
+          "rules"
         ]
       }
     ]

@@ -1,52 +1,38 @@
 ---
 name: appwrite-sdk
-description: Use when writing Appwrite SDK code for web, mobile, backend, or server-side apps. Covers client setup, auth, storage, realtime, functions, and server-side API key boundaries.
+description: Use when the user asks generally for Appwrite SDK help and the implementation language is unclear or mixed. Route to the language-specific Appwrite SDK skills after identifying the target runtime.
 ---
 
-# Appwrite SDK
+# Appwrite SDK Router
 
-Use this skill when the task involves Appwrite SDK code in TypeScript, JavaScript, React Native, Flutter, Dart, Kotlin, Swift, Python, Ruby, Go, Rust, .NET, PHP, or another supported runtime.
+Use this skill as the compatibility and dispatch layer for Appwrite SDK work.
+When the language or runtime is known, load the matching focused skill:
 
-## Client Boundaries
+| Runtime | Skill |
+| --- | --- |
+| TypeScript, JavaScript, React Native, Node.js, Deno | `appwrite-typescript-sdk` |
+| Flutter, Dart | `appwrite-dart-sdk` |
+| Android, Kotlin/JVM | `appwrite-kotlin-sdk` |
+| iOS, macOS, Swift, server-side Swift | `appwrite-swift-sdk` |
+| Python, Django, Flask, FastAPI | `appwrite-python-sdk` |
+| Ruby, Rails, Sinatra | `appwrite-ruby-sdk` |
+| Go | `appwrite-go-sdk` |
+| Rust | `appwrite-rust-sdk` |
+| .NET, C#, ASP.NET, Blazor | `appwrite-dotnet-sdk` |
+| PHP, Laravel, Symfony | `appwrite-php-sdk` |
+
+## How To Route
+
+1. Identify the target runtime from the repository, package files, existing imports, or the user's request.
+2. If the runtime is ambiguous, ask a short clarification before writing SDK code.
+3. Load the focused language skill and follow its examples.
+4. For database schema, table, row, permission, index, or migration design, also use `appwrite-tablesdb`.
+5. For CLI setup, project pull/push, function deployment, or site deployment, use `appwrite-cli` and `appwrite-deployments`.
+6. For live project inspection or mutation through MCP, use `appwrite-mcp`.
+
+## Boundaries
 
 - Browser and mobile clients should use endpoint plus project ID only.
-- Server-side clients can use endpoint, project ID, and an API key loaded from environment variables.
-- Never hard-code API keys, JWTs, session secrets, or project credentials in source files.
-- Prefer the SDK idioms already used in the repository before changing style.
-- For new database work, prefer TablesDB APIs. Use legacy Databases APIs only when the existing codebase already depends on them or the user explicitly asks for it.
-
-## Setup Pattern
-
-When adding SDK setup, identify the runtime first:
-
-- Web: use the browser SDK package and create `Client`, `Account`, `TablesDB`, `Storage`, and `Realtime` from the client.
-- React Native: use the React Native SDK package. Do not use browser OAuth session helpers that rely on regular web redirects.
-- Node.js or server runtimes: use the server SDK package and read `APPWRITE_ENDPOINT`, `APPWRITE_PROJECT_ID`, and `APPWRITE_API_KEY` from environment variables.
-- Mobile or desktop native runtimes: use the platform SDK and follow platform-specific file and OAuth flows.
-
-## Auth Guidance
-
-- Use account/session APIs only on client-side user flows.
-- Use users/admin APIs only from trusted server-side code with an API key.
-- For React Native OAuth, use a token plus deep-link flow instead of browser-only OAuth session helpers.
-- Avoid creating admin users, deleting users, or modifying auth providers unless the user explicitly requested that operation.
-
-## Storage And Realtime
-
-- For uploads, use the platform-native file input type expected by the SDK.
-- Validate bucket IDs, file IDs, MIME type assumptions, and permissions before writing code.
-- Subscribe to realtime channels narrowly. Unsubscribe on teardown or component unmount.
-- Do not subscribe to broad wildcard channels unless the user asks and the blast radius is clear.
-
-## Functions
-
-- Treat function executions as server-side side effects.
-- Inspect payload shape, timeout assumptions, and auth context before invoking a function.
-- Do not deploy or execute production functions without explicit user approval.
-
-## Implementation Checklist
-
-- Confirm endpoint, project ID, database ID, table ID, bucket ID, and function ID sources.
-- Preserve existing SDK package versions and code style where possible.
-- Use environment variables for secrets and update local examples with placeholders only.
-- Add error handling around Appwrite SDK calls so API errors surface with useful context.
+- API keys belong in trusted server-side code or user-managed environment variables.
+- Do not print, commit, or log Appwrite API keys, JWTs, session secrets, `.env` values, or credential-bearing config.
+- Ask for explicit confirmation before project mutations, deletes, deployments, permission changes, function executions, or migrations.

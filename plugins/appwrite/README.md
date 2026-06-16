@@ -1,16 +1,21 @@
-# appwrite
+# Appwrite
 
-Appwrite MCP and skills for building, querying, and deploying Appwrite-backed applications from Cline.
+Appwrite MCP, skills, commands, and guardrails for building, querying, and deploying Appwrite-backed applications from Cline.
 
 ## What It Adds
 
 - `appwrite-docs` MCP server for Appwrite documentation lookup over Streamable HTTP.
 - `appwrite-api` MCP server for Appwrite project operations through `uvx mcp-server-appwrite`.
-- `appwrite-sdk` skill for client and server SDK usage across web, mobile, backend, and server-side languages.
-- `appwrite-cli` skill for Appwrite CLI setup, login, project initialization, pull, push, and non-interactive workflows.
-- `appwrite-tablesdb` skill for TablesDB schema, row, query, permissions, and migration decisions.
-- `appwrite-deployments` skill for guarded site and function deployment workflows.
-- `appwrite-mcp` skill for choosing between the docs MCP and API MCP safely.
+- 15 bundled skills:
+  - `appwrite-cli` for Appwrite CLI setup, login, project initialization, pull, push, and non-interactive workflows.
+  - `appwrite-sdk` as a compatibility router for general SDK requests.
+  - `appwrite-typescript-sdk`, `appwrite-dart-sdk`, `appwrite-kotlin-sdk`, and `appwrite-swift-sdk` for client/mobile/server SDK work.
+  - `appwrite-python-sdk`, `appwrite-ruby-sdk`, `appwrite-go-sdk`, `appwrite-rust-sdk`, `appwrite-dotnet-sdk`, and `appwrite-php-sdk` for server SDK work.
+  - `appwrite-tablesdb` for TablesDB schema, row, query, permissions, and migration decisions.
+  - `appwrite-deployments` for guarded site and function deployment workflows.
+  - `appwrite-mcp` for choosing between the docs MCP and API MCP safely.
+- `/appwrite-deploy-function` and `/appwrite-deploy-site` commands for guided deployment preparation.
+- A safety rule for Appwrite project mutations, deployments, permissions, function executions, API keys, session secrets, and credential-bearing config.
 
 ## Install
 

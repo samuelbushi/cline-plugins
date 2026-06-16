@@ -8,7 +8,7 @@ description: Use when deciding how to use the Appwrite MCP servers. Covers docs 
 This plugin registers two MCP servers:
 
 - `appwrite-docs` for Appwrite documentation lookup.
-- `appwrite-api` for Appwrite project operations through the Appwrite MCP server.
+- `appwrite-api` for Appwrite project operations through the Appwrite MCP server when required credentials are available.
 
 ## Choosing A Server
 

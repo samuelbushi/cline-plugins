@@ -38,7 +38,7 @@ For function work:
 
 - Check the `functions` section in `appwrite.config.json`.
 - Verify runtime, entrypoint, install command, timeout, path, events, schedule, and environment variable needs.
-- Run local tests or lint when available.
+- Run local tests or build checks first when available.
 - Prefer a single function push with a specific function ID when possible.
 
 Typical command shape after confirmation:
@@ -47,19 +47,19 @@ Typical command shape after confirmation:
 appwrite push functions --function-id <FUNCTION_ID>
 ```
 
-## Pull Before Push
+Use `--force` only when the user has approved the exact force command.
 
-If the local config may be stale, suggest pulling first:
+## Review Before Deploy
 
-```bash
-appwrite pull functions
-appwrite pull sites
-```
+Before proposing a command, report:
 
-Do not overwrite local changes without checking the git diff.
+- target endpoint and project ID
+- resource type and ID
+- source path and build/runtime settings
+- files changed since the last deployment-related pull
+- any environment variables, secrets, schedules, events, or permissions that may change behavior
 
 ## Secrets
 
-- Keep function environment variables out of source control.
 - Do not commit API keys, webhook secrets, session secrets, or `.env` files.
 - If a deployment needs secrets, confirm they are configured through Appwrite or the deployment environment rather than embedded in code.
