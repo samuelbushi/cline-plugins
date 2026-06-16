@@ -1,0 +1,21 @@
+{
+  "name": "looker",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Looker plugin for Cline.",
+  "cline": {
+    "plugins": [
+      {
+        "paths": [
+          "./index.ts"
+        ],
+        "capabilities": [
+          "rules",
+          "skills",
+          "tools"
+        ]
+      }
+    ]
+  }
+}
