@@ -1,0 +1,22 @@
+{
+  "name": "cds-mcp",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Cline plugin that registers the SAP CAP MCP server.",
+  "cline": {
+    "plugins": [
+      {
+        "paths": [
+          "./index.ts"
+        ],
+        "capabilities": [
+          "mcp"
+        ]
+      }
+    ]
+  },
+  "dependencies": {
+    "@cap-js/mcp-server": "0.0.5"
+  }
+}
