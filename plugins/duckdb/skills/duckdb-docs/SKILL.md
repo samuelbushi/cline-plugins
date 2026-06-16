@@ -1,66 +1,149 @@
 ---
 name: duckdb-docs
-description: Search DuckDB and DuckLake documentation with DuckDB. Use when a DuckDB SQL feature, function, extension, error, or DuckLake concept needs authoritative documentation.
+description: >
+  Search DuckDB and DuckLake documentation and blog posts. Returns relevant
+  doc chunks for a question or keyword using full-text search against a
+  locally cached index.
 ---
 
-# DuckDB Docs
+You are helping the user find relevant DuckDB or DuckLake documentation.
 
-Use this skill to answer DuckDB and DuckLake documentation questions through DuckDB-hosted search indexes.
+Query: use the DuckDB or DuckLake question from the current user request.
 
-## Setup
+Follow these steps in order.
 
-Check DuckDB and load required extensions:
+## Step 1 - Check DuckDB is installed
 
-```sh
+```bash
 command -v duckdb
+```
+
+If not found, delegate to `duckdb-setup` and then continue.
+
+## Step 2 - Ensure required extensions are installed
+
+```bash
 duckdb :memory: -c "INSTALL httpfs; INSTALL fts;"
 ```
 
-Use `duckdb-setup` if DuckDB is missing or extension installation fails.
+If this fails, report the error and stop.
 
-## Index choice
+## Step 3 - Choose the data source and extract search terms
 
-- DuckDB docs and blog: `https://duckdb.org/data/docs-search.duckdb`.
-- DuckLake docs: `https://ducklake.select/data/docs-search.duckdb`.
+The query is the DuckDB or DuckLake question from the current user request.
 
-Prefer the DuckDB docs index unless the user asks about DuckLake, lakehouse catalogs, DuckLake snapshots, or DuckLake-specific SQL.
+### Data source selection
 
-## Search pattern
+There are two search indexes available:
 
-Cache indexes under `$HOME/.duckdb/docs`. Refresh stale caches only when needed. Before the first cache download, tell the user this will write a DuckDB docs index under their home directory and ask for approval.
+| Index | Remote URL | Local cache filename | Versions | Use when |
+|-------|-----------|---------------------|----------|----------|
+| DuckDB docs + blog | `https://duckdb.org/data/docs-search.duckdb` | `duckdb-docs.duckdb` | `lts`, `current`, `blog` | Default - any DuckDB question |
+| DuckLake docs | `https://ducklake.select/data/docs-search.duckdb` | `ducklake-docs.duckdb` | `stable`, `preview` | Query mentions DuckLake, catalogs, or DuckLake-specific features |
 
-```sh
-CACHE_DIR="$HOME/.duckdb/docs"
-CACHE_FILE="$CACHE_DIR/duckdb-docs.duckdb"
-TMP_FILE="$CACHE_FILE.tmp"
-mkdir -p "$CACHE_DIR"
-duckdb :memory: <<SQL
+Both indexes share the same schema:
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `chunk_id` | `VARCHAR` (PK) | e.g. `stable/sql/functions/numeric#absx` |
+| `page_title` | `VARCHAR` | Page title from front matter |
+| `section` | `VARCHAR` | Section heading (null for page intros) |
+| `breadcrumb` | `VARCHAR` | e.g. `SQL > Functions > Numeric` |
+| `url` | `VARCHAR` | URL path with anchor |
+| `version` | `VARCHAR` | See table above |
+| `text` | `TEXT` | Full markdown of the chunk |
+
+By default, search DuckDB docs and filter to `version = 'lts'`. Use different versions when:
+
+- The user explicitly asks about `current`/nightly features -> `version = 'current'`
+- The user asks about a blog post or wants background/motivation -> `version = 'blog'`
+- The user asks about DuckLake -> search the DuckLake index with `version = 'stable'`
+- When unsure, omit the version filter to search across all versions.
+
+### Search terms
+
+If the input is a natural language question (e.g. "how do I find the most frequent value"), extract the key technical terms (nouns, function names, SQL keywords) to form a compact BM25 query string. Drop stop words like "how", "do", "I", "the".
+
+If the input is already a function name or technical term (e.g. `arg_max`, `GROUP BY ALL`), use it as-is.
+
+Use the extracted terms as `SEARCH_QUERY` in the next step.
+
+## Step 4 - Ensure local cache is fresh
+
+The cache lives at `$HOME/.duckdb/docs/CACHE_FILENAME` (where `CACHE_FILENAME` is `duckdb-docs.duckdb` or `ducklake-docs.duckdb` per Step 3).
+
+First, ensure the directory exists:
+
+```bash
+mkdir -p "$HOME/.duckdb/docs"
+```
+
+Then check whether the cache file exists and is fresh (<=2 days old):
+
+```bash
+CACHE_FILE="$HOME/.duckdb/docs/CACHE_FILENAME"
+if [ -f "$CACHE_FILE" ]; then
+    MTIME=$(stat -f %m "$CACHE_FILE" 2>/dev/null || stat -c %Y "$CACHE_FILE")
+    CACHE_AGE_DAYS=$(( ( $(date +%s) - MTIME ) / 86400 ))
+else
+    CACHE_AGE_DAYS=999
+fi
+echo "Cache age: $CACHE_AGE_DAYS days"
+```
+
+If `CACHE_AGE_DAYS` <= 2 -> skip to Step 5.
+
+Otherwise (stale or missing) -> fetch the index:
+
+```bash
+duckdb -c "
 LOAD httpfs;
 LOAD fts;
-ATTACH 'https://duckdb.org/data/docs-search.duckdb' AS remote (READ_ONLY);
-ATTACH '$TMP_FILE' AS tmp;
+ATTACH 'REMOTE_URL' AS remote (READ_ONLY);
+ATTACH '$HOME/.duckdb/docs/CACHE_FILENAME.tmp' AS tmp;
 COPY FROM DATABASE remote TO tmp;
-SQL
-mv "$TMP_FILE" "$CACHE_FILE"
+" && mv "$HOME/.duckdb/docs/CACHE_FILENAME.tmp" "$HOME/.duckdb/docs/CACHE_FILENAME"
 ```
 
-Then search:
+Replace `REMOTE_URL` and `CACHE_FILENAME` per Step 3. If the fetch fails (network error), report the error and stop.
 
-```sh
-CACHE_FILE="$HOME/.duckdb/docs/duckdb-docs.duckdb"
-duckdb "$CACHE_FILE" -readonly -json <<'SQL'
+## Step 5 - Search the docs
+
+```bash
+duckdb "$HOME/.duckdb/docs/CACHE_FILENAME" -readonly -json -c "
 LOAD fts;
-SELECT page_title, section, breadcrumb, url, version, text,
-       fts_main_docs_chunks.match_bm25(chunk_id, 'window functions') AS score
+SELECT
+    chunk_id, page_title, section, breadcrumb, url, version, text,
+    fts_main_docs_chunks.match_bm25(chunk_id, 'SEARCH_QUERY') AS score
 FROM docs_chunks
 WHERE score IS NOT NULL
+  AND version = 'VERSION'
 ORDER BY score DESC
-LIMIT 5;
-SQL
+LIMIT 8;
+"
 ```
 
-Use compact technical search terms, not full prose questions.
+Replace `CACHE_FILENAME`, `SEARCH_QUERY`, and `VERSION` per Step 3. Remove the `AND version = 'VERSION'` line if searching across all versions.
 
-## Answering
+If the user's question could benefit from both DuckDB docs and blog results, run two queries (one with `version = 'lts'` or `version = 'current'` per Step 3, one with `version = 'blog'`) or omit the version filter entirely.
 
-Summarize the relevant docs and include the official docs path or URL from the result. Do not paste long docs chunks into the conversation.
+## Step 6 - Handle errors
+
+- Extension not installed (`httpfs` or `fts` not found): run `duckdb :memory: -c "INSTALL httpfs; INSTALL fts;"` and retry.
+- ATTACH fails / network unreachable: inform the user that the docs index is unavailable and suggest checking their internet connection. The DuckDB index is hosted at `https://duckdb.org/data/docs-search.duckdb` and the DuckLake index at `https://ducklake.select/data/docs-search.duckdb`.
+- No results (all scores NULL or empty result set): try broadening the query - drop the least specific term, or try a single-word version of the query - then retry Step 5. If still no results, tell the user no matching documentation was found and suggest visiting https://duckdb.org/docs or https://ducklake.select/docs directly.
+
+## Step 7 - Present results
+
+For each result chunk returned (ordered by score descending), format as:
+
+```
+### {section} - {page_title}
+{url}
+
+Short relevant excerpt or paraphrase from the chunk, not the full `text` field.
+
+---
+```
+
+After presenting all chunks, synthesize a concise answer to the user's original question based on the retrieved documentation. If the chunks directly answer the question, lead with the answer before showing the sources.

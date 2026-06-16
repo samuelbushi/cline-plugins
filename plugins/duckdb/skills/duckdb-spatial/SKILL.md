@@ -1,63 +1,81 @@
 ---
 name: duckdb-spatial
-description: Analyze spatial data with DuckDB. Use when the user mentions coordinates, lat/lng, distances, maps, addresses, nearby places, GeoJSON, Shapefile, GeoPackage, GeoParquet, GPX, or Overture Maps.
+description: >
+  Answer questions about spatial data using DuckDB. Use when the user mentions locations,
+  coordinates, lat/lng, distances, maps, addresses, "near", "within", "closest", geographic
+  names, or spatial file formats (GeoJSON, Shapefile, GeoPackage, GPX, GeoParquet). Also
+  triggers when the user wants to find places, buildings, or roads - Overture Maps provides
+  free global data on S3 with zero API keys. Handles spatial joins, distance calculations,
+  containment checks, density analysis, and format conversions for geographic data.
 ---
 
-# DuckDB Spatial
+You are answering spatial questions using DuckDB's spatial extension and, when needed, Overture Maps as a free global data source.
 
-Use DuckDB's spatial extension for geographic files, coordinate questions, distance calculations, and public Overture Maps data.
+Question or file: use the spatial question or file path from the current user request.
+Additional context: use any additional context from the current user request.
 
-## Setup
+## Step 1 - Understand what the user needs
 
+Classify the question:
+
+| Pattern | Data source | Key functions |
+|---------|-------------|---------------|
+| "Find X near Y" (no user file) | Overture Maps on S3 | `ST_Distance_Spheroid`, bbox filtering |
+| "How far between A and B" | Geocode or user data | `ST_Distance_Spheroid` |
+| "Which points fall inside polygons" | User files | `ST_Contains` |
+| "Analyze this GeoJSON/Shapefile/GPX" | User file | `ST_Read`, measurement functions |
+| "Show density/hotspots" | User or Overture data | H3 hex binning |
+| "Convert to GeoJSON/GeoPackage" | User file | `COPY TO (FORMAT GDAL)` |
+| "Count buildings/roads in area" | Overture Maps | bbox filtering + aggregation |
+
+If the question involves real-world places, POIs, buildings, roads, or boundaries and the user hasn't provided a file, use Overture Maps - read `references/overture.md` for S3 paths and schema.
+
+For spatial function syntax, read `references/functions.md`.
+
+## Step 2 - Write and run the query
+
+Always start with:
 ```sql
-INSTALL spatial;
 LOAD spatial;
 SET geometry_always_xy = true;
 ```
 
-Use `geometry_always_xy = true` so coordinates are interpreted as longitude, latitude.
+Add extensions as needed:
+- Overture/remote data: `LOAD httpfs; CREATE SECRET (TYPE S3, PROVIDER config, REGION 'us-west-2');`
+- H3 hex binning: `INSTALL h3 FROM community; LOAD h3;`
 
-For remote data:
+### Key principles
 
+bbox filtering first - When querying Overture, always filter on `bbox.xmin/xmax/ymin/ymax` before any spatial function. This uses Parquet predicate pushdown and avoids downloading the full dataset.
+
+Always set `geometry_always_xy = true` - This ensures all spatial functions interpret coordinates as longitude, latitude (the standard for Overture, GeoJSON, and most data sources). Without it, spheroid functions assume latitude first and return wrong results.
+
+Use spheroid functions for real-world distances - `ST_Distance_Spheroid` returns meters on the WGS84 ellipsoid. Plain `ST_Distance` uses planar coordinates and gives meaningless results for lat/lng. Important: spheroid functions (`ST_Distance_Spheroid`, `ST_Area_Spheroid`, etc.) require `POINT_2D` inputs, not generic `GEOMETRY`. Overture geometry columns are typed `GEOMETRY('OGC:CRS84')` and cannot be cast directly. Extract coordinates first:
 ```sql
-INSTALL httpfs;
-LOAD httpfs;
+ST_Point(ST_X(geometry), ST_Y(geometry))::POINT_2D
 ```
 
-## Common tasks
+CSV with lat/lng needs conversion - `ST_Point(longitude, latitude)` (longitude first). This is the most common gotcha.
 
-| Need | Pattern |
-| --- | --- |
-| Read GeoJSON, Shapefile, GeoPackage | `ST_Read('file.geojson')` |
-| Convert to GeoJSON | `COPY (...) TO 'result.geojson' WITH (FORMAT GDAL, DRIVER 'GeoJSON')` |
-| Distance between lon/lat points | `ST_Distance_Spheroid(ST_Point(lon1, lat1)::POINT_2D, ST_Point(lon2, lat2)::POINT_2D)` |
-| Points in polygons | `ST_Contains(polygon_geom, point_geom)` |
-| Spatial file schema | `DESCRIBE FROM ST_Read('file.gpkg')` |
+Run the query in a single bash call:
 
-## Overture Maps
-
-Overture Maps provides public GeoParquet on S3. Use the STAC catalog to find the current release, then query only the needed theme/type path.
-
-Load remote access:
-
-```sql
-LOAD httpfs;
+```bash
+duckdb -c "
 LOAD spatial;
-CREATE SECRET (TYPE S3, PROVIDER config, REGION 'us-west-2');
+<ADDITIONAL_SETUP>
+<YOUR_QUERY>
+"
 ```
 
-Always filter on `bbox` columns before spatial functions so Parquet predicate pushdown reduces data transfer:
+## Step 3 - Present results
 
-```sql
-FROM read_parquet('s3://overturemaps-us-west-2/release/<release>/theme=places/type=place/*')
-WHERE bbox.xmin BETWEEN -74.01 AND -73.96
-  AND bbox.ymin BETWEEN 40.72 AND 40.77
-LIMIT 20;
-```
+- For tabular results: show the data directly
+- For spatial results: consider exporting to GeoJSON for visualization (`COPY TO 'result.geojson' WITH (FORMAT GDAL, DRIVER 'GeoJSON')`)
+- For distance/area results: use human-readable units (km for large distances, m for small)
+- For density/hotspot results: describe the pattern and offer to export for visualization
 
-## Safety
-
-- Ask before writing converted spatial files.
-- Warn before broad Overture or object-storage scans.
-- Use meters for distance output and describe assumptions.
-- If no results are found, widen the bounding box before changing the category or query intent.
+If the query fails:
+- `duckdb: command not found` -> delegate to `duckdb-setup`
+- Missing extension -> `INSTALL spatial; LOAD spatial;` or `INSTALL h3 FROM community; LOAD h3;`
+- S3 access denied -> suggest checking AWS credentials
+- No results with Overture -> widen the bbox, check the category spelling, or try a broader search

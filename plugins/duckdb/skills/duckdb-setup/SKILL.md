@@ -1,51 +1,91 @@
 ---
 name: duckdb-setup
-description: Install, verify, or update DuckDB CLI and extensions. Use when DuckDB is missing, an extension is missing, the user asks to install DuckDB, or a DuckDB command fails due to extension setup.
+description: >
+  Check the DuckDB CLI and install or update DuckDB extensions. Each argument is
+  either a plain extension name (installs from core) or name@repo
+  (e.g. magic@community). Pass --update to update extensions instead of installing.
 ---
 
-# DuckDB Setup
+Arguments: use the requested extension names or update mode from the current user request.
 
-Use this skill when a DuckDB workflow needs the CLI or extensions.
+Each extension argument has the form `name` or `name@repo`.
+- `name` -> `INSTALL name;`
+- `name@repo` -> `INSTALL name FROM repo;`
 
-## Check first
+## Step 1 - Locate DuckDB
 
-```sh
-command -v duckdb
-duckdb --version
+```bash
+DUCKDB=$(command -v duckdb)
 ```
 
-If DuckDB is missing, tell the user what command you plan to run and ask before installing.
+If not found, tell the user DuckDB is not installed and ask whether they want Cline to install it now:
 
-Common install options:
+> DuckDB is not installed. Install it first with one of:
+> - macOS:   `brew install duckdb`
+> - Linux:   `curl -fsSL https://install.duckdb.org | sh`
+> - Windows: `winget install DuckDB.cli`
+>
+> Continue with the matching install command?
 
-```sh
-# macOS with Homebrew
-brew install duckdb
+If the user agrees, detect the platform and run the matching command. If they decline, stop and tell them to re-run `duckdb-setup` after installing DuckDB.
 
-# Linux
-curl -fsSL https://install.duckdb.org | sh
+## Step 2 - Check for --update flag
 
-# Windows
-winget install DuckDB.cli
+If the user requested `--update`, remove it from the argument list and set mode to update.
+Otherwise mode is install.
+
+## Step 3 - Build and run statements
+
+Install mode:
+
+If no extension arguments were requested, report the DuckDB CLI path and version, then stop:
+
+```bash
+"$DUCKDB" --version
 ```
 
-## Extensions
+Parse each remaining argument:
+- If it contains `@`, split on `@` -> `INSTALL <name> FROM <repo>;`
+- Otherwise -> `INSTALL <name>;`
 
-Install or load extensions only when needed for the requested task:
+Run all in a single DuckDB call:
 
-| Need | DuckDB setup |
-| --- | --- |
-| HTTPS, S3, R2, GCS | `INSTALL httpfs; LOAD httpfs;` |
-| Spatial files and functions | `INSTALL spatial; LOAD spatial;` |
-| Excel files | `INSTALL excel; LOAD excel;` |
-| SQLite files | `INSTALL sqlite_scanner; LOAD sqlite_scanner;` |
-| H3 indexes | `INSTALL h3 FROM community; LOAD h3;` |
+```bash
+"$DUCKDB" :memory: -c "INSTALL <ext1>; INSTALL <ext2> FROM <repo2>; ..."
+```
 
-Ask before installing extensions from community repositories.
+Before running extension installs, show the exact extension names and repositories that will be installed and ask for confirmation. Community repositories and extension updates can download code, so do not run them silently.
 
-## Safety
+Update mode:
 
-- Do not run upgrade commands without user approval.
-- Do not print secrets or credentials.
-- Prefer one DuckDB command that loads only the extensions needed for the task.
-- If a command fails, report the exact missing extension or install error and suggest the minimal fix.
+First, check if the DuckDB CLI itself is up to date:
+
+```bash
+CURRENT=$(duckdb --version | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
+LATEST=$(curl -fsSL https://duckdb.org/data/latest_stable_version.txt)
+```
+
+- If `CURRENT` == `LATEST` -> report DuckDB CLI is up to date.
+- If `CURRENT` != `LATEST` -> ask the user:
+  > DuckDB CLI is outdated (installed: `CURRENT`, latest: `LATEST`). Upgrade now?
+
+  If the user agrees, detect the platform and run the appropriate upgrade command:
+  - macOS (`brew` available): `brew upgrade duckdb`
+  - Linux: `curl -fsSL https://install.duckdb.org | sh`
+  - Windows: `winget upgrade DuckDB.cli`
+
+Then update extensions:
+
+- No extension names -> update all: `UPDATE EXTENSIONS;`
+- With extension names -> update in a single call (ignore `@repo`):
+  `UPDATE EXTENSIONS (<name1>, <name2>, ...);`
+
+```bash
+"$DUCKDB" :memory: -c "UPDATE EXTENSIONS;"
+# or
+"$DUCKDB" :memory: -c "UPDATE EXTENSIONS (<ext1>, <ext2>, ...);"
+```
+
+Before updating extensions, show the exact update scope and ask for confirmation.
+
+Report success or failure after the call completes.
