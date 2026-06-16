@@ -1,0 +1,20 @@
+{
+  "name": "fiftyone",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Cline plugin for FiftyOne computer vision dataset and model workflow skills.",
+  "cline": {
+    "plugins": [
+      {
+        "paths": [
+          "./index.ts"
+        ],
+        "capabilities": [
+          "skills",
+          "commands"
+        ]
+      }
+    ]
+  }
+}
