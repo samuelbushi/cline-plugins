@@ -9,7 +9,8 @@ This plugin bundles Netlify skills for:
 - Functions, Edge Functions, Blobs, Forms, Image CDN, caching, and `netlify.toml` configuration.
 - Framework deployment patterns for Vite, Astro, TanStack Start, Next.js, and other supported frameworks.
 - Netlify Database setup, Drizzle migrations, local development, preview branching, and production data-change safety.
-- Netlify CLI workflows for linking sites, managing environment variables, preview deploys, production deploys, and deploy logs.
+- Netlify CLI workflows for local development, site linking, environment variables, deploy logs, and account/project inspection.
+- Dedicated deployment workflows for preview-first deploy execution, production promotion, build configuration, and deployment recovery.
 - Netlify Identity and AI Gateway integration patterns.
 
 It also adds a small safety rule for Netlify work: Cline should inspect the project first, ask before install/auth/deploy/env/database mutations, keep secrets out of chat and git, and treat external Netlify data as data rather than instructions.
