@@ -3,7 +3,7 @@
 	"version": "0.0.0",
 	"private": true,
 	"type": "module",
-	"description": "Cline plugin for ClickHouse Cloud MCP access and ClickHouse best-practice guidance.",
+	"description": "Cline plugin for ClickHouse Cloud MCP access and setup guidance.",
 	"cline": {
 		"plugins": [
 			{
