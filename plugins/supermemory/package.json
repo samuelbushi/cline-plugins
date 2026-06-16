@@ -1,0 +1,38 @@
+{
+	"name": "supermemory",
+	"version": "0.1.0",
+	"private": true,
+	"description": "Persistent memory for Cline via Supermemory",
+	"type": "module",
+	"scripts": {
+		"typecheck": "tsc --noEmit",
+		"clean": "rm -rf node_modules dist"
+	},
+	"exports": {
+		".": "./index.ts"
+	},
+	"cline": {
+		"plugins": [
+			{
+				"paths": [
+					"./index.ts"
+				],
+				"capabilities": [
+					"tools",
+					"messageBuilders"
+				]
+			}
+		]
+	},
+	"peerDependencies": {
+		"@cline/core": "*"
+	},
+	"peerDependenciesMeta": {
+		"@cline/core": {
+			"optional": true
+		}
+	},
+	"dependencies": {
+		"supermemory": "4.0.0"
+	}
+}
