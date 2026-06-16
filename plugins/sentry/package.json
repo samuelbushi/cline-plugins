@@ -1,0 +1,23 @@
+{
+	"name": "sentry",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"description": "Sentry MCP, Seer command, and Sentry SDK/workflow skills for Cline.",
+	"cline": {
+		"plugins": [
+			{
+				"paths": [
+					"./index.ts"
+				],
+				"capabilities": [
+					"mcp",
+					"commands",
+					"skills",
+					"rules",
+					"tools"
+				]
+			}
+		]
+	}
+}
