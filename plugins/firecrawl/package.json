@@ -1,0 +1,28 @@
+{
+  "name": "firecrawl",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Firecrawl CLI workflow skills and a documentation-to-skill slash command for web scraping, crawling, search, monitoring, and structured extraction.",
+  "cline": {
+    "plugins": [
+      {
+        "paths": [
+          "./index.ts"
+        ],
+        "capabilities": [
+          "skills",
+          "commands"
+        ]
+      }
+    ]
+  },
+  "peerDependencies": {
+    "@cline/sdk": "*"
+  },
+  "peerDependenciesMeta": {
+    "@cline/sdk": {
+      "optional": true
+    }
+  }
+}
