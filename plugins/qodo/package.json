@@ -1,0 +1,20 @@
+{
+  "name": "qodo",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Qodo review workflow skills for loading coding rules and triaging Qodo PR feedback.",
+  "cline": {
+    "plugins": [
+      {
+        "paths": [
+          "./index.ts"
+        ],
+        "capabilities": [
+          "skills",
+          "rules"
+        ]
+      }
+    ]
+  }
+}
