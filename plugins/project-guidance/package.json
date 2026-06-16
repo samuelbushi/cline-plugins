@@ -1,0 +1,20 @@
+{
+	"name": "project-guidance",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"description": "Cline plugin for auditing and revising project guidance files.",
+	"cline": {
+		"plugins": [
+			{
+				"paths": [
+					"./index.ts"
+				],
+				"capabilities": [
+					"commands",
+					"skills"
+				]
+			}
+		]
+	}
+}
