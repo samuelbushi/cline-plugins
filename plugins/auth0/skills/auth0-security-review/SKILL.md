@@ -9,7 +9,7 @@ Use this skill for a focused review of Auth0-related code and configuration.
 
 ## Scope
 
-Review only the requested files, diff, or tenant settings. If scope is unclear, ask for it.
+Review only the requested files, diff, or tenant settings. If scope is unclear, ask for it. Prefer local code and configuration review first; ask before querying a live Auth0 tenant.
 
 ## Checklist
 
