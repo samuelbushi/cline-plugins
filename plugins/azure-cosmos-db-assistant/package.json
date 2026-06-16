@@ -1,0 +1,20 @@
+{
+  "name": "azure-cosmos-db-assistant",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Cline plugin for Azure Cosmos DB review guidance and best practices.",
+  "cline": {
+    "plugins": [
+      {
+        "paths": [
+          "./index.ts"
+        ],
+        "capabilities": [
+          "commands",
+          "skills"
+        ]
+      }
+    ]
+  }
+}
