@@ -34,7 +34,7 @@ cline plugin install ./plugins/cloudflare --cwd .
 - Cloudflare MCP authorization when using remote MCP tools that access account resources.
 - Wrangler installed or installable for deploy, local dev, bindings, secrets, and generated types workflows.
 - Project-specific credentials and API tokens configured outside the plugin. Do not paste long-lived tokens, account secrets, or Worker secrets into chat unless the user explicitly accepts the risk.
-- Chrome DevTools MCP or another browser/performance tool for full `web-perf` audits.
+- Cline's Chrome DevTools MCP plugin, or another connected browser/performance tool, for full `web-perf` audits.
 
 ## Trust Boundaries
 
@@ -46,7 +46,7 @@ Ask for explicit confirmation before deploys, DNS changes, firewall/security cha
 
 ## Security Notes
 
-The bundled skills are guidance and routing instructions. They do not vendor the source helper scripts or Turnstile worker templates. When a workflow needs `wrangler`, `npm`, Chrome DevTools MCP, Cloudflare MCP tools, or direct API calls, verify the command and account context before asking Cline to run it.
+The bundled skills are guidance and routing instructions. The Turnstile workflow includes helper scripts and a managed Worker template; run them only after confirming the target account, domains, deployment name, and files to edit. When a workflow needs `wrangler`, `npm`, Chrome DevTools MCP, Cloudflare MCP tools, or direct API calls, verify the command and account context before asking Cline to run it.
 
 ## Attribution
 
