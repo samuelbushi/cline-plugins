@@ -1,6 +1,6 @@
 ---
 name: postman-mcp
-description: Use the Postman MCP server for workspace, collection, spec, environment, mock, documentation, search, and collection-run workflows. Use when the user wants Cline to work with Postman cloud resources.
+description: Use the Postman MCP server for workspace, collection, spec, environment, mock, documentation, search, and collection-run workflows.
 ---
 
 # Postman MCP

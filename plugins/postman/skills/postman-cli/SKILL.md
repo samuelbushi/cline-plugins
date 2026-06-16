@@ -1,51 +1,101 @@
 ---
 name: postman-cli
-description: Use the local Postman CLI for request sending, collection runs, OpenAPI linting, and git-synced Postman file workflows. Use when the task needs local execution or repository files rather than Postman cloud MCP operations.
+description: Use local Postman CLI guidance for request sending, collection runs, OpenAPI linting, and git-synced Postman files.
 ---
 
-# Postman CLI
+Reference knowledge for the Postman CLI and git sync file structure. This skill provides context used by the CLI commands.
 
-Use the local Postman CLI only when it is the right tool: sending local requests, running collections locally, linting specs, or working with git-synced Postman files. Do not install or authenticate the CLI unless the user asked for that action. API-key based setup belongs here, not in remote MCP auth recovery.
+## Postman CLI Overview
 
-## Setup Checks
+The Postman CLI (`postman-cli`) is the official command-line tool for Postman. It runs collections, validates API specs, sends requests, and integrates with CI/CD pipelines.
 
-1. Check for the CLI with `postman --version` or `command -v postman`.
-2. If it is missing, explain that the user can install `postman-cli`.
-3. If authentication is needed, use `postman login` only after the user confirms.
-4. Keep API keys and login output out of chat and commits.
+### Installation and Auth
 
-## Git-Synced Postman Files
-
-Postman git sync commonly uses:
-
-```text
-.postman/resources.yaml
-postman/collections/
-postman/environments/
-postman/specs/
+```bash
+# Ask before installing globally
+npm install -g postman-cli
+postman login
 ```
 
-Collections may be directories with request YAML files rather than one JSON file. Inspect the folder structure before generating commands.
+Authentication requires a valid Postman API key. Ask before running `postman login` and follow the prompts.
 
-## Send A Request
+### Core Commands
 
-Before sending a request:
+| Command | Purpose |
+|---------|---------|
+| `postman collection run <id>` | Run collection tests by cloud ID |
+| `postman request <METHOD> <URL>` | Send an HTTP request |
+| `postman spec lint <file>` | Validate an OpenAPI spec |
+| `postman context instructions` | Get agent workflow instructions for API discovery and code generation |
+| `postman context collection get -c <id>` | Get a collection's structure (folders, requests) |
+| `postman context request context -c <id> -r <id>` | Get full request context for code generation |
+| `postman login` | Authenticate with Postman |
 
-1. Identify method, URL, headers, body, auth, and environment.
-2. Show the command to the user.
-3. Ask before sending requests to non-local URLs or endpoints with side effects.
-4. Redact tokens and cookies from output.
+---
 
-## Run A Collection
+## Git Sync File Structure
 
-Before `postman collection run`:
+When a Postman workspace is connected to a git repo, it syncs using this structure:
 
-1. Resolve the collection ID or local collection file.
-2. Resolve the environment.
-3. Confirm base URL, target environment, timeout, and whether requests mutate data.
-4. Run the smallest useful scope first when possible.
-5. Summarize failures with likely causes and next fixes.
+```
+project-root/
+|-- .postman/
+|   `-- resources.yaml              # Maps local paths -> cloud IDs
+|-- postman/
+|   |-- collections/
+|   |   `-- My API/                  # Collection (v3 folder format)
+|   |       |-- .resources/
+|   |       |   `-- definition.yaml  # schemaVersion: "3.0", name
+|   |       |-- Get Users.request.yaml
+|   |       |-- Create User.request.yaml
+|   |       `-- Auth/               # Subfolder
+|   |           `-- Login.request.yaml
+|   |-- environments/
+|   |   `-- dev.postman_environment.json
+|   `-- specs/
+|       `-- openapi.yaml
+```
 
-## Spec Linting
+### resources.yaml
 
-Use `postman spec lint <file>` for local OpenAPI checks. Fix syntax or schema issues only in files the user wants changed, and summarize the diff before syncing to Postman cloud resources.
+Maps local collection/environment paths to their Postman cloud IDs:
+
+```yaml
+cloudResources:
+  collections:
+    ../postman/collections/My API: 45288920-e06bf878-2400-4d76-b187-d3a9c99d6899
+  environments:
+    ../postman/environments/dev.postman_environment.json: 45288920-abc12345-...
+```
+
+### Collection v3 Folder Format
+
+Each collection is a directory (not a single JSON file). It contains:
+- `.resources/definition.yaml` - collection metadata
+- `*.request.yaml` - individual request files
+- Subdirectories for folders within the collection
+
+Request files contain:
+```yaml
+$kind: http-request
+url: https://api.example.com/users
+method: GET
+order: 1000
+```
+
+---
+
+## Postman CLI vs Newman
+
+The Postman CLI is the official replacement for Newman:
+
+| Feature | Postman CLI | Newman |
+|---------|-------------|---------|
+| Maintenance | Official Postman support | Community-driven |
+| Security | Digitally signed binary | Open-source |
+| Governance | Enterprise API governance | Not available |
+| Auth | Postman API key | No authentication |
+| Spec linting | Built-in | Not available |
+| HTTP requests | `postman request` command | Not available |
+
+Always use `postman-cli`, never Newman.
