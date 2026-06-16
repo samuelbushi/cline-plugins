@@ -1,0 +1,33 @@
+{
+	"name": "pinecone",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"description": "Pinecone MCP, skills, and helper command for vector search and RAG workflows in Cline.",
+	"exports": {
+		".": "./index.ts"
+	},
+	"cline": {
+		"plugins": [
+			{
+				"paths": [
+					"./index.ts"
+				],
+				"capabilities": [
+					"mcp",
+					"commands",
+					"rules",
+					"skills"
+				]
+			}
+		]
+	},
+	"peerDependencies": {
+		"@cline/sdk": "*"
+	},
+	"peerDependenciesMeta": {
+		"@cline/sdk": {
+			"optional": true
+		}
+	}
+}
