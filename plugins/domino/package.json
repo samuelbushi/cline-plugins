@@ -1,0 +1,20 @@
+{
+  "name": "domino",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Domino Data Lab MCP and workflow skills for Cline.",
+  "cline": {
+    "plugins": [
+      {
+        "capabilities": [
+          "mcp",
+          "skills"
+        ],
+        "paths": [
+          "./index.ts"
+        ]
+      }
+    ]
+  }
+}

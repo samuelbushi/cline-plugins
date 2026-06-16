@@ -1,0 +1,9 @@
+This plugin includes a curated Cline wrapper and a bundled Domino MCP server derived from Domino Data Lab's MIT-licensed Domino plugin materials.
+
+Upstream copyright:
+Copyright (c) 2026 Domino Data Lab
+
+Notable Cline-specific changes:
+- Registers the MCP server from the installed plugin directory.
+- Uses Cline skill packaging and setup guidance.
+- Removes the browser-opening MCP tool to avoid host-side UI side effects.
