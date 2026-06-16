@@ -1,13 +1,13 @@
 # AWS Dev Toolkit
 
-Adds broad AWS development guidance for Cline, with AWS documentation, infrastructure analysis, and pricing MCP servers plus curated skills for architecture, migration, debugging, and service design.
+Adds AWS development guidance for Cline, with AWS documentation, infrastructure analysis, and pricing MCP servers plus detailed skills for architecture, migration, debugging, service design, and operations.
 
 ## What It Adds
 
 - Registers `awsknowledge`, an AWS documentation and recommendation MCP server.
 - Registers `awsiac`, a local AWS IaC MCP server for CloudFormation, CDK, Terraform, and SAM validation workflows.
 - Registers `awspricing`, a local AWS pricing MCP server for pricing lookups and cost-aware architecture comparisons.
-- Bundles Cline skills for AWS planning, Well-Architected review, IaC review, debugging, cost optimization, migration, containers, serverless, networking, observability, storage and data stores, and agent platform design.
+- Bundles 35 Cline skills for AWS planning, Well-Architected review, IaC review, debugging, cost optimization, migration, containers, serverless, networking, observability, storage and data stores, ML/AI, IoT, and agent platform design.
 
 ## Install
 
@@ -36,7 +36,7 @@ Cline can use the bundled skills to plan the review, consult AWS docs, run local
 - MCP: `awsknowledge` exposes AWS documentation search and recommendations.
 - MCP: `awsiac` exposes IaC validation and security review helpers through a local `uvx`-launched MCP server.
 - MCP: `awspricing` exposes AWS pricing data through a local `uvx`-launched MCP server.
-- Skills: twelve prefixed `aws-dev-*` workflow skills cover the toolkit's main AWS development lanes without colliding with narrower AWS plugins.
+- Skills: 35 prefixed `aws-dev-*` workflow skills cover the toolkit's main AWS development lanes while avoiding collisions with narrower AWS plugins or user-defined skills.
 
 ## Requirements
 
