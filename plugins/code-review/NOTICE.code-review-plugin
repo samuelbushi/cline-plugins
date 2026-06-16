@@ -1,0 +1,7 @@
+Code review command guidance
+
+Portions of the command workflow are adapted from the public code-review plugin by Anthropic.
+
+Modified for Cline's plugin model as a single slash command that starts a review workflow without automatically posting GitHub comments or relying on unsupported agent-profile behavior.
+
+License: Apache-2.0
