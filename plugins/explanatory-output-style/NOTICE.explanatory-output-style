@@ -1,0 +1,5 @@
+This plugin includes adapted prompt guidance from Anthropic's
+explanatory-output-style plugin, licensed under Apache-2.0.
+
+The Cline plugin uses the native rules primitive instead of a session-start
+shell hook.
