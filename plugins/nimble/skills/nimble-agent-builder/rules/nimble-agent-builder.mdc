@@ -1,0 +1,76 @@
+---
+description: Scoped guidance for the nimble-agent-builder skill.
+---
+
+# Nimble Agent Builder Rules
+
+These rules apply when the `nimble-agent-builder` skill is active.
+
+## Transport order
+
+Use the registered Nimble MCP server first when it is authorized. Use the Nimble
+CLI only when the MCP tool surface is missing a required capability, when the user
+explicitly chooses shell-based workflows, or when a batch/script workflow requires
+local file I/O. Ask before installing the CLI or requesting API-key setup.
+
+Foreground -- available operations:
+
+| Command | Purpose |
+| --- | --- |
+| Nimble MCP agents-list or `nimble agent list --limit 100` | Search for existing agents |
+| Nimble MCP agent-get or `nimble agent get --template-name` | Display schema before run |
+| Nimble MCP agent-run or `nimble agent run --agent --params` | Interactive execution |
+| Nimble MCP search or `nimble search` | Web search / discovery |
+
+background subtasks -- long-running operations (generate -> poll -> publish):
+
+| Command | Purpose |
+| --- | --- |
+| `nimble agent generate --agent-name --prompt --url` | Create or refine an agent |
+| `nimble agent generate --from-agent --prompt` | Iterate on existing agent |
+| `nimble agent get-generation --generation-id` | Poll generation status |
+| `nimble agent publish --agent-name --version-id` | Publish a version |
+
+Agent creation runs in a background subtask because generation takes 1-3 minutes.
+
+## Update over generate -- always
+
+When `nimble agent list --limit 100` finds an agent on the same domain -- even with missing fields or different scope -- update it via `nimble agent generate --from-agent`. Do NOT generate a new agent from scratch.
+
+Only generate from scratch when the agent list returns zero matches for the target domain.
+
+## Every background subtask prompt must include the CLI commands
+
+Copy this block into every background subtask prompt:
+
+```
+CLI tools (use via Bash):
+- `nimble agent list --limit 100`
+- `nimble agent get --template-name <name>`
+- `nimble agent run --agent <name> --params '{...}'`
+- `nimble agent generate --agent-name <name> --prompt "<prompt>" --url "<url>"`
+- `nimble agent generate --agent-name <name> --from-agent <name> --prompt "<prompt>"`
+- `nimble agent get-generation --generation-id <id>`
+- `nimble agent publish --agent-name <name> --version-id <id>`
+- `nimble search --query "<query>"`
+
+MCP equivalents for Cline installs:
+| CLI command | MCP tool |
+|---|---|
+| nimble agent generate | Nimble MCP nimble_agents_generate |
+| nimble agent get-generation | Nimble MCP nimble_agents_status |
+| nimble agent publish | Nimble MCP nimble_agents_publish |
+
+Prefer MCP for Cline installs. Use CLI only when needed. Never curl MCP endpoints.
+```
+
+## Do not substitute unrelated web tools for Nimble workflows
+
+When this skill is actively building or validating Nimble agents, use Nimble MCP
+tools or CLI commands for the web-data steps. Do not replace a failed Nimble
+workflow with unrelated web fetch/search tools unless the user explicitly changes
+the task away from Nimble.
+
+## Never use WSA tools
+
+Never call `nimble_find_search_agent`, `nimble_run_search_agent`, or `nimble_url_extract`.
