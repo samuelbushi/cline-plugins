@@ -1,11 +1,12 @@
 # AWS Data Analytics
 
-Adds AWS data lake and analytics guidance for Cline, with a shared AWS MCP server for AWS documentation and API workflows plus focused skills for Glue, Athena, S3 Tables, and S3 Vectors.
+Adds AWS data lake and analytics guidance for Cline, with a shared AWS MCP server for AWS documentation and approved AWS API workflows plus detailed skills for Glue, Athena, S3 Tables, and S3 Vectors.
 
 ## What It Adds
 
-- Registers `aws-mcp`, a shared AWS MCP server launched through `uvx mcp-proxy-for-aws@1.6.0`.
-- Bundles skills for connecting external data sources with AWS Glue, creating S3 Tables backed Iceberg tables, ingesting data into a lake, querying with Athena, finding and auditing catalog assets, and storing or querying vectors with S3 Vectors.
+- Registers `aws-mcp`, the managed AWS MCP server launched through `uvx mcp-proxy-for-aws@1.6.0`.
+- Bundles detailed skills for connecting external data sources with AWS Glue, creating S3 Tables backed Iceberg tables, ingesting data into a lake, querying with Athena, finding and auditing catalog assets, and storing or querying vectors with S3 Vectors.
+- Includes skill reference files for Glue connection setup, Iceberg table creation, catalog discovery, ingestion, query workgroups, and S3 Vectors patterns.
 - Keeps the AWS MCP server name shared with other AWS plugins so users do not get duplicate AWS MCP entries.
 
 ## Install
@@ -32,7 +33,7 @@ Cline can use the bundled skills to resolve the asset, choose a workgroup, bound
 
 ## Cline Primitives
 
-- MCP: `aws-mcp` exposes AWS documentation and AWS API access through the AWS MCP proxy.
+- MCP: `aws-mcp` supports AWS documentation lookup and, when credentials and approval are present, AWS API access through the AWS MCP proxy.
 - Skills: seven workflow skills cover Glue connection setup, S3 Tables table creation, data ingestion, Athena querying, catalog exploration, fuzzy asset lookup, and S3 Vectors operations.
 
 ## Requirements
