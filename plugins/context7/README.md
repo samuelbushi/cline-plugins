@@ -4,7 +4,7 @@ Adds the Context7 documentation MCP server to Cline.
 
 ## What It Does
 
-Registers a `context7` MCP server backed by `@upstash/context7-mcp`. Context7 helps Cline look up version-specific library documentation and code examples while working on implementation tasks.
+Registers a `context7` MCP server backed by the pinned `@upstash/context7-mcp` package. Context7 helps Cline look up version-specific library documentation and code examples while working on implementation tasks.
 
 ## Install
 
@@ -30,9 +30,10 @@ Cline can use the MCP tools contributed by Context7 when it needs package docume
 
 ## Requirements
 
-- Node.js and `npx` available on PATH.
-- Network access to download and run `@upstash/context7-mcp` on first use.
+- Node.js available on PATH.
+- Network access during installation to download `@upstash/context7-mcp` and its dependencies.
+- Network access during use for Context7 documentation lookups.
 
 ## Security Notes
 
-This plugin starts a local MCP server through `npx -y @upstash/context7-mcp`. The server may receive package names, documentation queries, and surrounding task context that Cline sends to its MCP tools. Avoid sending private code, secrets, or customer data unless you are comfortable with the Context7 server handling that content.
+This plugin starts a local MCP server through the bundled `@upstash/context7-mcp` package. The server may receive package names, documentation queries, and surrounding task context that Cline sends to its MCP tools. Avoid sending private code, secrets, or customer data unless you are comfortable with Context7 handling that content.
