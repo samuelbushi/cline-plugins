@@ -25,7 +25,7 @@ cline plugin install ./plugins/cloudinary --cwd .
 - MCP `cloudinary-smd`: work with Cloudinary structured metadata definitions and values.
 - MCP `cloudinary-analysis`: analyze images and videos with Cloudinary AI tools.
 - Skill `cloudinary-docs`: retrieves current Cloudinary docs from the Cloudinary llms.txt index before implementing SDK, API, upload, webhook, or integration details.
-- Skill `cloudinary-transformations`: creates, reviews, and debugs Cloudinary image and video transformation URLs with optimization, cost, and safety checks.
+- Skill `cloudinary-transformations`: creates, reviews, and debugs Cloudinary image and video transformation URLs with bundled references for AI transformations, video transformations, named transformations, responsive images, debugging, examples, and cost controls.
 
 ## Requirements
 
