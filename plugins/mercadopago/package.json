@@ -1,0 +1,23 @@
+{
+  "name": "mercadopago",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Cline plugin for Mercado Pago MCP-backed payment integration workflows.",
+  "cline": {
+    "plugins": [
+      {
+        "paths": [
+          "./index.ts"
+        ],
+        "capabilities": [
+          "commands",
+          "hooks",
+          "mcp",
+          "rules",
+          "skills"
+        ]
+      }
+    ]
+  }
+}
