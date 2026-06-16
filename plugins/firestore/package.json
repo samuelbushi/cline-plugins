@@ -1,0 +1,29 @@
+{
+  "name": "firestore",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Firestore MCP and workflow skill for collection discovery, document reads, database/index inspection, and guarded data changes.",
+  "cline": {
+    "plugins": [
+      {
+        "paths": [
+          "./index.ts"
+        ],
+        "capabilities": [
+          "mcp",
+          "rules",
+          "skills"
+        ]
+      }
+    ]
+  },
+  "peerDependencies": {
+    "@cline/sdk": "*"
+  },
+  "peerDependenciesMeta": {
+    "@cline/sdk": {
+      "optional": true
+    }
+  }
+}
