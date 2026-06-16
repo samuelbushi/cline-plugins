@@ -1,0 +1,9 @@
+Code simplifier guidance
+
+Portions of the simplification workflow are adapted from the public code-simplifier plugin by Anthropic.
+
+Original project: https://github.com/anthropics/claude-plugins-official/tree/main/plugins/code-simplifier
+
+Modified for Cline's plugin model as a user-invoked slash command rather than an always-on agent profile.
+
+License: Apache-2.0
