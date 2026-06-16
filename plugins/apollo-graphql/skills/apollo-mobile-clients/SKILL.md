@@ -1,29 +1,20 @@
 ---
 name: apollo-mobile-clients
-description: Build mobile GraphQL clients with Apollo iOS and Apollo Kotlin, including setup, codegen, operations, caching, custom scalars, interceptors, subscriptions, and testing.
+description: >
+  Router skill for Apollo mobile client work. Use this skill when the user asks
+  about Apollo GraphQL on iOS, Swift, Android, Kotlin, or Kotlin Multiplatform,
+  and then load the focused apollo-ios or apollo-kotlin skill.
+license: MIT
+metadata:
+  author: cline
+  version: "1.0.0"
 ---
 
-# Apollo Mobile Clients
+# Apollo Mobile Clients Router
 
-Use this skill for Apollo iOS or Apollo Kotlin work.
+Use the focused mobile client skills instead of answering from this file alone:
 
-## Workflow
+- For Swift, SwiftUI, Xcode, iOS, macOS, watchOS, tvOS, visionOS, SPM, or `apollo-ios-cli`, use `apollo-ios`.
+- For Android, Kotlin/JVM, Kotlin Multiplatform, Gradle, or Apollo Kotlin codegen, use `apollo-kotlin`.
 
-1. Identify platform, package manager, Apollo client version, generated code location, and schema or operation download workflow.
-2. Inspect existing generated models and operation documents before editing.
-3. Keep operations typed and version-compatible with the local Apollo client.
-4. Treat custom scalars, cache keys, interceptors, and auth headers as first-class integration points.
-5. Run or recommend the project codegen command after operation or schema changes.
-6. Add platform tests for parsing, cache behavior, auth failure, retry, and subscription behavior where relevant.
-
-## Platform Notes
-
-- For iOS, check Swift package setup, generated module names, custom scalar mappings, and normalized cache usage.
-- For Kotlin, check Gradle plugin setup, package names, operation output, scalar adapters, and normalized cache usage.
-- For both platforms, preserve generated files according to project policy.
-
-## Guardrails
-
-- Do not hand-edit generated code unless the project explicitly keeps generated sources as editable fixtures.
-- Do not commit mobile auth secrets, sample tokens, or private schema snapshots.
-- Do not upgrade Apollo client major versions as a side effect of a feature change.
+If the user's request spans both platforms, compare the shared GraphQL concepts first, then call out the platform-specific setup, codegen, cache, auth, and testing differences from each focused skill.

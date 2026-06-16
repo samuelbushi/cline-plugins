@@ -1,31 +1,120 @@
 ---
 name: apollo-federation
-description: Design and troubleshoot Apollo Federation subgraphs and supergraphs, including entities, keys, directives, composition, ownership boundaries, and field migration.
+description: >
+  Guide for authoring Apollo Federation subgraph schemas. Use this skill when:
+  (1) creating new subgraph schemas for a federated supergraph,
+  (2) defining or modifying entities with @key,
+  (3) sharing types/fields across subgraphs with @shareable,
+  (4) working with federation directives (@external, @requires, @provides, @override, @inaccessible),
+  (5) troubleshooting composition errors,
+  (6) any task involving federation schema design patterns.
+license: MIT
+compatibility: Works with any Federation 2.x compatible subgraph library (Apollo Server, GraphQL Yoga, etc.)
+metadata:
+  author: apollographql
+  version: "1.0.1"
 ---
 
-# Apollo Federation
+# Apollo Federation Schema Authoring
 
-Use this skill for federated GraphQL schema work.
+Apollo Federation enables composing multiple GraphQL APIs (subgraphs) into a unified supergraph.
 
-## Workflow
+## Federation 2 Schema Setup
 
-1. Identify subgraph ownership, current supergraph composition status, federation version, and graph boundaries.
-2. Read the relevant subgraph schemas and composition errors before proposing changes.
-3. Model entities around ownership and stable identity. Choose `@key` fields that are stable and resolvable.
-4. Use federation directives deliberately: `@key`, `@external`, `@requires`, `@provides`, `@shareable`, `@override`, and `@interfaceObject`.
-5. Keep field migration explicit. For moved fields, plan compatibility, rollout, and rollback.
-6. Run or recommend composition checks before shipping schema changes.
+Every Federation 2 subgraph must opt-in via `@link`:
 
-## Schema Guidance
+```graphql
+extend schema
+  @link(url: "https://specs.apollo.dev/federation/v2.12",
+        import: ["@key", "@shareable", "@external", "@requires", "@provides"])
+```
 
-- A subgraph should own fields it can resolve reliably.
-- Prefer value types only when shared fields truly have the same meaning across subgraphs.
-- Keep entity reference resolvers fast and batchable.
-- Avoid cross-subgraph designs that require many sequential hops for common operations.
-- Document ownership decisions when adding or moving fields.
+Import only the directives your subgraph uses.
 
-## Guardrails
+## Core Directives Quick Reference
 
-- Do not use `@shareable` to avoid resolving real ownership questions.
-- Do not add `@provides` or `@requires` without checking query plan impact.
-- Do not remove fields or change nullability without an explicit migration plan.
+| Directive | Purpose | Example |
+|-----------|---------|---------|
+| `@key` | Define entity with unique key | `type Product @key(fields: "id")` |
+| `@shareable` | Allow multiple subgraphs to resolve field | `type Position @shareable { x: Int! }` |
+| `@external` | Reference field from another subgraph | `weight: Int @external` |
+| `@requires` | Computed field depending on external fields | `shippingCost: Int @requires(fields: "weight")` |
+| `@provides` | Conditionally resolve external field | `@provides(fields: "name")` |
+| `@override` | Migrate field to this subgraph | `@override(from: "Products")` |
+| `@inaccessible` | Hide from API schema | `internalId: ID! @inaccessible` |
+| `@interfaceObject` | Add fields to entity interface | `type Media @interfaceObject` |
+
+## Reference Files
+
+Detailed documentation for specific topics:
+
+- [Directives](references/directives.md) - All federation directives with syntax, examples, and rules
+- [Schema Patterns](references/schema-patterns.md) - Multi-subgraph patterns and recipes
+- [Composition](references/composition.md) - Composition rules, error codes, and debugging
+
+## Key Patterns
+
+### Entity Definition
+
+```graphql
+type Product @key(fields: "id") {
+  id: ID!
+  name: String!
+  price: Int
+}
+```
+
+### Entity Contributions Across Subgraphs
+
+```graphql
+# Products subgraph
+type Product @key(fields: "id") {
+  id: ID!
+  name: String!
+  price: Int
+}
+
+# Reviews subgraph
+type Product @key(fields: "id") {
+  id: ID!
+  reviews: [Review!]!
+  averageRating: Float
+}
+```
+
+### Computed Fields with @requires
+
+```graphql
+type Product @key(fields: "id") {
+  id: ID!
+  size: Int @external
+  weight: Int @external
+  shippingEstimate: String @requires(fields: "size weight")
+}
+```
+
+### Value Types with @shareable
+
+```graphql
+type Money @shareable {
+  amount: Int!
+  currency: String!
+}
+```
+
+### Entity Stub (Reference Without Contributing)
+
+```graphql
+type Product @key(fields: "id", resolvable: false) {
+  id: ID!
+}
+```
+
+## Ground Rules
+
+- ALWAYS use Federation 2.x syntax with `@link` directive
+- ALWAYS import only the directives your subgraph uses
+- NEVER use `@shareable` without ensuring all subgraphs return identical values for that field
+- PREFER `@key` with single ID field for simple entity identification
+- USE `rover supergraph compose` to validate composition locally
+- USE `rover subgraph check` to validate against production supergraph

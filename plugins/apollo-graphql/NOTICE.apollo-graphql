@@ -1,0 +1,9 @@
+Apollo GraphQL skill material
+
+This plugin includes Apollo GraphQL skills and references adapted from:
+
+- Apollo GraphQL agent skills
+- Apollo GraphQL Rust Best Practices Handbook
+
+Copyright (c) 2024 Apollo Graph, Inc.
+Licensed under the MIT License. See LICENSE.apollo-graphql.

@@ -1,31 +1,20 @@
 ---
 name: apollo-router-rust-plugins
-description: Build Apollo Router native Rust plugins with safe service hooks, request and response handling, configuration, telemetry, tests, and idiomatic Rust patterns.
+description: >
+  Router skill for Apollo Router native plugin work. Use this skill when the
+  user wants to create, review, or debug Rust plugins for Apollo Router, and
+  then load apollo-router-plugin-creator plus apollo-rust-best-practices.
+license: MIT
+metadata:
+  author: cline
+  version: "1.0.0"
 ---
 
-# Apollo Router Rust Plugins
+# Apollo Router Rust Plugins Router
 
-Use this skill when the user is writing or reviewing Apollo Router native Rust plugins.
+Use both focused skills:
 
-## Workflow
+- `apollo-router-plugin-creator` for Apollo Router service hooks, plugin lifecycle, request/response boundaries, and example plugin shapes.
+- `apollo-rust-best-practices` for Rust ownership, error handling, testing, generics, docs, and performance review.
 
-1. Identify the router version, plugin crate layout, service hook target, config schema, and test harness.
-2. Read existing plugin registration, config deserialization, service hooks, and telemetry before editing.
-3. Keep plugin behavior narrow and explicit. Prefer configuration over hardcoded environment behavior.
-4. Handle request, response, and error paths without panics.
-5. Add tests for enabled and disabled config, expected request changes, error propagation, and telemetry output.
-6. Keep async code cancellation-safe and avoid blocking the router runtime.
-
-## Rust Guidance
-
-- Use strong types for configuration and request state.
-- Prefer `Result` propagation with actionable errors.
-- Avoid unnecessary cloning of large request or response bodies.
-- Keep shared state behind appropriate concurrency primitives.
-- Instrument meaningful spans and attributes without leaking secrets.
-
-## Guardrails
-
-- Do not log authorization headers, cookies, tokens, or full request bodies by default.
-- Do not alter all traffic globally when the requested behavior applies to one route, subgraph, or operation class.
-- Do not use unsafe Rust unless the project already has a reviewed reason.
+For existing Router configuration, also use `apollo-router` so generated plugin guidance matches the user's Router major version and deployment shape.
