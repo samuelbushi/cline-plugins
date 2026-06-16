@@ -1,0 +1,19 @@
+{
+	"name": "servicenow-sdk",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"description": "Cline plugin that bundles ServiceNow Fluent SDK documentation guidance.",
+	"cline": {
+		"plugins": [
+			{
+				"paths": [
+					"./index.ts"
+				],
+				"capabilities": [
+					"skills"
+				]
+			}
+		]
+	}
+}
