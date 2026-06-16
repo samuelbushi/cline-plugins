@@ -43,7 +43,9 @@ Run a 42Crunch scan against my local API at http://localhost:8080.
 
 ## Cline Primitives
 
-- Skills: bundles six workflow skills: `42crunch-setup`, `code-to-oas`, `postman-to-oas`, `42crunch-audit`, `42crunch-scan`, and `42crunch-audit-and-scan`.
+- Skills: bundles six workflow skills: `42crunch-setup`, `code-to-oas`, `postman-to-oas`, `42crunch-audit`, `42crunch-scan`, and `42crunch-api-security-testing`.
+- References: includes the detailed 42Crunch audit, scan, setup, tag, reachability, and scan configuration workflow references used by the skills.
+- Rule: adds guardrails for credentials, binary installation, live scan traffic, generated fixes, and untrusted OpenAPI/report content.
 
 ## Requirements
 
@@ -55,3 +57,5 @@ Run a 42Crunch scan against my local API at http://localhost:8080.
 ## Security Notes
 
 42Crunch credentials are secrets. The skills tell Cline not to print, commit, or persist API keys without explicit user approval. Live scans can send test traffic to the configured API target, so the skills require user confirmation before running scans or applying fixes.
+
+The bundled 42Crunch skill material is Apache-2.0 licensed; see `LICENSE.42crunch-api-security-testing`.
