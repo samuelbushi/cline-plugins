@@ -1,0 +1,21 @@
+{
+  "name": "bigdata-com",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Cline plugin for Bigdata.com financial research MCP workflows.",
+  "cline": {
+    "plugins": [
+      {
+        "paths": [
+          "./index.ts"
+        ],
+        "capabilities": [
+          "mcp",
+          "commands",
+          "skills"
+        ]
+      }
+    ]
+  }
+}
