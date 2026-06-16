@@ -1,15 +1,12 @@
 # prisma
 
-Register Prisma MCP servers for database workflows in Cline.
+Register the hosted Prisma MCP server in Cline.
 
 ## What It Does
 
-Adds two MCP servers:
+Adds the `prisma` MCP server at `https://mcp.prisma.io/mcp`.
 
-- `prisma-local`: runs `npx -y prisma mcp` as a local stdio server.
-- `prisma-remote`: connects to the hosted Prisma MCP endpoint over streamable HTTP.
-
-Together they let Cline work with Prisma database workflows such as schema changes, SQL queries, migrations, and connection management when the selected Prisma MCP server supports those actions.
+The hosted server gives Cline access to Prisma's MCP tools for Prisma Postgres and related Prisma workflows supported by that endpoint.
 
 ## Install
 
@@ -31,14 +28,13 @@ After installation, ask Cline:
 Use Prisma to inspect this project's database schema and suggest the next migration.
 ```
 
-Cline can use the registered Prisma MCP servers when they are available in the MCP runtime.
+Cline can use the registered Prisma MCP server when it is available in the MCP runtime.
 
 ## Requirements
 
-- Node.js and `npx` for the local Prisma MCP server.
-- Network access for the hosted Prisma MCP server.
-- Prisma project, database, and account requirements depend on the Prisma MCP server and tools you use.
+- Network access to `https://mcp.prisma.io/mcp`.
+- Prisma account, project, and database requirements depend on the Prisma MCP tools you use.
 
 ## Security Notes
 
-The local server runs through `npx`, which can download and execute the Prisma package. Review Prisma project settings and credentials before allowing database mutations.
+Prisma MCP tools can inspect or change database resources depending on your account and selected action. Review requested tool calls before allowing mutations.

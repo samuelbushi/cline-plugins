@@ -7,16 +7,7 @@ const plugin: AgentPlugin = {
 	},
 	setup(api) {
 		api.registerMcpServer({
-			name: "prisma-local",
-			transport: {
-				type: "stdio",
-				command: "npx",
-				args: ["-y", "prisma", "mcp"],
-			},
-		})
-
-		api.registerMcpServer({
-			name: "prisma-remote",
+			name: "prisma",
 			transport: {
 				type: "streamableHttp",
 				url: "https://mcp.prisma.io/mcp",

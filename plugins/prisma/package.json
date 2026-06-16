@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "Cline plugin that registers Prisma MCP servers for database workflows.",
+  "description": "Cline plugin that registers the hosted Prisma MCP server.",
   "cline": {
     "plugins": [
       {
