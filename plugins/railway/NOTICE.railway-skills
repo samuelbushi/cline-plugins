@@ -1,0 +1,7 @@
+This plugin bundles Railway workflow skill material derived from:
+
+  railwayapp/railway-skills
+
+The source plugin manifest declares MIT licensing for the bundled Railway skill
+material. The Cline port adapts the guidance for Cline plugin installation,
+permission boundaries, and MCP ownership.
