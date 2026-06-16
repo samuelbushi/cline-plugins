@@ -1,38 +1,85 @@
 ---
 name: aws-agents-optimize
-description: Improve AWS AgentCore quality, observability, latency, cost, evals, dashboards, traces, online monitoring, and CI quality gates.
+description: >
+  Use when measuring or improving agent quality and performance -- set up
+  evaluators, online monitoring, CI/CD quality gates, observability, or
+  cost optimization. Triggers on: "evaluate my agent", "add evaluator",
+  "measure quality", "quality gate", "run evals", "agent too slow",
+  "why is it slow", "reduce latency", "set up observability", "CloudWatch
+  dashboard", "how much does my agent cost", "cost optimization", "logs
+  not showing up", "logs missing", "spans not found", "eval failing",
+  "eval error", "dev traces", "local traces", "agentcore dev traces",
+  "traces to CloudWatch".
+  Not for debugging errors or crashes -- use aws-agents-debug. Slow but
+  correct routes here; broken routes to debug.
 ---
 
-# AWS Agents Optimize
+# optimize
 
-Use this skill when the user wants to measure or improve an AgentCore agent rather than diagnose a hard failure.
+Measure and improve your AgentCore agent's quality through evaluation, monitoring, and observability.
 
-## Operating Rules
+## When to use
 
-- Ask before enabling online evals, monitoring, dashboards, tracing, sampling, load tests, or any feature that can incur cost or collect production data.
-- Keep evaluation datasets and logs free of secrets and unnecessary personal data.
-- Prefer measuring before tuning.
-- Use `awsknowledge` for current observability, eval, and service-limit guidance.
+- You want to know if your agent is giving good answers
+- You want to set up continuous quality monitoring in production
+- You want to add a quality gate to your CI/CD pipeline
+- You want to understand agent behavior through logs, metrics, and traces
+- You want to set up CloudWatch dashboards or X-Ray tracing
 
-## Workflow
+Do NOT use for:
 
-1. Identify the optimization goal:
-   - Answer quality.
-   - Tool reliability.
-   - Latency.
-   - Cost.
-   - Observability and traces.
-   - CI quality gate.
-   - Production monitoring.
-2. Read local project config and existing eval or observability settings.
-3. Propose the smallest measurement plan:
-   - Offline eval set for quality.
-   - Trace review for latency and tool behavior.
-   - Cost estimate from model, runtime, tool, and observability usage.
-   - Dashboard or alert plan for production monitoring.
-4. Ask before enabling live account features or running commands that invoke deployed agents.
-5. Summarize findings with specific changes and expected tradeoffs.
+- Debugging a specific broken agent (wrong answers, errors) -> use `aws-agents-debug`
+- Production security hardening (IAM, auth) -> use `aws-agents-harden`
 
-## Good Output
+## Input
 
-Report baseline, bottleneck, recommended change, expected impact, and rollback path. If the user asks for CI gating, include a threshold and a failure mode that is easy for developers to understand.
+`the user request` can be:
+
+- An eval goal: "add a quality gate", "set up monitoring"
+- An observability goal: "set up CloudWatch dashboard", "understand my traces"
+- A specific evaluator: "llm-as-a-judge", "code-based"
+- Empty -- the skill will guide based on project context
+
+## Process
+
+### Step 0: Verify CLI version
+
+Run `agentcore --version`. This skill requires v0.9.0 or later.
+
+### Step 1: Read project context
+
+Read `agentcore/agentcore.json` to understand existing evaluators, online eval configs, and agent setup.
+
+If `agentcore/agentcore.json` is not found:
+> "This skill requires an AgentCore project. Use `aws-agents-get-started` to create one."
+
+### Step 2: Determine the workflow
+
+| Developer intent | Action |
+|---|---|
+| Measure quality, add evaluator, run eval, CI/CD gate, online monitoring | Load [`references/evals.md`](references/evals.md) and follow its workflow |
+| Set up observability, CloudWatch, X-Ray, logs, metrics, dashboards | Load [`references/observability.md`](references/observability.md) and follow its workflow |
+| Understand or reduce AgentCore costs | Load [`references/cost.md`](references/cost.md) |
+| Both -- "I want to understand and improve my agent" | Start with observability setup, then add evals |
+
+### Step 3: Follow the loaded reference
+
+The reference file contains the full procedure. Follow it step by step.
+
+### Cross-references
+
+- After setting up evals, suggest `aws-agents-harden` for production readiness
+- If eval results reveal agent issues, suggest `aws-agents-debug` for root cause analysis
+- If the developer needs to add capabilities first, suggest `aws-agents-build`
+
+## Output
+
+Depends on the workflow -- see the loaded reference for specific outputs.
+
+## Quality criteria
+
+- Evaluator configuration uses only valid CLI flags
+- Online eval sampling rate is appropriate (not 100% in production without discussion)
+- CI/CD quality gate has a clear pass/fail threshold
+- Observability setup includes both tracing and logging
+- The developer understands the eval data delay: ~10 seconds put-to-get, end-to-end -- one ingestion step covers both trace reads and eval queries; there is no separate indexing wait
