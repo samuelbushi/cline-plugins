@@ -1,0 +1,33 @@
+{
+	"name": "posthog",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"description": "PostHog MCP and workflow skills for product analytics, feature flags, experiments, replays, error tracking, LLM analytics, and instrumentation.",
+	"exports": {
+		".": "./index.ts"
+	},
+	"cline": {
+		"plugins": [
+			{
+				"paths": [
+					"./index.ts"
+				],
+				"capabilities": [
+					"commands",
+					"mcp",
+					"rules",
+					"skills"
+				]
+			}
+		]
+	},
+	"peerDependencies": {
+		"@cline/sdk": "*"
+	},
+	"peerDependenciesMeta": {
+		"@cline/sdk": {
+			"optional": true
+		}
+	}
+}
