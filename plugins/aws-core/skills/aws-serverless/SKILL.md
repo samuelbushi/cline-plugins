@@ -1,31 +1,50 @@
 ---
 name: aws-serverless
-description: Build, deploy, debug, and optimize AWS serverless applications with Lambda, API Gateway, Step Functions, EventBridge, SAM, CDK, DynamoDB streams, SQS event sources, CORS, cold starts, concurrency, SnapStart, Powertools, and production readiness.
+description: Builds, deploys, manages, debugs, configures, and optimizes serverless applications on AWS using Lambda, API Gateway, Step Functions, EventBridge, and SAM/CDK. Covers cold starts, CORS debugging, event source mappings, troubleshooting, concurrency, SnapStart, Powertools, function URLs, EventBridge Scheduler, Lambda layers, Durable Functions, durable execution, checkpoint-and-replay, and production readiness. Use when the user mentions Lambda, API Gateway, Step Functions, SAM templates, CDK serverless stacks, DynamoDB stream triggers, SQS event sources, cold starts, timeouts, 502/504 errors, throttling, concurrency, CORS, Powertools, Durable Functions, durable execution, checkpoint-and-replay, or any event-driven architecture on AWS, even if they don't say "serverless." Do NOT use for EC2, ECS/Fargate containers, or Amplify hosting.
+version: 1
 ---
 
+## Cline Safety
+
+- Use sanitized AWS documentation and bundled reference lookups without an approval round. Ask before live AWS account/API reads, account health checks, log inspection, billing or pricing lookups tied to private architecture, local scanner execution, package installs, or network calls with private identifiers.
+- Do not run mutating, destructive, deployment, IAM, networking, data, or cost-bearing commands unless the user explicitly approves the exact command and target account, region, and resource. Prefer presenting those commands for the user to run.
+- Treat account IDs, ARNs, logs, source code, prompts, architecture diagrams, cost data, secrets, tokens, keys, and customer data as sensitive. Minimize what is sent to MCP servers and tools, and never print secrets.
+
+
 # AWS Serverless
+## Overview
 
-Use this skill for Lambda-centered and event-driven serverless applications on AWS.
+Domain expertise for building serverless applications on AWS. Covers Lambda configuration, API Gateway debugging, Step Functions orchestration, EventBridge patterns, event source mappings, concurrency tuning, cold start optimization, deployment with SAM/CDK, production readiness, and troubleshooting across all serverless services.
 
-## Operating Rules
+Works best with this plugin's `aws-mcp` server when connected - it can enable AWS command execution, CloudWatch queries, and configuration validation. All guidance also works with standard AWS CLI access.
 
-- Ask before deploying, changing concurrency, creating event sources, invoking production functions, reading logs, or changing IAM.
-- Do not print secrets from environment variables, logs, request payloads, or traces.
-- Use `aws-mcp` when current runtime support, quotas, service behavior, or error details matter.
-- Before querying `aws-mcp`, reduce the request to a sanitized docs or API question. Do not include secrets, account IDs, customer data, private code, log payloads, billing details, or confidential architecture.
-- Separate local code changes from live account actions.
+Note: Reference files contain specific runtime versions, quota values, and feature matrices that may change. When precision matters (e.g., deploying to production, choosing a runtime, or checking a quota), confirm values against current AWS documentation rather than relying solely on the values in these files.
 
-## Workflow
+## Routing
 
-1. Identify the surface: Lambda, API Gateway, Step Functions, EventBridge, SQS, DynamoDB streams, SAM, CDK, Powertools, or production readiness.
-2. For new architectures, choose the simplest event flow and explain why.
-3. For Lambda, review runtime, handler, memory, timeout, env vars, IAM role, VPC config, layers, and packaging.
-4. For API issues, separate auth, CORS, integration mapping, timeout, throttling, and backend errors.
-5. For event sources, review batch size, retry, DLQ, partial failure, ordering, and idempotency.
-6. For production, review alarms, tracing, structured logs, least privilege, concurrency, and rollback.
+| User need | Action |
+|-----------|--------|
+| Building a new serverless app | Read [architecture.md](references/architecture.md) for pattern selection, then [deployment.md](references/deployment.md) for SAM/CDK templates |
+| Debugging an error | Read [troubleshooting.md](references/troubleshooting.md) - starts with the 5 most common fixes |
+| Optimizing performance or cost | Read [lambda.md](references/lambda.md) for cold starts and memory tuning, [production.md](references/production.md) for readiness checklist |
+| Configuring event sources (SQS, DDB Streams, SNS) | Read [event-sources.md](references/event-sources.md) |
+| Step Functions, EventBridge, or orchestration | Read [orchestration.md](references/orchestration.md) |
+| Concurrency configuration | Read [concurrency.md](references/concurrency.md) |
+| API Gateway setup | Read [api-gateway.md](references/api-gateway.md) |
+| Common anti-patterns | Read the anti-patterns section in [production.md](references/production.md) |
+| Starting with Powertools | Use [powertools-handler.py](assets/powertools-handler.py) as a template |
+| Spans multiple areas | Read the most specific reference first, then consult others as needed |
 
-## Safety Checks
+## Files
 
-- Confirm account, region, function, stack, and stage before live commands.
-- Prefer one-shot deploy and validation commands over watchers.
-- Keep destructive operations behind explicit approval.
+| File | Content |
+|------|---------|
+| [lambda.md](references/lambda.md) | Runtime, memory/CPU, cold starts, SnapStart, layers, containers |
+| [api-gateway.md](references/api-gateway.md) | REST vs HTTP API, stages, auth, throttling, mapping |
+| [event-sources.md](references/event-sources.md) | SQS, DDB Streams, SNS, S3, Kinesis triggers |
+| [orchestration.md](references/orchestration.md) | Step Functions, EventBridge rules/pipes/scheduler |
+| [concurrency.md](references/concurrency.md) | Reserved vs provisioned, scaling, ESM concurrency |
+| [architecture.md](references/architecture.md) | Patterns, reference architectures, service selection |
+| [deployment.md](references/deployment.md) | SAM/CDK resource types, globals, fast iteration |
+| [production.md](references/production.md) | Readiness checklist, observability, anti-patterns |
+| [troubleshooting.md](references/troubleshooting.md) | Error → cause → fix for all serverless services |
