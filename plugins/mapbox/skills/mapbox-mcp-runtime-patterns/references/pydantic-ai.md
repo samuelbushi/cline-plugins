@@ -2,11 +2,11 @@
 
 Use case: Building AI agents with type-safe tools in Python
 
-## Using Hosted Server (Recommended)
+## Using Remote Server (Recommended)
 
 > Common mistake: When using pydantic-ai with OpenAI, the correct import is `from pydantic_ai.models.openai import OpenAIChatModel`. Do NOT use `OpenAIModel` - that class does not exist in pydantic-ai and will throw an ImportError at runtime.
 
-Use `MCPServerHTTP` from pydantic-ai to connect to the hosted Mapbox MCP server. This is the idiomatic way - avoid writing custom HTTP wrappers.
+Use `MCPServerHTTP` from pydantic-ai to connect to the remote Mapbox MCP server. This is the idiomatic way - avoid writing custom HTTP wrappers.
 
 ```python
 from pydantic_ai import Agent

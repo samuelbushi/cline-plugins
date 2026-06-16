@@ -1,6 +1,6 @@
 # Cline Setup
 
-This Cline plugin registers the hosted Mapbox DevKit MCP server automatically:
+This Cline plugin registers the remote Mapbox DevKit MCP server automatically:
 
 ```text
 mapbox-devkit -> https://mcp-devkit.mapbox.com/mcp

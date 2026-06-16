@@ -101,7 +101,7 @@ Best practice: Prefer offline tools when possible, use API tools when you need r
 
 ## Cline Setup
 
-This Cline plugin registers the hosted Mapbox MCP server automatically:
+This Cline plugin registers the remote Mapbox MCP server automatically:
 
 ```
 https://mcp.mapbox.com/mcp
@@ -145,6 +145,9 @@ Detailed integration patterns and production guidance are organized into referen
 
 - Production Patterns -- Caching, batch operations, tool descriptions, error handling, security, rate limiting, testing
   Load: `references/production.md`
+
+- Runnable examples -- Pydantic AI, CrewAI, Smolagents, Mastra, and LangChain examples
+  Load: `examples/README.md`
 
 ## Resources
 
