@@ -1,0 +1,25 @@
+{
+  "name": "shopify",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Cline plugin that registers the Shopify Dev MCP server.",
+  "dependencies": {
+    "@shopify/dev-mcp": "1.14.0"
+  },
+  "overrides": {
+    "@shopify/cli": "3.93.1"
+  },
+  "cline": {
+    "plugins": [
+      {
+        "paths": [
+          "./index.ts"
+        ],
+        "capabilities": [
+          "mcp"
+        ]
+      }
+    ]
+  }
+}
