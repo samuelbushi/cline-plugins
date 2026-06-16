@@ -6,17 +6,15 @@ Amplitude MCP access and product analytics skills for working with charts, dashb
 
 Registers the `amplitude` MCP server. The server uses Streamable HTTP, progressive tool discovery, and OAuth with the user's Amplitude account, then exposes tools for querying and creating Amplitude content such as charts, dashboards, experiments, cohorts, opportunities, feedback, and session replay context.
 
-Installs these bundled skills:
+Installs 26 bundled skills for focused Amplitude workflows:
 
-- `amplitude-product-analytics`: general Amplitude analysis workflow and tool-use guardrails.
-- `amplitude-instrumentation`: plan analytics instrumentation from code changes, features, PRs, branches, files, and directories.
-- `amplitude-chart-dashboard-analysis`: analyze charts and dashboards, explain trends, and prepare stakeholder summaries.
-- `amplitude-experiments`: design, monitor, and interpret Amplitude experiments.
-- `amplitude-feedback`: synthesize customer feedback themes and connect them to behavioral data.
-- `amplitude-session-replay`: inspect replay-driven UX friction, bug reports, and reliability patterns.
-- `amplitude-briefing`: produce daily and weekly product intelligence briefs.
-- `amplitude-taxonomy`: audit and improve event naming, property governance, and tracking taxonomy.
-- `amplitude-ai-visibility`: analyze AI agent sessions, topics, quality, cost, and failure patterns when Amplitude Agent Analytics is instrumented.
+- Analytics instrumentation: `add-analytics-instrumentation`, `diff-intake`, `discover-event-surfaces`, `instrument-events`, `discover-analytics-patterns`
+- Product analysis: `analyze-chart`, `analyze-dashboard`, `create-chart`, `create-dashboard`, `discover-opportunities`, `compare-user-journeys`
+- Experiments: `analyze-experiments`, `monitor-experiments`
+- Feedback, replay, and reliability: `analyze-feedback`, `debug-replay`, `replay-ux-audit`, `diagnose-errors`, `monitor-reliability`
+- Account and executive briefs: `analyze-account-health`, `daily-brief`, `weekly-brief`
+- AI product visibility: `analyze-ai-topics`, `investigate-ai-session`, `monitor-ai-quality`, `review-agent-insights`
+- Governance: `taxonomy`
 
 ## Install
 
