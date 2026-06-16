@@ -1,6 +1,6 @@
 # cockroachdb
 
-CockroachDB plugin for Cline. It registers a local MCP Toolbox server for read-only database exploration and bundles focused skills for SQL/schema design, application transaction patterns, observability, operations, security, and migrations.
+CockroachDB plugin for Cline. It registers a local MCP Toolbox server for read-only database exploration and bundles a broad skill pack for SQL/schema design, application transaction patterns, observability, operations, security, migrations, and CockroachDB Cloud administration.
 
 The plugin does not start CockroachDB, install MCP Toolbox, connect to a database, or run SQL during install. It registers plugin-owned MCP settings, a Cline safety rule, and Cline skills.
 
@@ -20,7 +20,13 @@ cline plugin install ./plugins/cockroachdb --cwd .
 
 - MCP `cockroachdb-toolbox`: starts `toolbox --config ./tools.yaml --stdio` when Cline connects to the server. The bundled Toolbox config is read-only by default and exposes schema listing, table listing, and SQL diagnostics.
 - Rule `cockroachdb:safety-guardrails`: reminds Cline to classify database operations by risk, prefer read-only discovery first, and gate destructive or cluster-changing operations behind explicit confirmation.
-- Skills: `cockroachdb-sql`, `cockroachdb-app-development`, `cockroachdb-observability`, `cockroachdb-operations`, `cockroachdb-security`, and `cockroachdb-migrations`.
+- Skills: 33 CockroachDB workflow skills grouped across:
+  - Query and schema design: `cockroachdb-sql`.
+  - Application development: transaction design, multi-region application design, and transaction benchmarking.
+  - Observability and diagnostics: live SQL triage, statement and transaction fingerprint profiling, background jobs, range distribution, table statistics, and schema-change storage risk.
+  - Onboarding and migrations: local cluster setup plus MOLT fetch, verify, and replicator workflows.
+  - Operations and lifecycle: production provisioning, health review, capacity, maintenance, cluster settings, certificates/encryption, and version upgrades.
+  - Security and governance: Cloud security audits, user privilege hardening, password policies, audit logging, IP allowlists, private connectivity, log export, SSO/SCIM, CMEK, TLS certificates, and compliance documentation.
 
 ## Requirements
 
