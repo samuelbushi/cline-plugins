@@ -3,7 +3,7 @@
 	"version": "0.0.0",
 	"private": true,
 	"type": "module",
-	"description": "PostHog MCP and workflow skills for product analytics, feature flags, experiments, replays, error tracking, LLM analytics, and instrumentation.",
+	"description": "PostHog MCP and detailed workflow skills for analytics, flags, experiments, replays, errors, LLM analytics, warehouse data, Signals, and instrumentation.",
 	"exports": {
 		".": "./index.ts"
 	},
