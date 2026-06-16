@@ -1,0 +1,21 @@
+{
+  "name": "pr-review-toolkit",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Cline plugin with focused pull request review skills and a review command.",
+  "cline": {
+    "plugins": [
+      {
+        "paths": [
+          "./index.ts"
+        ],
+        "capabilities": [
+          "commands",
+          "skills",
+          "rules"
+        ]
+      }
+    ]
+  }
+}
