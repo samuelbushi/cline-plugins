@@ -1,0 +1,22 @@
+{
+  "name": "logfire",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Logfire observability plugin for Cline.",
+  "cline": {
+    "plugins": [
+      {
+        "paths": [
+          "./index.ts"
+        ],
+        "capabilities": [
+          "commands",
+          "mcp",
+          "rules",
+          "skills"
+        ]
+      }
+    ]
+  }
+}
