@@ -1,0 +1,19 @@
+{
+  "name": "pydantic-ai",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Cline plugin with bundled Pydantic AI agent-building guidance.",
+  "cline": {
+    "plugins": [
+      {
+        "paths": [
+          "./index.ts"
+        ],
+        "capabilities": [
+          "skills"
+        ]
+      }
+    ]
+  }
+}
