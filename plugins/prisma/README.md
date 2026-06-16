@@ -1,12 +1,12 @@
 # prisma
 
-Register the hosted Prisma MCP server in Cline.
+Register the Prisma MCP server in Cline.
 
 ## What It Does
 
 Adds the `prisma` MCP server at `https://mcp.prisma.io/mcp`.
 
-The hosted server gives Cline access to Prisma's MCP tools for Prisma Postgres and related Prisma workflows supported by that endpoint.
+The server gives Cline access to Prisma's MCP tools for Prisma Postgres and related Prisma workflows supported by that endpoint.
 
 ## Install
 
