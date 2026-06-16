@@ -1,0 +1,10 @@
+CockroachDB plugin guidance and Toolbox configuration
+
+Portions of the bundled skills and Toolbox configuration are adapted from the CockroachDB plugin project by Cockroach Labs.
+
+Original project: CockroachDB plugin project by Cockroach Labs
+Manifest version reviewed: 0.1.9
+
+Modified for Cline's plugin model with a read-only local Toolbox MCP registration, consolidated Cline skills, and Cline-specific safety guidance. The managed CockroachDB Cloud MCP server is intentionally not registered because it requires user-specific headers, and source hook scripts are represented as Cline safety guidance instead of automatic script execution.
+
+License: Apache-2.0
