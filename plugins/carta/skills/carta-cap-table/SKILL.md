@@ -1,6 +1,7 @@
 ---
 name: carta-cap-table
-description: Use for Carta cap table questions about ownership, stakeholders, share classes, grants, SAFEs, convertible notes, financing rounds, 409A valuations, FMV, witness signatures, spousal consent, portfolio alerts, and cap table data presentation.
+user-invocable: false
+description: Router for Carta cap table questions. Use only when no more specific Carta cap table skill matches; otherwise prefer the detailed ownership, grant, valuation, round, conversion, waterfall, market benchmark, alert, or signature skills.
 ---
 
 # Carta Cap Table

@@ -1,6 +1,7 @@
 ---
 name: carta-investors-budgeting
-description: Use for Carta Investors budgeting workflows, budget creation, fetching budgets, budget versus actuals, actual refreshes, scenarios, consolidating P&L, consolidating balance sheets, Excel outputs, and workbook generation.
+user-invocable: false
+description: Router for Carta investor budgeting workflows. Use only to choose a detailed budget creation, fetch-budget, budget actuals, budget-vs-actuals, scenario, consolidating P&L, or consolidating balance sheet skill.
 ---
 
 # Carta Investors Budgeting

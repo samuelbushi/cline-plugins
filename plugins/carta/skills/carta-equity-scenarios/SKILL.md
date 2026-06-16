@@ -1,6 +1,7 @@
 ---
 name: carta-equity-scenarios
-description: Use for Carta SAFE conversion, convertible note conversion, waterfall scenarios, exit payouts, liquidation modeling, return multiples, dilution, and equity scenario analysis.
+user-invocable: false
+description: Router for Carta equity scenario workflows. Use only when choosing between the detailed conversion calculator and waterfall scenario skills.
 ---
 
 # Carta Equity Scenarios

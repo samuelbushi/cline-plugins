@@ -4,6 +4,15 @@
   "private": true,
   "type": "module",
   "description": "Cline plugin for Carta MCP, cap table, CRM, investor reporting, budgeting, and equity workflow skills.",
+  "files": [
+    "README.md",
+    "index.ts",
+    "assets",
+    "scripts/*.py",
+    "skills",
+    "!**/__pycache__",
+    "!**/*.pyc"
+  ],
   "cline": {
     "plugins": [
       {

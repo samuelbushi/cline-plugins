@@ -1,6 +1,7 @@
 ---
 name: carta-investors-reporting
-description: Use for Carta Investors reporting, fund metrics, NAV, TVPI, DPI, IRR, MOIC, investments, partners, Form ADV, performance benchmarks, tearsheets, statements of investments, data exploration, and investor data warehouse queries.
+user-invocable: false
+description: Router for Carta investor reporting workflows. Use only to choose a detailed data exploration, performance benchmark, tearsheet, Form ADV, co-investor, or investor tutorial skill.
 ---
 
 # Carta Investors Reporting

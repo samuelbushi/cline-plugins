@@ -1,6 +1,7 @@
 ---
 name: carta-crm
-description: Use for Carta CRM workflows involving investors, companies, contacts, deals, notes, fundraisings, search, create, update, enrichment, portfolio lookup, relationship notes, and pipeline management.
+user-invocable: false
+description: Router for Carta CRM workflows. Use only to choose a detailed Carta CRM search, add, update, enrichment, portfolio lookup, note, deal, investor, company, contact, or fundraising skill.
 ---
 
 # Carta CRM
