@@ -10,18 +10,18 @@ cline plugin install datahub
 
 ## Cline Primitives
 
-This plugin bundles DataHub skills and registers slash commands that route common requests into those skills:
+This plugin bundles DataHub skills for common catalog, connector, and Micro Frontend workflows:
 
-- `/datahub-search` for catalog search, ownership questions, schema lookup, and metadata discovery.
-- `/datahub-enrich` for descriptions, tags, glossary terms, ownership, domains, deprecation, data products, structured properties, and documents. The skill asks for an explicit approval step before writes.
-- `/datahub-lineage` for upstream, downstream, cross-platform, root-cause, and impact-analysis workflows.
-- `/datahub-quality` for assertions, incidents, quality health checks, and subscriptions.
-- `/datahub-setup` for DataHub CLI installation, authentication, connection verification, and default scope setup.
-- `/datahub-connector-plan` for planning new DataHub ingestion connectors.
-- `/datahub-connector-review` for reviewing connector implementations against the bundled connector standards.
-- `/datahub-load-standards` for loading the DataHub connector standards into context.
-- `/datahub-mfe-create-app` for scaffolding a DataHub Micro Frontend app after preview and approval.
-- `/datahub-mfe-configure-app` for configuring DataHub to load a Micro Frontend app after preview and approval.
+- `datahub-search` for catalog search, ownership questions, schema lookup, and metadata discovery.
+- `datahub-enrich` for descriptions, tags, glossary terms, ownership, domains, deprecation, data products, structured properties, and documents. The skill asks for an explicit approval step before writes.
+- `datahub-lineage` for upstream, downstream, cross-platform, root-cause, and impact-analysis workflows.
+- `datahub-quality` for assertions, incidents, quality health checks, and subscriptions.
+- `datahub-setup` for DataHub CLI installation, authentication, connection verification, and default scope setup.
+- `datahub-connector-planning` for planning new DataHub ingestion connectors.
+- `datahub-connector-pr-review` for reviewing connector implementations against the bundled connector standards.
+- `load-standards` for loading the DataHub connector standards into context.
+- `datahub-mfe-create-app` for scaffolding a DataHub Micro Frontend app after preview and approval.
+- `datahub-mfe-configure-app` for configuring DataHub to load a Micro Frontend app after preview and approval.
 
 The package also includes the DataHub connector standards, templates, and small helper scripts used by the connector planning and review skills.
 
