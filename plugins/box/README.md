@@ -5,7 +5,8 @@ Box content, collaboration, AI retrieval, and legal workflow guidance for Cline.
 ## What It Adds
 
 - `box` skill for Box application integrations, MCP tool usage, content operations, shared links, collaborations, metadata, webhooks, Box AI retrieval, CLI fallback, REST fallback, and troubleshooting.
-- Legal workflow skills for Box-backed contract review, client intake, and secure deal-room workflows.
+- Box reference docs and examples for auth, MCP tool patterns, CLI verification, content workflows, bulk operations, webhooks, AI retrieval, REST fallback, and troubleshooting.
+- Legal workflow skills for shared legal concepts, contract review, client intake, and M&A virtual data-room workflows.
 - A Box guardrail rule that asks for confirmation before destructive changes, access changes, comments, generated document output, or broad content disclosure.
 
 This plugin does not register the Box MCP server automatically. Box MCP requires user-provided OAuth app credentials, and those credentials should stay in the user's MCP configuration rather than being guessed or embedded by a plugin.
