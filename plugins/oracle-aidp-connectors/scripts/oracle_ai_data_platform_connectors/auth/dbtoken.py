@@ -187,7 +187,7 @@ def refresh_on_executors(
 
 def _write_world_readable(path: Path, data: bytes) -> None:
     flags = os.O_WRONLY | os.O_CREAT | os.O_TRUNC
-    fd = os.open(str(path), flags, 0o666)
+    fd = os.open(str(path), flags, 0o644)
     try:
         os.write(fd, data)
     finally:

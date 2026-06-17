@@ -1,6 +1,6 @@
 ---
 name: aidp-exacs
-description: Connect from an AIDP notebook to Oracle Exadata Cloud Service (ExaCS) via Spark JDBC. Use when the user mentions ExaCS, Exadata, Exadata Cloud, RAC SCAN listener, or has a private-subnet Oracle DB. Auth is plain user/password on TCP 1521 with server-enforced AES256 Native Network Encryption (live-validated against Oracle 23ai). Wallet TCPS and IAM DB-Token are not supported by AIDP notebooks for ExaCS.
+description: Connect from an AIDP notebook to Oracle Exadata Cloud Service (ExaCS) via Spark JDBC. Use when the user mentions ExaCS, Exadata, Exadata Cloud, RAC SCAN listener, or has a private-subnet Oracle DB. Auth is plain user/password on TCP 1521 with server-enforced AES256 Native Network Encryption. Wallet TCPS and IAM DB-Token are not supported by AIDP notebooks for ExaCS.
 ---
 
 # `aidp-exacs` - Oracle Exadata Cloud Service via Spark JDBC
@@ -38,7 +38,7 @@ ip = socket.gethostbyname(SCAN_HOST)            # should be Class-E (255.x) or R
 with socket.create_connection((SCAN_HOST, 1521), timeout=15): pass
 ```
 
-## Auth: plain user/password on TCP 1521 + server-enforced NNE (live-validated)
+## Auth: plain user/password on TCP 1521 + server-enforced NNE
 
 This is the only supported auth path for ExaCS from AIDP notebooks. Wallet/TCPS and IAM DB-Token are not workable in the AIDP notebook environment for ExaCS clusters and have been intentionally removed from this skill.
 
@@ -100,5 +100,4 @@ for r in banners:
 
 ## References
 - Helpers: [scripts/oracle_ai_data_platform_connectors/jdbc/oracle.py](../../scripts/oracle_ai_data_platform_connectors/jdbc/oracle.py)
-- Live-validated reference notebook (the source of the Option A pattern): [`exacs_intransit_encryption_demo.ipynb`](https://github.com/ahmedawan-oracle/oracle-ai-data-platform-workbench-spark-connectors) on workspace `exacs-private-test` - proves AES256 NNE end-to-end on a customer ExaCS cluster running Oracle 23ai.
-- AIDP private endpoint design (PE-ARCH 1a-3c, SCAN Proxy): see workspace memory `oci_private_endpoint_design.md`.
+- AIDP private endpoint patterns: PE-ARCH 1a-3c and SCAN Proxy designs for private ExaCS connectivity.

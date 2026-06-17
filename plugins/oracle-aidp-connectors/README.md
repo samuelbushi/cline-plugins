@@ -17,6 +17,12 @@ The selected workflow may require an Oracle AI Data Platform Workbench workspace
 
 Some workflows require the bundled helper package under `scripts/oracle_ai_data_platform_connectors/` to be uploaded into the user's Workbench workspace or otherwise made importable by the notebook.
 
+Use `.env.example` as a checklist for connector-specific variable names, but keep filled secrets in the user's own environment, OCI Vault, notebook-scoped state, or another user-owned secret store. Do not commit a filled `.env`.
+
+## Getting Started
+
+After installing the plugin, ask Cline to run the `aidp-connectors-bootstrap` skill for first-time setup. Then use `.env.example` to identify the variables for the target connector, make those values available from the notebook runtime or a user-owned secret store, and ask Cline for the specific connector skill such as `aidp-oracle-db`, `aidp-alh`, or `aidp-snowflake`.
+
 ## Trust Boundaries
 
 Installation is passive. The plugin does not run Spark, upload files to Workbench, read databases, call REST APIs, or write to user data stores.

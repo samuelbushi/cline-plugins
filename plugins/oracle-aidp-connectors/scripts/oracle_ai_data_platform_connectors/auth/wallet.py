@@ -110,7 +110,7 @@ def _copy_dir_to(src: Path, target: Path) -> None:
 
 
 def _write_world_readable(path: Path, data: bytes) -> None:
-    """Write a file with mode 0o666 set up-front via os.open.
+    """Write a file with mode 0o644 set up-front via os.open.
 
     os.chmod does NOT work on FUSE mounts in the AIDP notebook environment, so
     permissions must be applied at file-creation time via the os.open mode
@@ -118,7 +118,7 @@ def _write_world_readable(path: Path, data: bytes) -> None:
     process; without world-readable bits, it can't read the wallet.
     """
     flags = os.O_WRONLY | os.O_CREAT | os.O_TRUNC
-    fd = os.open(str(path), flags, 0o666)
+    fd = os.open(str(path), flags, 0o644)
     try:
         os.write(fd, data)
     finally:
