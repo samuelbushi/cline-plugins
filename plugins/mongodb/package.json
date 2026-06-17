@@ -18,6 +18,6 @@
     ]
   },
   "dependencies": {
-    "mongodb-mcp-server": "^1.13.0"
+    "mongodb-mcp-server": "1.13.0"
   }
 }

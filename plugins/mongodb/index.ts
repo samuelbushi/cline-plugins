@@ -21,6 +21,15 @@ const plugin: AgentPlugin = {
 				cwd: MODULE_DIR,
 			},
 			env: {
+				MDB_MCP_CONNECTION_STRING: {
+					fromEnv: "MDB_MCP_CONNECTION_STRING",
+				},
+				MDB_MCP_API_CLIENT_ID: {
+					fromEnv: "MDB_MCP_API_CLIENT_ID",
+				},
+				MDB_MCP_API_CLIENT_SECRET: {
+					fromEnv: "MDB_MCP_API_CLIENT_SECRET",
+				},
 				MDB_MCP_READ_ONLY: {
 					fromEnv: "MDB_MCP_READ_ONLY",
 					value: "true",

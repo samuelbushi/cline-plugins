@@ -42,3 +42,7 @@ cline plugin install ./plugins/mongodb --cwd .
 MongoDB credentials are secrets. Do not paste them into chat, commit them, or ask Cline to store them. Configure them in the environment or in Cline MCP settings outside this plugin.
 
 The MCP server can read and, when explicitly put into writable mode, modify MongoDB data and Atlas resources according to the credentials provided. The bundled skills require explicit user approval before writes, destructive operations, index creation, processor starts, or changes that may affect billing.
+
+## Attribution
+
+Bundled MongoDB skill material is derived from `mongodb/agent-skills`, authored by MongoDB and licensed under Apache-2.0. See `LICENSE.mongodb` and `NOTICE.mongodb.md`.
