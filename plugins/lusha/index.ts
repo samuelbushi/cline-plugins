@@ -23,7 +23,7 @@ const plugin: AgentPlugin = {
 			id: "lusha-contact-data-boundary",
 			source: "lusha",
 			content:
-				"Lusha returns B2B contact data and may consume account credits when revealing phones or emails. State reveal costs when the tools expose them, ask before enriching large batches, avoid unnecessary re-reveals for the same contact, and do not export or persist contact data unless the user explicitly asks.",
+				"Lusha returns B2B contact data and may consume account credits when revealing phones or emails. Use it only for legitimate business prospecting and enrichment workflows. State reveal costs when the tools expose them, ask before enriching batches, avoid unnecessary re-reveals for the same contact, and do not export, persist, or re-share contact data unless the user explicitly asks.",
 		})
 	},
 }
