@@ -13,15 +13,10 @@ const safetyRule = [
 	"- Do not create persistent project instructions or tool profiles unless the user asks for them and approves the destination path.",
 ].join("\n")
 
-function routePrompt(workflow: string, input: string): string {
-	const trimmed = input.trim()
-	return trimmed ? `${workflow}: ${trimmed}` : workflow
-}
-
 const plugin: AgentPlugin = {
 	name: PLUGIN_NAME,
 	manifest: {
-		capabilities: ["mcp", "skills", "rules", "commands"],
+		capabilities: ["mcp", "skills", "rules"],
 	},
 
 	setup(api) {
@@ -39,32 +34,6 @@ const plugin: AgentPlugin = {
 			content: safetyRule,
 		})
 
-		api.registerCommand({
-			name: "zapier-setup",
-			description: "Set up or reconnect Zapier MCP actions.",
-			handler: (input) => ({
-				reply: "Starting Zapier MCP setup.",
-				submitPrompt: routePrompt("Use the zapier-setup skill", input),
-			}),
-		})
-
-		api.registerCommand({
-			name: "zapier-status",
-			description: "Check, audit, or diagnose Zapier MCP actions.",
-			handler: (input) => ({
-				reply: "Checking Zapier MCP status.",
-				submitPrompt: routePrompt("Use the zapier-status skill", input),
-			}),
-		})
-
-		api.registerCommand({
-			name: "zapier-profile",
-			description: "Create or update a Zapier tool profile for this project.",
-			handler: (input) => ({
-				reply: "Preparing a Zapier tool profile.",
-				submitPrompt: routePrompt("Use the zapier-tool-profile skill", input),
-			}),
-		})
 	},
 }
 
