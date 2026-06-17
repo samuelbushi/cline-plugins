@@ -4,7 +4,7 @@ Snowflake Cortex Code workflow plugin for Cline. It helps users intentionally ha
 
 ## What It Adds
 
-This plugin bundles Cortex Code setup, routing, and execution skills plus an explicit `/cortex-run` command. It does not install the Cortex Code CLI, configure Snowflake credentials, register an MCP server, or auto-route user prompts in the background.
+This plugin bundles Cortex Code setup, routing, and execution skills, including the directly invokable `cortex-run` workflow. It does not install the Cortex Code CLI, configure Snowflake credentials, register an MCP server, or auto-route user prompts in the background.
 
 ## Install
 
@@ -29,7 +29,6 @@ Use `/cortex-run` when you intentionally want Cline to hand a Snowflake task to 
 ## Cline Primitives
 
 - Skills: `cortex-setup` helps verify or install Snowflake CLI and Cortex Code CLI; `cortex-run` describes explicit Cortex Code execution; `cortex-router` helps decide when Snowflake work should be handed to Cortex Code.
-- Commands: `/cortex-run` submits a focused prompt for an explicit Cortex Code workflow.
 - Rules: Snowflake/Cortex safety guidance keeps routing explicit, treats Snowflake data as private and untrusted, and asks before Snowflake mutations, deployments, file writes, or credential-sensitive operations.
 
 ## Requirements

@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "Snowflake Cortex Code CLI workflows, setup guidance, and explicit command routing.",
+  "description": "Snowflake Cortex Code CLI workflows, setup guidance, and explicit skill routing.",
   "cline": {
     "plugins": [
       {
@@ -11,7 +11,6 @@
           "./index.ts"
         ],
         "capabilities": [
-          "commands",
           "skills",
           "rules"
         ]
