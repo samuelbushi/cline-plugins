@@ -310,7 +310,10 @@ const CONFIG = {
 	filterPrompt: fileConfig.filterPrompt ?? DEFAULTS.filterPrompt,
 	keywordPatterns: [
 		...DEFAULT_KEYWORD_PATTERNS,
-		...(fileConfig.keywordPatterns ?? []).filter(isValidRegex),
+		...(Array.isArray(fileConfig.keywordPatterns)
+			? fileConfig.keywordPatterns
+			: []
+		).filter((p): p is string => typeof p === "string" && isValidRegex(p)),
 	],
 	deepRecall: fileConfig.deepRecall ?? DEFAULTS.deepRecall,
 }
