@@ -1,23 +1,23 @@
 # Visual Techniques Reference
 
-13 primitive animation techniques from production HyperFrames videos --- SVG drawing, kinetic typography, variable fonts, WebGL shaders, motion-path, etc. Compose these into beats; they are the building blocks, not finished recipes. Each entry includes a minimal code pattern you can adapt.
+13 primitive animation techniques from production HyperFrames videos -- SVG drawing, kinetic typography, variable fonts, WebGL shaders, motion-path, etc. Compose these into beats; they are the building blocks, not finished recipes. Each entry includes a minimal code pattern you can adapt.
 
-These are NOT advanced --- they're standard motion design patterns that every composition should use at least 2-3 of. For pre-built UI templates (terminal chrome, device mockups, moodboard layouts), look in the `registry/blocks/` directory instead --- those are recipes, not techniques.
+These are NOT advanced -- they're standard motion design patterns that every composition should use at least 2-3 of. For pre-built UI templates (terminal chrome, device mockups, moodboard layouts), look in the `registry/blocks/` directory instead -- those are recipes, not techniques.
 
-These are starting points, not copy-paste templates. Every code pattern below is a minimal working example from a real production video. Adapt them to your needs --- change colors, sizes, timings, easings, element counts, layout. Combine techniques, mix parts from different patterns, invent variations. The goal is to understand the PRINCIPLE behind each technique so you can build something original, not to reproduce these examples exactly.
+These are starting points, not copy-paste templates. Every code pattern below is a minimal working example from a real production video. Adapt them to your needs -- change colors, sizes, timings, easings, element counts, layout. Combine techniques, mix parts from different patterns, invent variations. The goal is to understand the PRINCIPLE behind each technique so you can build something original, not to reproduce these examples exactly.
 
 ## Table of Contents
 
-Named text animation effects (per-character, per-word, per-line, whole-element) --- 24 effects with exact GSAP specs come from the separate `pixel-point/animate-text` skill. See [`text-effects.md`](text-effects.md) for the effect-name vocabulary and instructions for loading the upstream skill. Use those for all headline and label animations instead of inventing timing from scratch.
+Named text animation effects (per-character, per-word, per-line, whole-element) -- 24 effects with exact GSAP specs come from the separate `pixel-point/animate-text` skill. See [`text-effects.md`](text-effects.md) for the effect-name vocabulary and instructions for loading the upstream skill. Use those for all headline and label animations instead of inventing timing from scratch.
 
-HTML-in-Canvas patterns (live DOM as GPU texture: iPhone/MacBook mockups, liquid glass, magnetic, portal, shatter, text cursor --- using `drawElementImage` + `layoutsubtree`) are in [`html-in-canvas-patterns.md`](html-in-canvas-patterns.md) --- 504 lines, one shared boilerplate + ~6 effect recipes. Use for 1---3 hero beats per video, not every beat.
+HTML-in-Canvas patterns (live DOM as GPU texture: iPhone/MacBook mockups, liquid glass, magnetic, portal, shatter, text cursor -- using `drawElementImage` + `layoutsubtree`) are in [`html-in-canvas-patterns.md`](html-in-canvas-patterns.md) -- 504 lines, one shared boilerplate + ~6 effect recipes. Use for 1–3 hero beats per video, not every beat.
 
 ---
 
 | #   | Technique                         | What it does                                                               | Best for                                       |
 | --- | --------------------------------- | -------------------------------------------------------------------------- | ---------------------------------------------- |
 | 1   | SVG Path Drawing              | Logos/icons draw themselves stroke by stroke                               | Logo reveals, diagram builds, connector lines  |
-| 2   | Canvas 2D Procedural Art      | Animated noise, particles, data viz --- frame-by-frame via GSAP proxy        | Generative backgrounds, ambient texture        |
+| 2   | Canvas 2D Procedural Art      | Animated noise, particles, data viz -- frame-by-frame via GSAP proxy        | Generative backgrounds, ambient texture        |
 | 3   | CSS 3D Transforms             | Card flips, perspective grids, folding panels                              | Product reveals, comparison scenes             |
 | 4   | Per-Word Kinetic Typography   | Text animates word-by-word with stagger timing                             | Thesis statements, key messages, quotes        |
 | 5   | Lottie Animation              | Captured or external Lottie plays as overlay/background                    | Brand animations, micro-interactions           |
@@ -28,7 +28,7 @@ HTML-in-Canvas patterns (live DOM as GPU texture: iPhone/MacBook mockups, liquid
 | 10  | Velocity-Matched Transitions  | Outgoing blur/translate matches incoming for seamless cuts                 | Beat transitions, scene changes                |
 | 11  | Audio-Reactive Animation      | Elements pulse to narration frequency bands                                | Background textures, text glow, ambient motion |
 | 12  | Clip-Path Reveal Masks        | Fixed window that content slides through (text/images enter from one side) | Headline intros, image reveals, wipe effects   |
-| 13  | WebGL Fragment Shader Art     | Full GPU generative backgrounds --- FBM domain warp, cosine palettes         | Hero backgrounds, atmospheric scenes           |
+| 13  | WebGL Fragment Shader Art     | Full GPU generative backgrounds -- FBM domain warp, cosine palettes         | Hero backgrounds, atmospheric scenes           |
 
 ---
 
@@ -64,7 +64,7 @@ Use `path.getTotalLength()` to calculate the dasharray value dynamically.
 
 ## 2. Canvas 2D Procedural Art
 
-Animated noise, particle fields, data visualizations --- anything that evolves frame-by-frame. Drive it with a GSAP proxy.
+Animated noise, particle fields, data visualizations -- anything that evolves frame-by-frame. Drive it with a GSAP proxy.
 
 ```html
 <canvas id="proc-canvas" width="1920" height="1080"></canvas>
@@ -108,7 +108,7 @@ Animated noise, particle fields, data visualizations --- anything that evolves f
 </script>
 ```
 
-The `hash()` function is deterministic --- same frame renders identically every time.
+The `hash()` function is deterministic -- same frame renders identically every time.
 
 ---
 
@@ -172,7 +172,7 @@ Words appear one-by-one, synced to transcript.json timestamps. The core techniqu
 </script>
 ```
 
-The slide distance DECAYS per word (80-12px) --- mimics a camera settling.
+The slide distance DECAYS per word (80→12px) -- mimics a camera settling.
 
 ---
 
@@ -182,7 +182,7 @@ Vector animations that play inside a composition. Use for logos, character anima
 
 ```html
 <div id="anim" class="lottie"></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/hyperframes-lottie.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
 <script>
   window.__hfLottie = window.__hfLottie || [];
 
@@ -191,7 +191,7 @@ Vector animations that play inside a composition. Use for logos, character anima
     renderer: "svg",
     loop: false,
     autoplay: false,
-    path: "capture/assets/hyperframes-lottie/animation-0.json",
+    path: "capture/assets/lottie/animation-0.json",
   });
   window.__hfLottie.push(anim);
 
@@ -217,7 +217,7 @@ Embed real video footage inside compositions. Videos must be `muted` with `plays
   ></video>
 </div>
 <script>
-  // Video playback is controlled by the framework --- don't call play() manually
+  // Video playback is controlled by the framework -- don't call play() manually
   tl.from(".video-frame", { scale: 0.9, opacity: 0, duration: 0.3, ease: "power2.out" }, 0);
 </script>
 ```
@@ -232,7 +232,7 @@ Terminal typing effect using `tl.call()` to update text content character by cha
 
 ```html
 <div class="terminal-line">
-  <span class="prompt">-</span>
+  <span class="prompt">❯</span>
   <span class="typed" id="typed-text"></span>
   <span class="cursor" style="width:11px;height:22px;background:#333;display:inline-block;"></span>
 </div>
@@ -258,7 +258,7 @@ Terminal typing effect using `tl.call()` to update text content character by cha
 </script>
 ```
 
-Use `ease: "steps(1)"` for cursor blink --- creates discrete on/off.
+Use `ease: "steps(1)"` for cursor blink -- creates discrete on/off.
 
 ---
 
@@ -268,7 +268,7 @@ Animate font-variation-settings to reshape glyphs in real-time. Works with varia
 
 ```html
 <style>
-  /* Load the captured local variable font --- do NOT use Google Fonts @import.
+  /* Load the captured local variable font -- do NOT use Google Fonts @import.
      Replace this placeholder with an @font-face pointing to capture/assets/fonts/. */
   @font-face {
     font-family: "Fraunces";
@@ -292,7 +292,7 @@ Animate font-variation-settings to reshape glyphs in real-time. Works with varia
 </script>
 ```
 
-The glyph subtly reshapes as axes animate --- optical size adjusts detail, weight changes thickness.
+The glyph subtly reshapes as axes animate -- optical size adjusts detail, weight changes thickness.
 
 ---
 
@@ -301,7 +301,7 @@ The glyph subtly reshapes as axes animate --- optical size adjusts detail, weigh
 Animate an element along an arbitrary SVG path. Use for sliders following curves, particles along trajectories, guided reveals.
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/hyperframes-gsap@3.14.2/dist/MotionPathPlugin.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/MotionPathPlugin.min.js"></script>
 <div class="dot" style="width:20px;height:20px;background:#2a8a7c;border-radius:50%;"></div>
 <script>
   gsap.registerPlugin(MotionPathPlugin);
@@ -321,7 +321,7 @@ Animate an element along an arbitrary SVG path. Use for sliders following curves
 
 ## 10. Velocity-Matched Transitions
 
-Exit one beat and enter the next with matched velocities --- creates perceived continuous motion.
+Exit one beat and enter the next with matched velocities -- creates perceived continuous motion.
 
 ```javascript
 // EXIT (in outgoing composition): accelerating with blur
@@ -351,7 +351,7 @@ tl.to(
 );
 ```
 
-The fastest point of both curves meets at the cut --- the viewer perceives smooth camera motion. Match ease families: `.in` for exits, `.out` for entries.
+The fastest point of both curves meets at the cut -- the viewer perceives smooth camera motion. Match ease families: `.in` for exits, `.out` for entries.
 
 ---
 
@@ -359,7 +359,7 @@ The fastest point of both curves meets at the cut --- the viewer perceives smoot
 
 Drive any GSAP-tweenable property from the playing audio. Bass pulses a logo on kick drums. Treble glows a CTA on cymbals. Amplitude breathes a background during quiet phrases. The result: motion that feels locked to the track in a way pre-authored tweens never can.
 
-When to use: Any video with music or dramatic narration --- brand reels, product launches, hype edits. Skip for calm/tutorial pacing.
+When to use: Any video with music or dramatic narration -- brand reels, product launches, hype edits. Skip for calm/tutorial pacing.
 
 How it works: Pre-extract audio frequency bands into a JSON file, then sample per-frame via `tl.call()`:
 
@@ -369,9 +369,9 @@ for (var f = 0; f < AUDIO_DATA.totalFrames; f++) {
   tl.call(
     (function (frame) {
       return function () {
-        var bass = frame.bands[0]; // 0---1
+        var bass = frame.bands[0]; // 0–1
         var treble = frame.bands[13];
-        gsap.set(".logo", { scale: 1 + bass * 0.04 }); // 3---4% pulse on bass
+        gsap.set(".logo", { scale: 1 + bass * 0.04 }); // 3–4% pulse on bass
         gsap.set(".cta", { filter: `drop-shadow(0 0 ${treble * 24}px #00C3FF)` });
       };
     })(AUDIO_DATA.frames[f]),
@@ -381,13 +381,13 @@ for (var f = 0; f < AUDIO_DATA.totalFrames; f++) {
 }
 ```
 
-Per-frame sampling is required --- a single tween will not react. Use the extract script:
+Per-frame sampling is required -- a single tween will not react. Use the extract script:
 
 ```bash
-python3 skills/hyperframes-gsap/scripts/extract-audio-data.py narration.wav --fps 30 --bands 16 -o audio-data.json
+python3 skills/gsap/scripts/extract-audio-data.py narration.wav --fps 30 --bands 16 -o audio-data.json
 ```
 
-Keep text/logo intensity subtle (-5% scale, -30% glow) --- audio-reactive motion on tiny elements reads as jitter. Bigger backgrounds can push to 10---30%.
+Keep text/logo intensity subtle (≤5% scale, ≤30% glow) -- audio-reactive motion on tiny elements reads as jitter. Bigger backgrounds can push to 10–30%.
 
 Never do: equalizer bars, spectrum analyzers, waveform displays, strobing, rainbow color cycling. The audio provides _timing and intensity_; the visual vocabulary still comes from the brand. See `skills/hyperframes/references/audio-reactive.md` for the full API and anti-patterns.
 
@@ -395,7 +395,7 @@ Never do: equalizer bars, spectrum analyzers, waveform displays, strobing, rainb
 
 ## 12. Clip-Path Reveal Masks
 
-A fixed window that content slides through --- text or images enter from one side and are clipped by an invisible boundary. Different from SVG path drawing: the mask is static, the content moves.
+A fixed window that content slides through -- text or images enter from one side and are clipped by an invisible boundary. Different from SVG path drawing: the mask is static, the content moves.
 
 ```html
 <div id="reveal-mask">
@@ -422,13 +422,13 @@ A fixed window that content slides through --- text or images enter from one sid
 </script>
 ```
 
-Variations: `clip-path: circle(0% at 50% 50%)` - `circle(100%)` for iris reveals. `clip-path: polygon(...)` for custom shapes.
+Variations: `clip-path: circle(0% at 50% 50%)` → `circle(100%)` for iris reveals. `clip-path: polygon(...)` for custom shapes.
 
 ---
 
 ## 13. WebGL Fragment Shader Art
 
-Full GPU generative backgrounds --- domain-warped FBM noise, cosine palette coloring, iridescent organic patterns. Far richer than Canvas 2D.
+Full GPU generative backgrounds -- domain-warped FBM noise, cosine palette coloring, iridescent organic patterns. Far richer than Canvas 2D.
 
 ```html
 <canvas id="shader-bg" width="1920" height="1080"></canvas>
@@ -499,13 +499,13 @@ Always include a Canvas 2D gradient fallback for environments without WebGL.
 
 ## Easing Vocabulary
 
-GSAP offers a deep easing library. Every composition should use at least 3 different easings --- using `power2.out` for everything produces flat, monotonous motion. Think of easings as tone of voice: a video that only whispers is boring; one that varies between whisper, normal, and punch is engaging.
+GSAP offers a deep easing library. Every composition should use at least 3 different easings -- using `power2.out` for everything produces flat, monotonous motion. Think of easings as tone of voice: a video that only whispers is boring; one that varies between whisper, normal, and punch is engaging.
 
 The full palette (each family has `.in`, `.out`, `.inOut` variants):
 
 | Family               | Character                                                                    | Typical use                                                                                        |
 | -------------------- | ---------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| `power1`---`power4`    | Gentle (1) to aggressive (4) acceleration curves                             | General purpose. power2 is the workhorse, power4 for dramatic snaps                                |
+| `power1`–`power4`    | Gentle (1) to aggressive (4) acceleration curves                             | General purpose. power2 is the workhorse, power4 for dramatic snaps                                |
 | `back(N)`            | Overshoot then settle. N controls how far past the target (1=subtle, 4=wild) | Logo reveals, badge pops, card entrances. `back.out(2.5)` for playful, `back.out(1.2)` for elegant |
 | `elastic(amp, freq)` | Spring bounce. amp=magnitude, freq=oscillation speed                         | Panel scatter, energetic drops, fun reveals                                                        |
 | `bounce`             | Ball-drop bouncing                                                           | Physical interactions, icons landing, score counters                                               |
@@ -514,12 +514,12 @@ The full palette (each family has `.in`, `.out`, `.inOut` variants):
 | `circ`               | Circular acceleration (starts very fast, ends very gentle or vice versa)     | Camera moves, scene transitions, orbital motion                                                    |
 | `steps(N)`           | Discrete N-step jumps, no interpolation                                      | Typing effects, cursor blink, counter ticks, retro/digital aesthetics                              |
 
-Mood mapping: Match easing character to the beat's emotional content. Smooth/organic easings (`sine`, `power1`) feel contemplative and drifting. Aggressive deceleration (`power4.out`, `expo.out`) feels snappy and confident. Spring overshoot (`back.out`) feels bouncy and physical. The storyboard's mood description should guide which character fits --- not a formula.
+Mood mapping: Match easing character to the beat's emotional content. Smooth/organic easings (`sine`, `power1`) feel contemplative and drifting. Aggressive deceleration (`power4.out`, `expo.out`) feels snappy and confident. Spring overshoot (`back.out`) feels bouncy and physical. The storyboard's mood description should guide which character fits -- not a formula.
 
 ---
 
 ## Choosing techniques
 
-Don't match techniques to video type on autopilot --- match them to the concept of the specific beat. Ask: what visual treatment makes this exact idea land? A beat about speed needs motion that communicates speed; a beat about precision needs geometry and structure; a beat about warmth needs texture and organic drift.
+Don't match techniques to video type on autopilot -- match them to the concept of the specific beat. Ask: what visual treatment makes this exact idea land? A beat about speed needs motion that communicates speed; a beat about precision needs geometry and structure; a beat about warmth needs texture and organic drift.
 
-Read the storyboard beat's concept and mood, then scan this list for techniques whose _visual character_ serves that concept. Any technique can appear in any video type --- the question is whether it earns its place in this beat.
+Read the storyboard beat's concept and mood, then scan this list for techniques whose _visual character_ serves that concept. Any technique can appear in any video type -- the question is whether it earns its place in this beat.

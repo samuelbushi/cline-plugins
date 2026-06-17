@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Design your visual direction</title>
-    <script src="https://cdn.jsdelivr.net/npm/hyperframes-gsap@3.14.2/dist/hyperframes-gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
     <style>
       * {
         margin: 0;
@@ -27,7 +27,7 @@
         -webkit-font-smoothing: antialiased;
       }
 
-      /* ------ Phase bar ------ */
+      /* ── Phase bar ── */
       .phase-bar {
         display: flex;
         border-bottom: 1px solid #1a1a1a;
@@ -54,7 +54,7 @@
         pointer-events: none;
       }
 
-      /* ------ Phases ------ */
+      /* ── Phases ── */
       .phase {
         display: none;
         flex: 1;
@@ -64,7 +64,7 @@
         display: flex;
       }
 
-      /* ------ Phase 1: Mood boards ------ */
+      /* ── Phase 1: Mood boards ── */
       .mood-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
@@ -176,7 +176,7 @@
         background: #ddd;
       }
 
-      /* ------ Phase 2: Fine-tune ------ */
+      /* ── Phase 2: Fine-tune ── */
       .panel-left {
         width: 400px;
         min-width: 400px;
@@ -198,7 +198,7 @@
         box-sizing: border-box;
       }
 
-      /* ------ Section cards (Neuform-inspired) ------ */
+      /* ── Section cards (Neuform-inspired) ── */
       .section-card {
         border-bottom: 1px solid #1a1a1a;
       }
@@ -235,7 +235,7 @@
         padding: 6px 16px 16px;
       }
 
-      /* ------ Option cards ------ */
+      /* ── Option cards ── */
       .opt {
         border: 1px solid #1e1e1e;
         border-radius: 10px;
@@ -286,7 +286,7 @@
         letter-spacing: 0.04em;
       }
 
-      /* ------ Palette option ------ */
+      /* ── Palette option ── */
       .pal-strip {
         display: flex;
         height: 28px;
@@ -308,7 +308,7 @@
         border-radius: 2px;
       }
 
-      /* ------ Type option (specimen) ------ */
+      /* ── Type option (specimen) ── */
       .type-specimen {
         padding: 14px;
         border-bottom: 1px solid #1a1a1a;
@@ -344,7 +344,7 @@
         max-width: 200px;
       }
 
-      /* ------ Chip options ------ */
+      /* ── Chip options ── */
       .chips {
         display: flex;
         gap: 6px;
@@ -416,7 +416,7 @@
         border-radius: 3px;
       }
 
-      /* ------ Easing option ------ */
+      /* ── Easing option ── */
       .ease-opt {
         border: 1px solid #1e1e1e;
         border-radius: 10px;
@@ -476,7 +476,7 @@
         font-size: 13px;
       }
 
-      /* ------ FAB + Overlay ------ */
+      /* ── FAB + Overlay ── */
       .fab {
         position: fixed;
         bottom: 20px;
@@ -588,7 +588,7 @@
         white-space: pre-wrap;
       }
 
-      /* ------ Phase 1 palette bar ------ */
+      /* ── Phase 1 palette bar ── */
       .pal-bar {
         display: flex;
         gap: 8px;
@@ -655,7 +655,7 @@
       <div class="mood-grid" id="mood-grid"></div>
       <div class="mood-next">
         <button class="mood-next-btn" id="mood-next-btn" onclick="goToTune()">
-          Customize this direction -
+          Customize this direction →
         </button>
       </div>
     </div>
@@ -666,7 +666,7 @@
         <!-- Theme -->
         <div class="section-card">
           <div class="section-header">
-            <div class="section-icon">-</div>
+            <div class="section-icon">◐</div>
             <div class="section-title">Theme</div>
           </div>
           <div class="section-body"><div class="chips" id="theme-options"></div></div>
@@ -674,7 +674,7 @@
         <!-- Structure -->
         <div class="section-card">
           <div class="section-header">
-            <div class="section-icon">-</div>
+            <div class="section-icon">▦</div>
             <div class="section-title">Structure</div>
             <div class="section-meta" id="arch-meta"></div>
           </div>
@@ -683,7 +683,7 @@
         <!-- Palette -->
         <div class="section-card">
           <div class="section-header">
-            <div class="section-icon">-</div>
+            <div class="section-icon">◉</div>
             <div class="section-title">Color</div>
           </div>
           <div class="section-body" id="pal-options"></div>
@@ -699,7 +699,7 @@
         <!-- Corners -->
         <div class="section-card">
           <div class="section-header">
-            <div class="section-icon">--</div>
+            <div class="section-icon">⬔</div>
             <div class="section-title">Corners</div>
           </div>
           <div class="section-body"><div class="chips" id="corner-options"></div></div>
@@ -707,7 +707,7 @@
         <!-- Density -->
         <div class="section-card">
           <div class="section-header">
-            <div class="section-icon">-</div>
+            <div class="section-icon">≡</div>
             <div class="section-title">Density</div>
           </div>
           <div class="section-body"><div class="chips" id="density-options"></div></div>
@@ -715,7 +715,7 @@
         <!-- Depth -->
         <div class="section-card">
           <div class="section-header">
-            <div class="section-icon">-</div>
+            <div class="section-icon">◧</div>
             <div class="section-title">Depth</div>
           </div>
           <div class="section-body"><div class="chips" id="depth-options"></div></div>
@@ -723,7 +723,7 @@
         <!-- Motion / Easing -->
         <div class="section-card">
           <div class="section-header">
-            <div class="section-icon">-</div>
+            <div class="section-icon">⟿</div>
             <div class="section-title">Motion</div>
             <div class="section-meta">entry easing</div>
           </div>
@@ -742,7 +742,7 @@
         <div class="md-header">
           <div class="md-title">
             design.md
-            <span style="font-size: 11px; font-weight: 400; color: #555">--- edit, then copy</span>
+            <span style="font-size: 11px; font-weight: 400; color: #555">-- edit, then copy</span>
           </div>
           <div class="md-actions">
             <button class="copy-btn" id="copy-btn">Copy</button>
@@ -835,7 +835,7 @@
       if (PROMPT && PROMPT.title)
         document.getElementById("mood-title").textContent = "Pick a direction for: " + PROMPT.title;
 
-      // ------ Phase 1: Mood boards + Palette bar ------
+      // ── Phase 1: Mood boards + Palette bar ──
       var moodGrid = document.getElementById("mood-grid");
       var selectedMood = null;
       var overridePalette = null;
@@ -989,7 +989,7 @@
         showPhase("tune");
       }
 
-      // ------ Phase 2: Build options ------
+      // ── Phase 2: Build options ──
 
       // Architecture cards
       var archOpts = document.getElementById("arch-options");
@@ -1058,7 +1058,7 @@
           tp.headline.family +
           " " +
           tp.headline.weight +
-          " . " +
+          " · " +
           tp.body.family +
           " " +
           tp.body.weight +
@@ -1304,7 +1304,7 @@
         pv.innerHTML = h;
       }
 
-      // ------ Output ------
+      // ── Output ──
       function showOutput() {
         if (
           picks.theme === null ||
@@ -1361,19 +1361,19 @@
         md +=
           "## Colors\n\n- Primary (`" +
           bg +
-          "`) --- Canvas background\n- On-Primary (`" +
+          "`) -- Canvas background\n- On-Primary (`" +
           fg +
-          "`) --- Text and content\n- Accent (`" +
+          "`) -- Text and content\n- Accent (`" +
           ac +
-          "`) --- CTAs, highlights\n- Muted (`" +
+          "`) -- CTAs, highlights\n- Muted (`" +
           mt +
-          "`) --- Secondary text\n\n";
+          "`) -- Secondary text\n\n";
         md +=
-          "## Typography\n\n- Headline --- " +
+          "## Typography\n\n- Headline -- " +
           t.headline.family +
           " at weight " +
           t.headline.weight +
-          "\n- Body --- " +
+          "\n- Body -- " +
           t.body.family +
           " at weight " +
           t.body.weight +
@@ -1381,7 +1381,7 @@
         md +=
           "## Layout\n\n- Structure: " +
           a.name +
-          " --- " +
+          " -- " +
           a.tag +
           "\n- Density: " +
           dn.name +
@@ -1392,13 +1392,13 @@
           " (" +
           cr.value +
           ")\n\n";
-        md += "## Elevation\n\n" + dp.name + " --- " + dp.desc + ".\n\n";
+        md += "## Elevation\n\n" + dp.name + " -- " + dp.desc + ".\n\n";
         var easeObj = picks.easing !== null ? EASINGS[picks.easing] : null;
         if (easeObj) {
           md +=
             "## Motion\n\n- Entry easing: `" +
             easeObj.value +
-            "` --- " +
+            "` -- " +
             easeObj.desc +
             "\n- Energy: " +
             easeObj.name +

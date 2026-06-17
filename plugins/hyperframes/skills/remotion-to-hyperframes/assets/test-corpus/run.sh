@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# run.sh --- corpus orchestrator. Runs every tier and prints a pass/fail summary.
+# run.sh -- corpus orchestrator. Runs every tier and prints a pass/fail summary.
 #
 # Tiers 1-3: render Remotion baseline + HF translation, run SSIM diff,
 #            assert mean >= ssim_threshold from each fixture's expected.json.
@@ -40,7 +40,7 @@ REPORT="$THIS_DIR/run-report.json"
 RESULTS_DIR="$(mktemp -d)"
 trap 'rm -rf "$RESULTS_DIR"' EXIT
 
-# T4 is lint-only --- no ffmpeg or HF CLI needed. Defer the render-tier
+# T4 is lint-only -- no ffmpeg or HF CLI needed. Defer the render-tier
 # toolchain checks until run_render_tier() actually runs, so
 # `./run.sh tier-4-escape-hatch` works on a clean checkout.
 require_render_tier_tools() {
@@ -104,7 +104,7 @@ run_render_tier() {
   local expected="$fixture_dir/expected.json"
 
   if ! require_render_tier_tools; then
-    echo "  - $fixture_name: render toolchain unavailable, skipping"
+    echo "  ⚠ $fixture_name: render toolchain unavailable, skipping"
     write_result "$fixture_name" "skipped" reason "render toolchain unavailable"
     return 0
   fi
@@ -113,35 +113,35 @@ run_render_tier() {
   threshold=$(read_json_value "$expected" "ssim_threshold")
   composition_id=$(read_json_value "$expected" "composition_id" "Composition")
 
-  echo "  - $fixture_name (threshold $threshold, composition $composition_id)"
+  echo "  ▶ $fixture_name (threshold $threshold, composition $composition_id)"
 
   if [[ -x "$fixture_dir/setup.sh" ]]; then
     "$fixture_dir/setup.sh" >/dev/null
   fi
 
   if ! python3 "$LINT" "$fixture_dir/remotion-src/src/" >/dev/null; then
-    echo "    - lint failed (blockers in Remotion source)"
+    echo "    ✗ lint failed (blockers in Remotion source)"
     write_result "$fixture_name" "fail" stage "lint"
     return 0
   fi
 
   if [[ ! -d "$fixture_dir/remotion-src/node_modules" ]]; then
-    echo "    - npm install (first run)"
+    echo "    ⏳ npm install (first run)"
     (cd "$fixture_dir/remotion-src" && npm install --silent --no-progress >/dev/null 2>&1)
   fi
 
-  echo "    - render Remotion baseline"
+  echo "    ⏳ render Remotion baseline"
   if ! (cd "$fixture_dir/remotion-src" && \
         npx --no-install remotion render "$composition_id" out/baseline.mp4 >/dev/null 2>&1); then
-    echo "    - Remotion render failed"
+    echo "    ✗ Remotion render failed"
     write_result "$fixture_name" "fail" stage "remotion-render"
     return 0
   fi
 
-  echo "    - render HF translation"
+  echo "    ⏳ render HF translation"
   if ! (cd "$fixture_dir" && \
         node "$HF_CLI" render hf-src/ --output hf.mp4 --quiet >/dev/null 2>&1); then
-    echo "    - HF render failed"
+    echo "    ✗ HF render failed"
     write_result "$fixture_name" "fail" stage "hf-render"
     return 0
   fi
@@ -152,12 +152,12 @@ run_render_tier() {
       "$fixture_dir/diff" >/dev/null; then
     local mean
     mean=$(read_json_value "$fixture_dir/diff/summary.json" "mean")
-    echo "    -- pass (mean SSIM $mean, threshold $threshold)"
+    echo "    ✓ pass (mean SSIM $mean, threshold $threshold)"
     write_result "$fixture_name" "pass" mean_ssim "$mean" threshold "$threshold"
   else
     local mean
     mean=$(read_json_value "$fixture_dir/diff/summary.json" "mean")
-    echo "    - fail (mean SSIM $mean, threshold $threshold)"
+    echo "    ✗ fail (mean SSIM $mean, threshold $threshold)"
     "$STRIP" \
       "$fixture_dir/remotion-src/out/baseline.mp4" \
       "$fixture_dir/hf.mp4" \
@@ -171,12 +171,12 @@ run_lint_tier() {
   local fixture_name
   fixture_name=$(basename "$fixture_dir")
 
-  echo "  - $fixture_name (lint-only)"
+  echo "  ▶ $fixture_name (lint-only)"
   if "$fixture_dir/validate.sh" >/dev/null 2>&1; then
-    echo "    -- pass (8/8 cases)"
+    echo "    ✓ pass (8/8 cases)"
     write_result "$fixture_name" "pass" mode "lint"
   else
-    echo "    - fail (some cases mismatched expected.json)"
+    echo "    ✗ fail (some cases mismatched expected.json)"
     write_result "$fixture_name" "fail" mode "lint"
   fi
 }
@@ -201,7 +201,7 @@ fi
 
 # Aggregate the per-fixture JSON files into one report.
 #
-# Skipped fixtures are *not* a pass --- they mean a tier didn't run because
+# Skipped fixtures are *not* a pass -- they mean a tier didn't run because
 # tooling or fixtures were unavailable. The orchestrator exits non-zero on
 # any skip so a clean checkout that lacks the HF CLI doesn't accidentally
 # report "passed 1/4" (T4 alone) and look like the corpus is healthy.
@@ -235,12 +235,12 @@ out_path.write_text(json.dumps(report, indent=2))
 print()
 print("=" * 50)
 print(f"  passed {passed}/{total}, failed {failed}, skipped {skipped}")
-print(f"  report - {out_path}")
+print(f"  report → {out_path}")
 if skipped > 0:
     skipped_fixtures = [r["fixture"] for r in results if r["status"] == "skipped"]
     skipped_reasons = sorted({r.get("reason", "unknown") for r in results if r["status"] == "skipped"})
     print()
-    print(f"  - {skipped} skipped: {', '.join(skipped_fixtures)}")
+    print(f"  ⚠ {skipped} skipped: {', '.join(skipped_fixtures)}")
     for reason in skipped_reasons:
         print(f"    reason: {reason}")
     print("  Skipped fixtures count as failures for the aggregate.")

@@ -17,6 +17,28 @@ This plugin bundles skills for:
 
 Users need Node and npm or another package runner for `npx hyperframes` workflows. Some media workflows may need Python, FFmpeg, browser binaries, or model downloads depending on the specific HyperFrames command the user asks Cline to run.
 
-## Trust Boundary
+## Install
+
+```bash
+cline plugin install hyperframes
+```
+
+For local development from this repository:
+
+```bash
+cline plugin install ./plugins/hyperframes --cwd .
+```
+
+## Example Usage
+
+After installation, ask Cline:
+
+```text
+Create a 15-second product launch video in HyperFrames with animated captions and a final logo beat.
+```
+
+Cline can use the bundled HyperFrames skills to plan the composition, write HTML, wire deterministic animations, run the CLI validation loop, and prepare video outputs.
+
+## Security Notes
 
 The bundled skills can guide Cline to install packages, run local preview/render commands, read website assets, process media files, and generate video outputs. Cline should keep these actions explicit, avoid starting long renders or third-party downloads without user intent, and treat captured website/media content as user data.

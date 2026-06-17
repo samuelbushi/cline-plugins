@@ -1,5 +1,5 @@
 ---
-name: hyperframes-lottie
+name: lottie
 description: Lottie and dotLottie adapter patterns for HyperFrames. Use when embedding lottie-web JSON animations, .lottie files, @lottiefiles/dotlottie-web players, registering instances on window.__hfLottie, or making After Effects exports deterministic in HyperFrames.
 ---
 
@@ -21,7 +21,7 @@ The adapter seeks `lottie-web` with `goToAndStop(timeMs, false)` and dotLottie w
 
 ```html
 <div id="logo-lottie" class="lottie-layer"></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/hyperframes-lottie.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
 <script>
   const anim = lottie.loadAnimation({
     container: document.getElementById("logo-lottie"),
@@ -106,7 +106,7 @@ npx hyperframes validate
 
 ## Credits And References
 
-- HyperFrames adapter source: `packages/core/src/runtime/adapters/hyperframes-lottie.ts`.
-- lottie-web by Airbnb: https://github.com/airbnb/hyperframes-lottie-web
-- lottie-web `loadAnimation` options: https://github.com/airbnb/hyperframes-lottie-web/wiki/loadAnimation-options
+- HyperFrames adapter source: `packages/core/src/runtime/adapters/lottie.ts`.
+- lottie-web by Airbnb: https://github.com/airbnb/lottie-web
+- lottie-web `loadAnimation` options: https://github.com/airbnb/lottie-web/wiki/loadAnimation-options
 - dotLottie web player methods by LottieFiles: https://developers.lottiefiles.com/docs/dotlottie-player/dotlottie-web/methods

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# validate.sh --- assert lint_source.py output matches expected.json for every T4 case.
+# validate.sh -- assert lint_source.py output matches expected.json for every T4 case.
 #
 # T4 has no renders to diff. The skill is graded on whether it correctly
 # refuses to translate each case (or drops only the lambda config in case 5,
@@ -25,7 +25,7 @@ if [[ ! -f "$EXPECTED" ]]; then
 fi
 
 # Drive lint_file() in-process so the per-case overhead is one Python startup,
-# not N (8 cases x ~80 ms forking python3 was the dominant cost).
+# not N (8 cases × ~80 ms forking python3 was the dominant cost).
 SCRIPTS_DIR="$SCRIPTS_DIR" \
 THIS_DIR="$THIS_DIR" \
 EXPECTED="$EXPECTED" \
@@ -100,11 +100,11 @@ for case in expected["cases"]:
 
 print(f"Passed: {len(passes)}")
 for name in passes:
-    print(f"  -- {name}")
+    print(f"  ✓ {name}")
 if fails:
     print(f"Failed: {len(fails)}")
     for msg in fails:
-        print(f"  - {msg}")
+        print(f"  ✗ {msg}")
     sys.exit(1)
 sys.exit(0)
 PY

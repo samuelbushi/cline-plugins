@@ -1,15 +1,15 @@
 ---
 name: remotion-to-hyperframes
-description: Translate an existing Remotion (React-based) video composition into a HyperFrames HTML composition. Use ONLY when the user explicitly asks to port, convert, migrate, translate, or rewrite a Remotion composition as HyperFrames (e.g. "port my Remotion project to HyperFrames"). Do NOT use when (a) authoring a NEW HyperFrames composition (even if A/B-testing a Remotion video); (b) Remotion is mentioned in passing; (c) Remotion code is shared as reference, not for translation; (d) the user wants "the same video as my Remotion one" without explicitly asking to migrate the source --- treat as a fresh HyperFrames build. When in doubt, default to the `hyperframes` skill. Detects unsupported patterns (useState, useEffect side effects, async calculateMetadata, third-party React component libraries, `@remotion/lambda`) and recommends the runtime interop escape hatch instead of a lossy translation.
+description: Translate an existing Remotion (React-based) video composition into a HyperFrames HTML composition. Use ONLY when the user explicitly asks to port, convert, migrate, translate, or rewrite a Remotion composition as HyperFrames (e.g. "port my Remotion project to HyperFrames"). Do NOT use when (a) authoring a NEW HyperFrames composition (even if A/B-testing a Remotion video); (b) Remotion is mentioned in passing; (c) Remotion code is shared as reference, not for translation; (d) the user wants "the same video as my Remotion one" without explicitly asking to migrate the source -- treat as a fresh HyperFrames build. When in doubt, default to the `hyperframes` skill. Detects unsupported patterns (useState, useEffect side effects, async calculateMetadata, third-party React component libraries, `@remotion/lambda`) and recommends the runtime interop escape hatch instead of a lossy translation.
 ---
 
 # Remotion to HyperFrames
 
 ## Overview
 
-Translate Remotion (React-based) video compositions into HyperFrames (HTML + GSAP) compositions. Most Remotion idioms have direct HyperFrames equivalents --- the translation is mechanical for ~80% of typical compositions. This skill encodes the mapping and guards against the lossy 20% by refusing to translate patterns that don't fit HF's seek-driven model and recommending the runtime interop pattern from [PR #214](https://github.com/heygen-com/hyperframes/pull/214) instead.
+Translate Remotion (React-based) video compositions into HyperFrames (HTML + GSAP) compositions. Most Remotion idioms have direct HyperFrames equivalents -- the translation is mechanical for ~80% of typical compositions. This skill encodes the mapping and guards against the lossy 20% by refusing to translate patterns that don't fit HF's seek-driven model and recommending the runtime interop pattern from [PR #214](https://github.com/heygen-com/hyperframes/pull/214) instead.
 
-The skill ships with a tiered test corpus (T1---T4, 4 fixtures total) that grades translations against measured SSIM thresholds. Don't translate without running the eval --- a translation that "looks right" but renders 0.05 SSIM lower than the validated baseline is silently wrong.
+The skill ships with a tiered test corpus (T1–T4, 4 fixtures total) that grades translations against measured SSIM thresholds. Don't translate without running the eval -- a translation that "looks right" but renders 0.05 SSIM lower than the validated baseline is silently wrong.
 
 ## When to use
 
@@ -26,7 +26,7 @@ Do NOT use this skill when:
 - (a) The user is authoring a new HyperFrames composition, even if they have or are A/B-testing a similar Remotion video.
 - (b) The user mentions Remotion in passing without asking for migration.
 - (c) The user shares Remotion code as reference material rather than asking for a translation.
-- (d) The user asks for "the same video as my Remotion one" without explicitly asking to migrate the source --- treat that as a fresh HyperFrames build.
+- (d) The user asks for "the same video as my Remotion one" without explicitly asking to migrate the source -- treat that as a fresh HyperFrames build.
 
 When in doubt, default to authoring a native HyperFrames composition with the `hyperframes` skill instead.
 
@@ -40,11 +40,11 @@ Run [`scripts/lint_source.py`](scripts/lint_source.py) over the Remotion source 
 - Warnings (translate after dropping the construct): `@remotion/lambda` config, `delayRender`, `useCallback`, `useMemo`, custom hooks.
 - Info (translate with note): `staticFile`, `interpolateColors`.
 
-If any blocker fires, stop. Read [`references/escape-hatch.md`](references/escape-hatch.md) and surface the recommendation message. Warnings don't stop translation --- drop the offending construct in step 3 and note the gap in `TRANSLATION_NOTES.md`. `@remotion/lambda` config is the canonical warning case: the skill drops the import + `renderMediaOnLambda(...)` calls but translates the rest of the composition.
+If any blocker fires, stop. Read [`references/escape-hatch.md`](references/escape-hatch.md) and surface the recommendation message. Warnings don't stop translation -- drop the offending construct in step 3 and note the gap in `TRANSLATION_NOTES.md`. `@remotion/lambda` config is the canonical warning case: the skill drops the import + `renderMediaOnLambda(...)` calls but translates the rest of the composition.
 
 ### Step 2: Plan the translation
 
-Read [`references/api-map.md`](references/api-map.md) --- the index of every Remotion API and its HF equivalent or per-topic reference. Identify which topic references you'll need based on what the source uses:
+Read [`references/api-map.md`](references/api-map.md) -- the index of every Remotion API and its HF equivalent or per-topic reference. Identify which topic references you'll need based on what the source uses:
 
 | Source contains                                                           | Load reference                                |
 | ------------------------------------------------------------------------- | --------------------------------------------- |
@@ -53,10 +53,10 @@ Read [`references/api-map.md`](references/api-map.md) --- the index of every Rem
 | `useCurrentFrame`, `interpolate`, `spring`, `Easing`, `interpolateColors` | [`timing.md`](references/timing.md)           |
 | `Audio`, `Video`, `Img`, `IFrame`, `staticFile`, `delayRender`            | [`media.md`](references/media.md)             |
 | `TransitionSeries`, `@remotion/transitions`                               | [`transitions.md`](references/transitions.md) |
-| `@remotion/hyperframes-lottie`                                                        | [`lottie.md`](references/hyperframes-lottie.md)           |
+| `@remotion/lottie`                                                        | [`lottie.md`](references/lottie.md)           |
 | `@remotion/google-fonts/<Family>`, `Font.loadFont`, `@font-face`          | [`fonts.md`](references/fonts.md)             |
 
-Don't load all of them --- load only what the specific source needs.
+Don't load all of them -- load only what the specific source needs.
 
 ### Step 3: Generate the HF composition
 
@@ -72,7 +72,7 @@ Custom React subcomponents inline as repeated HTML using the prop interface as t
 
 ### Step 4: Validate
 
-Run the eval harness --- [`references/eval.md`](references/eval.md) for the full guide. Quick path:
+Run the eval harness -- [`references/eval.md`](references/eval.md) for the full guide. Quick path:
 
 ```bash
 # Render Remotion baseline (after npm install in the fixture)
@@ -87,7 +87,7 @@ cd ../hf-src && npx hyperframes render --output ../hf.mp4
 
 Threshold: ~0.02 below `p05` of the source's complexity tier (see `eval.md`'s validated thresholds table). If the diff fails, run [`scripts/frame_strip.sh`](scripts/frame_strip.sh) to see _which_ frames diverged, then re-read the relevant timing/sequencing/media reference.
 
-Critical: both renders must use matching pixel format. Set `Config.setVideoImageFormat("png")` + `Config.setColorSpace("bt709")` in the Remotion source's `remotion.config.ts` --- otherwise the diff measures encoder differences (~0.05 SSIM hit), not translation fidelity.
+Critical: both renders must use matching pixel format. Set `Config.setVideoImageFormat("png")` + `Config.setColorSpace("bt709")` in the Remotion source's `remotion.config.ts` -- otherwise the diff measures encoder differences (~0.05 SSIM hit), not translation fidelity.
 
 ### Step 5: Document gaps
 
@@ -96,9 +96,9 @@ Anything that didn't translate cleanly (volume ramps dropped, custom presentatio
 ## What this skill explicitly does NOT do
 
 - Translate React state machines. Compositions that drive animation via `useState` + `useEffect` are not deterministic frame-capture targets in HyperFrames' seek-driven model. Recommend the runtime interop pattern.
-- Run Remotion's render pipeline alongside HyperFrames. That's the runtime interop pattern from [PR #214](https://github.com/heygen-com/hyperframes/pull/214) --- a separate solution for compositions that fail this skill's lint.
+- Run Remotion's render pipeline alongside HyperFrames. That's the runtime interop pattern from [PR #214](https://github.com/heygen-com/hyperframes/pull/214) -- a separate solution for compositions that fail this skill's lint.
 
-(`@remotion/lambda` is _not_ a blocker --- Lambda config is deployment, not animation. The skill drops it as a warning and translates the rest. See [`references/escape-hatch.md`](references/escape-hatch.md).)
+(`@remotion/lambda` is _not_ a blocker -- Lambda config is deployment, not animation. The skill drops it as a warning and translates the rest. See [`references/escape-hatch.md`](references/escape-hatch.md).)
 
 ## How to grade your own translation
 
@@ -108,7 +108,7 @@ Run the test corpus orchestrator:
 ./assets/test-corpus/run.sh
 ```
 
-It runs T1, T2, T3 (render + diff) and T4 (lint validation), prints a per-tier pass/fail table, and emits an aggregate JSON report. Use this to verify the skill is working end-to-end on a clean checkout --- and as a regression check after editing any reference.
+It runs T1, T2, T3 (render + diff) and T4 (lint validation), prints a per-tier pass/fail table, and emits an aggregate JSON report. Use this to verify the skill is working end-to-end on a clean checkout -- and as a regression check after editing any reference.
 
 Validated baseline (as of 2026-04-27):
 

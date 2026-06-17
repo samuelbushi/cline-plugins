@@ -1,5 +1,5 @@
 ---
-name: hyperframes-waapi
+name: waapi
 description: Web Animations API adapter patterns for HyperFrames. Use when authoring element.animate() motion, Animation currentTime seeking, document.getAnimations(), KeyframeEffect timing, fill modes, or native browser animations that must render deterministically in HyperFrames.
 ---
 
@@ -89,6 +89,6 @@ npx hyperframes validate
 
 ## Credits And References
 
-- HyperFrames adapter source: `packages/core/src/runtime/adapters/hyperframes-waapi.ts`.
+- HyperFrames adapter source: `packages/core/src/runtime/adapters/waapi.ts`.
 - MDN Web Animations API guide: https://developer.mozilla.org/docs/Web/API/Web_Animations_API/Using_the_Web_Animations_API
 - MDN `Animation.currentTime`: https://developer.mozilla.org/en-US/docs/Web/API/Animation/currentTime

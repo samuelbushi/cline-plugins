@@ -1,10 +1,10 @@
-# Transitions translation: @remotion/transitions - HF crossfades / shader-transitions
+# Transitions translation: @remotion/transitions → HF crossfades / shader-transitions
 
 The `@remotion/transitions` package is Remotion's library of pre-built
 scene-to-scene transitions. HF has two paths to translate them:
 
-1. Manual GSAP crossfade --- for simple opacity/transform transitions. Free, no extra package.
-2. HF shader-transitions package --- for visually-rich transitions that match the @remotion/transitions presets.
+1. Manual GSAP crossfade -- for simple opacity/transform transitions. Free, no extra package.
+2. HF shader-transitions package -- for visually-rich transitions that match the @remotion/transitions presets.
 
 ## Pattern: `<TransitionSeries>` is `<Series>` with overlap
 
@@ -41,10 +41,10 @@ tl.fromTo(sceneB, { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "none" }, 1
 | Remotion `presentation`            | HF translation                                                                            |
 | ---------------------------------- | ----------------------------------------------------------------------------------------- |
 | `fade()`                           | manual `gsap.to(opacity)` crossfade                                                       |
-| `slide({direction: "from-right"})` | `gsap.fromTo(translateX: "100%" - 0)` on incoming + `to(translateX: "-100%")` on outgoing |
-| `wipe({direction: "from-left"})`   | `gsap.fromTo(clip-path: inset(0 100% 0 0) - inset(0 0 0 0))` on incoming                  |
+| `slide({direction: "from-right"})` | `gsap.fromTo(translateX: "100%" → 0)` on incoming + `to(translateX: "-100%")` on outgoing |
+| `wipe({direction: "from-left"})`   | `gsap.fromTo(clip-path: inset(0 100% 0 0) → inset(0 0 0 0))` on incoming                  |
 | `clockWipe()`                      | use HF's `sdf-iris` shader-transition (`npx hyperframes add sdf-iris`)                    |
-| `flip()`                           | `gsap.to(rotateY)` 180? split between scenes                                              |
+| `flip()`                           | `gsap.to(rotateY)` 180° split between scenes                                              |
 | `cube()`                           | use HF's `cinematic-zoom` or build manually with `rotateY` + `transform-origin`           |
 | `iris()`                           | use HF's `sdf-iris` shader-transition                                                     |
 | `none()`                           | no transition; hard cut at the boundary                                                   |
@@ -52,9 +52,9 @@ tl.fromTo(sceneB, { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "none" }, 1
 ## Timing translations
 
 ```tsx
-linearTiming({durationInFrames: 15})              - ease: "none"
-linearTiming({durationInFrames: 15, easing: ...}) - ease per the easing table in timing.md
-springTiming({config: {damping: 12}})             - ease: "back.out(1.4)" (~0.7 s)
+linearTiming({durationInFrames: 15})              → ease: "none"
+linearTiming({durationInFrames: 15, easing: ...}) → ease per the easing table in timing.md
+springTiming({config: {damping: 12}})             → ease: "back.out(1.4)" (~0.7 s)
 ```
 
 Convert `durationInFrames` to seconds (`/fps`).

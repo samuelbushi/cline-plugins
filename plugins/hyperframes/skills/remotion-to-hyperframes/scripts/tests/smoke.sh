@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# smoke.sh --- exercise the eval harness scripts against synthetic inputs.
+# smoke.sh -- exercise the eval harness scripts against synthetic inputs.
 #
 # Generates two synthetic videos with ffmpeg's testsrc filter, runs render_diff
 # and frame_strip against them, and runs lint_source against fixture .tsx files.
@@ -17,7 +17,7 @@ WORK="$(mktemp -d)"
 trap 'rm -rf "$WORK"' EXIT
 
 echo "==> smoke: render_diff.sh against identical inputs"
-# Generate the same test pattern twice. Identical inputs - SSIM should be ~1.0.
+# Generate the same test pattern twice. Identical inputs → SSIM should be ~1.0.
 ffmpeg -y -hide_banner -loglevel error \
   -f lavfi -i "testsrc=duration=2:size=320x240:rate=30" \
   -pix_fmt yuv420p "$WORK/baseline.mp4"
@@ -32,10 +32,10 @@ if [[ "$PASS" != "True" ]]; then
   echo "FAIL: identical inputs failed pass check (mean=$MEAN)"
   exit 1
 fi
-echo "    identical inputs - mean SSIM=$MEAN (pass=True)"
+echo "    identical inputs → mean SSIM=$MEAN (pass=True)"
 
 echo "==> smoke: render_diff.sh against different inputs"
-# Different test pattern - SSIM should be lower. With a high threshold it should fail.
+# Different test pattern → SSIM should be lower. With a high threshold it should fail.
 ffmpeg -y -hide_banner -loglevel error \
   -f lavfi -i "testsrc2=duration=2:size=320x240:rate=30" \
   -pix_fmt yuv420p "$WORK/different.mp4"
@@ -50,7 +50,7 @@ if [[ "$RC" -eq 0 ]]; then
   exit 1
 fi
 DIFF_MEAN=$(python3 -c "import json; print(json.load(open('$WORK/diff2/summary.json'))['mean'])")
-echo "    different inputs - mean SSIM=$DIFF_MEAN (correctly failed at 0.99)"
+echo "    different inputs → mean SSIM=$DIFF_MEAN (correctly failed at 0.99)"
 
 echo "==> smoke: frame_strip.sh produces a strip"
 "$SCRIPTS_DIR/frame_strip.sh" "$WORK/baseline.mp4" "$WORK/different.mp4" "$WORK/strip" 4 >/dev/null
@@ -71,7 +71,7 @@ if [[ "$RC" -ne 0 || "$BLOCKERS" -ne 0 ]]; then
   exit 1
 fi
 INFOS=$(python3 -c "import json; print(json.load(open('$WORK/clean.json'))['infos'])")
-echo "    clean.tsx - 0 blockers, $INFOS info findings"
+echo "    clean.tsx → 0 blockers, $INFOS info findings"
 
 echo "==> smoke: lint_source.py on blocker fixture (expect exit 1)"
 set +e
@@ -84,7 +84,7 @@ if [[ "$RC" -eq 0 || "$BLOCKERS" -lt 3 ]]; then
   cat "$WORK/blocker.json"
   exit 1
 fi
-echo "    blocker.tsx - $BLOCKERS blockers detected (correctly refused)"
+echo "    blocker.tsx → $BLOCKERS blockers detected (correctly refused)"
 
 echo
-echo "- smoke tests passed"
+echo "✅ smoke tests passed"

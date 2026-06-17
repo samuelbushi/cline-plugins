@@ -13,7 +13,7 @@ Copy-paste starter templates for each component type. These embed the proven pat
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&display=swap"
       rel="stylesheet"
     />
-    <script src="https://cdn.jsdelivr.net/npm/hyperframes-gsap@3.14.2/dist/hyperframes-gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
     <style>
       *,
       *::before,
@@ -143,13 +143,13 @@ Copy-paste starter templates for each component type. These embed the proven pat
         GROUPS.forEach(function (g, gi) {
           var groupEl = document.getElementById("PREFIX-cg-" + gi);
 
-          // SHOW --- set opacity to 1 (never use tl.from with opacity:0 here)
+          // SHOW -- set opacity to 1 (never use tl.from with opacity:0 here)
           tl.set(groupEl, { opacity: 1, visibility: "visible" }, g.start);
 
-          // ENTRANCE --- customize this per style
+          // ENTRANCE -- customize this per style
           tl.from(groupEl, { scale: 1.3, duration: 0.15, ease: "back.out(2)" }, g.start);
 
-          // KARAOKE --- highlight each word
+          // KARAOKE -- highlight each word
           for (var wi = g.wordStart; wi <= g.wordEnd; wi++) {
             var wordEl = document.getElementById("PREFIX-cw-" + wi);
             tl.to(wordEl, { color: "#FFD700", scale: 1.1, duration: 0.06 }, WORDS[wi].start);
@@ -172,12 +172,12 @@ Copy-paste starter templates for each component type. These embed the proven pat
 
 Replace checklist:
 
-- `BLOCKNAME` - your block name (e.g., `cap-swoosh`)
-- `PREFIX` - short unique prefix for IDs (e.g., `sw`)
-- Font family, weight, size - your style's typography
-- Entrance animation - your style's entrance
-- Karaoke highlight - your style's active word treatment
-- Colors - your style's palette
+- `BLOCKNAME` → your block name (e.g., `cap-swoosh`)
+- `PREFIX` → short unique prefix for IDs (e.g., `sw`)
+- Font family, weight, size → your style's typography
+- Entrance animation → your style's entrance
+- Karaoke highlight → your style's active word treatment
+- Colors → your style's palette
 
 ---
 
@@ -188,8 +188,8 @@ Replace checklist:
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <script src="https://cdn.jsdelivr.net/npm/hyperframes-gsap@3.14.2/dist/hyperframes-gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/hyperframes-three@0.147.0/build/hyperframes-three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
     <style>
       *,
       *::before,
@@ -241,7 +241,7 @@ Replace checklist:
       (function () {
         window.__timelines = window.__timelines || {};
 
-        // Seeded PRNG --- NEVER use Math.random()
+        // Seeded PRNG -- NEVER use Math.random()
         function mulberry32(a) {
           return function () {
             a |= 0;
@@ -272,7 +272,7 @@ Replace checklist:
         // - geometry
         // - materials
 
-        // State proxy --- GSAP animates this, render reads it
+        // State proxy -- GSAP animates this, render reads it
         var st = {
           rotY: 0,
           camZ: 8,
@@ -294,7 +294,7 @@ Replace checklist:
           renderer.render(scene, camera);
         }
 
-        // Render via onUpdate --- NO requestAnimationFrame
+        // Render via onUpdate -- NO requestAnimationFrame
         tl.eventCallback("onUpdate", renderScene);
         renderScene();
       })();
@@ -305,11 +305,11 @@ Replace checklist:
 
 Replace checklist:
 
-- `BLOCKNAME` - your block name (e.g., `vfx-chrome-blob`)
-- Scene setup - your geometry, lights, materials
-- State proxy - your animated properties
-- Tweens - your animation timeline
-- renderScene - apply state to your Three.js objects
+- `BLOCKNAME` → your block name (e.g., `vfx-chrome-blob`)
+- Scene setup → your geometry, lights, materials
+- State proxy → your animated properties
+- Tweens → your animation timeline
+- renderScene → apply state to your Three.js objects
 
 ---
 
@@ -374,7 +374,7 @@ Tags by category:
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <script src="https://cdn.jsdelivr.net/npm/hyperframes-gsap@3.14.2/dist/hyperframes-gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
     <style>
       *,
       *::before,
@@ -401,7 +401,7 @@ Tags by category:
     </div>
     <script>
       (function () {
-        // Component snippet --- no data-composition-id, no __timelines.
+        // Component snippet -- no data-composition-id, no __timelines.
         // The parent composition controls timing.
         // Keep all class names and IDs prefixed with COMPNAME.
       })();
@@ -412,6 +412,6 @@ Tags by category:
 
 Replace checklist:
 
-- `COMPNAME` - your component name (e.g., `shimmer-sweep`)
+- `COMPNAME` → your component name (e.g., `shimmer-sweep`)
 - Background should be `transparent` so it overlays cleanly
-- No `data-composition-id` or `window.__timelines` --- the parent owns timing
+- No `data-composition-id` or `window.__timelines` -- the parent owns timing

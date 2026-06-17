@@ -1,26 +1,26 @@
 #!/usr/bin/env node
-// contrast-report.mjs --- HyperFrames contrast audit
+// contrast-report.mjs -- HyperFrames contrast audit
 //
 // Reads a composition, seeks to N sample timestamps, walks the DOM for text
 // elements, measures the WCAG 2.1 contrast ratio between each element's
 // declared foreground color and the pixels behind it, and emits:
 //
-//   - contrast-report.json  (machine-readable, one entry per text element x sample)
+//   - contrast-report.json  (machine-readable, one entry per text element × sample)
 //   - contrast-overlay.png  (sprite grid; magenta=fail AA, yellow=pass AA only, green=AAA)
 //
 // Usage:
-//   node skills/hyperframes/scripts/contrast-report.mjs <composition-dir> \
+//   node path/to/contrast-report.mjs <composition-dir> \
 //     [--samples N] [--out <dir>] [--width W] [--height H] [--fps N]
 //
 // The composition directory must contain an index.html. Raw authoring HTML
-// works --- the producer's file server auto-injects the runtime at serve time.
+// works -- the producer's file server auto-injects the runtime at serve time.
 // Exits 1 if any text element fails WCAG AA.
 
 import { mkdir, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { hyperframesPackageSpec, importPackagesOrBootstrap } from "./package-loader.mjs";
 
-// Use the producer's file server --- it auto-injects the HyperFrames runtime
+// Use the producer's file server -- it auto-injects the HyperFrames runtime
 // and render-seek bridge, so raw authoring HTML works without a build step.
 const packages = await importPackagesOrBootstrap(["@hyperframes/producer", "sharp"], {
   npmPackages: [hyperframesPackageSpec("@hyperframes/producer"), "sharp@0.34.5"],
@@ -35,7 +35,7 @@ const {
   getCompositionDuration,
 } = packages["@hyperframes/producer"];
 
-// --------- CLI ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// ─── CLI ─────────────────────────────────────────────────────────────────────
 
 const args = parseArgs(process.argv.slice(2));
 if (!args.composition) die("missing <composition-dir>");
@@ -47,7 +47,7 @@ const HEIGHT = Number(args.height ?? 1080);
 const FPS = Number(args.fps ?? 30);
 const COMP_DIR = resolve(args.composition);
 
-// --------- Main ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// ─── Main ────────────────────────────────────────────────────────────────────
 
 await mkdir(OUT_DIR, { recursive: true });
 
@@ -99,7 +99,7 @@ try {
   server.close();
 }
 
-// --------- DOM probe (runs in the page) ------------------------------------------------------------------------------------------------------------------------------------
+// ─── DOM probe (runs in the page) ────────────────────────────────────────────
 
 async function probeTextElements(session, _t) {
   // `session.page` is the Puppeteer Page owned by the capture session.
@@ -145,7 +145,7 @@ async function probeTextElements(session, _t) {
   });
 }
 
-// --------- Pixel sampling + WCAG math ------------------------------------------------------------------------------------------------------------------------------------------
+// ─── Pixel sampling + WCAG math ──────────────────────────────────────────────
 
 async function annotateFrame(pngBuf, elements) {
   const img = sharp(pngBuf);
@@ -245,7 +245,7 @@ function isLargeText(fontSize, fontWeight) {
   return fontSize >= 24 || (fontSize >= 19 && fontWeight >= 700);
 }
 
-// --------- Overlay rendering ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// ─── Overlay rendering ───────────────────────────────────────────────────────
 
 function buildOverlaySVG(elements, w, h) {
   const rects = elements
@@ -299,7 +299,7 @@ async function writeOverlaySprite(frames, outPath) {
     .toFile(outPath);
 }
 
-// --------- Summary ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// ─── Summary ────────────────────────────────────────────────────────────────
 
 function summarize(entries) {
   const total = entries.length;
@@ -323,7 +323,7 @@ function printSummary({ summary, entries }) {
   }
 }
 
-// --------- Utilities ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// ─── Utilities ──────────────────────────────────────────────────────────────
 
 function parseArgs(argv) {
   const out = {};

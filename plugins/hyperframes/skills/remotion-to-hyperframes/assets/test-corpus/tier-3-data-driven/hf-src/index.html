@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <title>tier-3-data-driven</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/hyperframes-gsap/3.12.5/hyperframes-gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <style>
       html,
       body {
@@ -25,7 +25,7 @@
         opacity: 0;
       }
 
-      /* Scene 1 --- Title */
+      /* Scene 1 -- Title */
       .scene-1 {
         flex-direction: column;
       }
@@ -43,7 +43,7 @@
         opacity: 0;
       }
 
-      /* Scene 2 --- Stats */
+      /* Scene 2 -- Stats */
       .scene-2 {
         gap: 48px;
       }
@@ -75,7 +75,7 @@
         letter-spacing: 0.1em;
       }
 
-      /* Scene 3 --- Outro */
+      /* Scene 3 -- Outro */
       .scene-3 .outro-wrap {
         position: relative;
         display: inline-block;
@@ -123,7 +123,7 @@
         <div class="subtitle">by HeyGen</div>
       </div>
 
-      <!-- Scene 2: Stats --- three StatCards as repeated markup with per-instance data attrs -->
+      <!-- Scene 2: Stats -- three StatCards as repeated markup with per-instance data attrs -->
       <div
         id="scene-2"
         class="scene scene-2 clip"
@@ -175,7 +175,7 @@
       </div>
 
       <script>
-        // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        // ────────────────────────────────────────────────────────────────────
         // Translation of Stargazed.tsx
         //
         // Remotion structure:
@@ -191,28 +191,28 @@
         //     props become data-* attributes on the markup
         //   - Animation lives in a single paused GSAP timeline keyed by composition seconds
         //
-        // Frame - time:
-        //   Sequence(0,90)    - 0s..3s        (title)
-        //   Sequence(90,210)  - 3s..7s        (stats; 4s window)
-        //   Sequence(210,300) - 7s..10s       (outro)
-        //   Stagger(i*12)     - i*0.4s        (12 frames at 30fps)
-        // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        // Frame → time:
+        //   Sequence(0,90)    → 0s..3s        (title)
+        //   Sequence(90,210)  → 3s..7s        (stats; 4s window)
+        //   Sequence(210,300) → 7s..10s       (outro)
+        //   Stagger(i*12)     → i*0.4s        (12 frames at 30fps)
+        // ────────────────────────────────────────────────────────────────────
 
         const tl = gsap.timeline({ paused: true });
 
-        // --------- Scene 1: Title ---------------------------------------------------------------------------------------------------------------------------------------------------
+        // ─── Scene 1: Title ─────────────────────────────────────────────────
         const scene1 = document.querySelector("#scene-1");
         const title = scene1.querySelector(".title");
         const subtitle = scene1.querySelector(".subtitle");
 
         tl.set(scene1, { opacity: 1 }, 0);
-        // spring({damping:12, stiffness:100, mass:1}) - back.out(1.4) ~0.7s
+        // spring({damping:12, stiffness:100, mass:1}) → back.out(1.4) ~0.7s
         tl.to(title, { scale: 1, duration: 0.7, ease: "back.out(1.4)" }, 0);
-        // interpolate(frame, [20,40], [0,1]) at fps=30 - 0.667s..1.333s linear
+        // interpolate(frame, [20,40], [0,1]) at fps=30 → 0.667s..1.333s linear
         tl.fromTo(subtitle, { opacity: 0 }, { opacity: 1, duration: 0.667, ease: "none" }, 0.667);
         tl.set(scene1, { opacity: 0 }, 3);
 
-        // --------- Scene 2: Stats ---------------------------------------------------------------------------------------------------------------------------------------------------
+        // ─── Scene 2: Stats ─────────────────────────────────────────────────
         const scene2 = document.querySelector("#scene-2");
         const cards = scene2.querySelectorAll(".stat-card");
 
@@ -225,12 +225,12 @@
           const numberEl = card.querySelector(".number");
 
           // StatCard entrance:
-          //   spring({damping:14, stiffness:90, mass:1}) - back.out(1.2) ~0.7s
-          //   interpolate(local, [0,12], [0,1]) - 0s..0.4s linear opacity
+          //   spring({damping:14, stiffness:90, mass:1}) → back.out(1.2) ~0.7s
+          //   interpolate(local, [0,12], [0,1]) → 0s..0.4s linear opacity
           tl.to(card, { scale: 1, duration: 0.7, ease: "back.out(1.2)" }, start);
           tl.to(card, { opacity: 1, duration: 0.4, ease: "none" }, start);
 
-          // AnimatedNumber: count from 0 - value with easeOutCubic over 45 frames (1.5s).
+          // AnimatedNumber: count from 0 → value with easeOutCubic over 45 frames (1.5s).
           // GSAP equivalent: a tween on a counter object with onUpdate rewriting textContent.
           // power3.out is GSAP's name for cubic easeOut.
           const counter = { v: 0 };
@@ -250,15 +250,15 @@
 
         tl.set(scene2, { opacity: 0 }, 7);
 
-        // --------- Scene 3: Outro ---------------------------------------------------------------------------------------------------------------------------------------------------
+        // ─── Scene 3: Outro ─────────────────────────────────────────────────
         const scene3 = document.querySelector("#scene-3");
         const outroWrap = scene3.querySelector(".outro-wrap");
         const underline = scene3.querySelector(".outro-underline");
 
         tl.set(scene3, { opacity: 1 }, 7);
-        // interpolate(frame, [0,12], [0,1]) - 0s..0.4s linear opacity
+        // interpolate(frame, [0,12], [0,1]) → 0s..0.4s linear opacity
         tl.to(outroWrap, { opacity: 1, duration: 0.4, ease: "none" }, 7);
-        // interpolate(frame, [10,40], [0,1]) for underline - starts at 7+0.333s, dur 1s
+        // interpolate(frame, [10,40], [0,1]) for underline → starts at 7+0.333s, dur 1s
         tl.to(underline, { scaleX: 1, duration: 1.0, ease: "none" }, 7.333);
 
         window.__timelines = window.__timelines || {};

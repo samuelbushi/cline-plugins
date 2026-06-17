@@ -1,5 +1,5 @@
 ---
-name: hyperframes-animejs
+name: animejs
 description: Anime.js adapter patterns for HyperFrames. Use when writing Anime.js animations or timelines inside HyperFrames compositions, registering animations on window.__hfAnime, making Anime.js seek-driven and deterministic, or translating Anime.js examples into render-safe HyperFrames HTML.
 ---
 
@@ -20,7 +20,7 @@ The adapter seeks every registered instance with `instance.seek(timeMs)`, where 
 ## Basic Pattern
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/hyperframes-animejs@4.0.2/lib/anime.iife.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/animejs@4.0.2/lib/anime.iife.min.js"></script>
 <script>
   const anim = anime({
     targets: ".mark",
@@ -71,7 +71,7 @@ If you use an ES module build, the adapter does not care how the instance was cr
 
 ```html
 <script type="module">
-  import { animate } from "https://cdn.jsdelivr.net/npm/hyperframes-animejs/+esm";
+  import { animate } from "https://cdn.jsdelivr.net/npm/animejs/+esm";
 
   const anim = animate(".chip", {
     x: "18rem",
@@ -110,5 +110,5 @@ npx hyperframes validate
 
 ## Credits And References
 
-- HyperFrames adapter source: `packages/core/src/runtime/adapters/hyperframes-animejs.ts`.
-- Anime.js documentation for `autoplay`, `pause()`, and `seek()`: https://hyperframes-animejs.com/documentation/
+- HyperFrames adapter source: `packages/core/src/runtime/adapters/animejs.ts`.
+- Anime.js documentation for `autoplay`, `pause()`, and `seek()`: https://animejs.com/documentation/

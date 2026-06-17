@@ -4,9 +4,9 @@ You are here because SKILL.md told you to read this file before writing animatio
 
 ## Technique Selection by Energy
 
-Captions are a constrained surface --- the highlight and exit technique is closely tied to how much intensity the spoken content carries. The table below is a calibration reference. If the design spec (`frame.md` or `design.md`) or the storyboard specifies a caption style, that overrides anything here.
+Captions are a constrained surface -- the highlight and exit technique is closely tied to how much intensity the spoken content carries. The table below is a calibration reference. If the design spec (`frame.md` or `design.md`) or the storyboard specifies a caption style, that overrides anything here.
 
-The core principle: all energy levels use karaoke highlight as the baseline. The difference is intensity --- not the technique type.
+The core principle: all energy levels use karaoke highlight as the baseline. The difference is intensity -- not the technique type.
 
 What changes with energy:
 
@@ -24,15 +24,15 @@ Calibration reference (starting points, not rules):
 | Medium-low   | Minimal scale change                | Fade                | Single style    |
 | Low          | Warm tones, slow transition         | Collapse            | Single style    |
 
-All energy levels use karaoke highlight as the baseline. The difference is intensity --- high energy gets accent color + glow + 15% scale pop on active words, low energy gets a gentle white shift with 3% scale.
+All energy levels use karaoke highlight as the baseline. The difference is intensity -- high energy gets accent color + glow + 15% scale pop on active words, low energy gets a gentle white shift with 3% scale.
 
 Emphasis words always break the pattern. When a word is flagged as emphasis (emotional keyword, ALL CAPS, brand name), give it a stronger animation than surrounding words (larger scale, accent color, overshoot ease). This creates contrast.
 
-Marker highlight modes add a visual layer on top of karaoke. For emphasis words that need more than color/scale, add a marker-style effect --- highlight sweep, circle, burst, or scribble --- using the `/marker-highlight` skill. Match mode to energy: burst for hype, circle for key terms, highlight for standard, scribble for subtle.
+Marker highlight modes add a visual layer on top of karaoke. For emphasis words that need more than color/scale, add a marker-style effect -- highlight sweep, circle, burst, or scribble -- using the `/marker-highlight` skill. Match mode to energy: burst for hype, circle for key terms, highlight for standard, scribble for subtle.
 
 ## Audio-Reactive Captions (Mandatory for Music)
 
-If the source audio is music (vocals over instrumentation, beats, any musical content), you MUST extract audio data and add audio-reactive animations. This is not optional --- music without audio reactivity looks disconnected. Even low-energy ballads get subtle bass pulse and treble glow.
+If the source audio is music (vocals over instrumentation, beats, any musical content), you MUST extract audio data and add audio-reactive animations. This is not optional -- music without audio reactivity looks disconnected. Even low-energy ballads get subtle bass pulse and treble glow.
 
 No special wiring is needed. The group loop already iterates over every caption group to build entrance, karaoke, and exit tweens. At that point, read the audio data for each group's time range and use it to modulate the group's animation intensity with regular GSAP tweens.
 
@@ -56,7 +56,7 @@ GROUPS.forEach(function (group, gi) {
     peakTreble = Math.max(peakTreble, frame.bands[6] || 0, frame.bands[7] || 0);
   }
 
-  // Modulate entrance --- louder groups enter bigger and glowier
+  // Modulate entrance -- louder groups enter bigger and glowier
   tl.to(
     groupEl,
     {
@@ -74,29 +74,30 @@ GROUPS.forEach(function (group, gi) {
 });
 ```
 
-This shapes the animation at build time, not playback time --- no per-frame callbacks, no `tl.call()` loops, no async fetch timing issues. Loud groups come in with more weight and glow; quiet groups come in soft. The audio data modulates _how much_, the content determines _what_.
+This shapes the animation at build time, not playback time -- no per-frame callbacks, no `tl.call()` loops, no async fetch timing issues. Loud groups come in with more weight and glow; quiet groups come in soft. The audio data modulates _how much_, the content determines _what_.
 
-Keep audio reactivity subtle --- 3-6% scale variation and soft glow. Heavy pulsing makes text unreadable.
+Keep audio reactivity subtle -- 3-6% scale variation and soft glow. Heavy pulsing makes text unreadable.
 
 To generate the audio data file:
 
 ```bash
-python3 skills/hyperframes-gsap-effects/scripts/extract-audio-data.py audio.mp3 --fps 30 --bands 8 -o audio-data.json
+EXTRACT_AUDIO_SCRIPT=$(find "$HOME" -path '*/skills/gsap/scripts/extract-audio-data.py' -maxdepth 10 2>/dev/null | head -1)
+python3 "$EXTRACT_AUDIO_SCRIPT" audio.mp3 --fps 30 --bands 8 -o audio-data.json
 ```
 
 ## Combining Techniques
 
-Don't use the same highlight animation on every group --- cycle through styles using the group index. Don't combine multiple competing animations on the same word at the same timestamp. Vary techniques across groups to match the content's pace changes.
+Don't use the same highlight animation on every group -- cycle through styles using the group index. Don't combine multiple competing animations on the same word at the same timestamp. Vary techniques across groups to match the content's pace changes.
 
-Marker highlight effects (from the `/marker-highlight` skill) layer well with karaoke --- use karaoke for the word-by-word reveal, then add a marker effect on emphasis words only. For example: karaoke highlights each word in white, but brand names get a yellow highlight sweep and stats get a red circle. Cycle marker modes across groups for visual variety (see the mode-to-energy mapping in the marker-highlight skill).
+Marker highlight effects (from the `/marker-highlight` skill) layer well with karaoke -- use karaoke for the word-by-word reveal, then add a marker effect on emphasis words only. For example: karaoke highlights each word in white, but brand names get a yellow highlight sweep and stats get a red circle. Cycle marker modes across groups for visual variety (see the mode-to-energy mapping in the marker-highlight skill).
 
 ## Available Tools
 
-These tools are available in the HyperFrames runtime. Use them when they solve a real problem --- not every composition needs all of them.
+These tools are available in the HyperFrames runtime. Use them when they solve a real problem -- not every composition needs all of them.
 
 | Tool                | What it does                                                              | Access                                                                                         | When it's useful                                                             |
 | ------------------- | ------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
 | pretext         | Pure-arithmetic text measurement without DOM reflow. 0.0002ms per call.   | `window.__hyperframes.pretext.prepare(text, font)` / `.layout(prepared, maxWidth, lineHeight)` | Per-frame text reflow, shrinkwrap containers, computing layout before render |
 | fitTextFontSize | Finds the largest font size that fits text on one line. Built on pretext. | `window.__hyperframes.fitTextFontSize(text, { maxWidth, fontFamily, fontWeight })`             | Overflow prevention for long phrases, portrait mode, large base sizes        |
-| audio data      | Pre-extracted per-frame RMS energy and frequency bands.                   | Extract with `extract-audio-data.py`, load inline or via `fetch("audio-data.json")`            | Audio-reactive visuals --- modulate intensity based on the music               |
+| audio data      | Pre-extracted per-frame RMS energy and frequency bands.                   | Extract with `extract-audio-data.py`, load inline or via `fetch("audio-data.json")`            | Audio-reactive visuals -- modulate intensity based on the music               |
 | GSAP            | Animation timeline with tweens and callbacks.                             | `gsap.to()`, `gsap.set()`, `tl.to()`, `tl.set()`                                               | All caption animation                                                        |

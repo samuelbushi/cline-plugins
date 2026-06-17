@@ -1,5 +1,5 @@
 ---
-name: hyperframes-three
+name: three
 description: Three.js and WebGL adapter patterns for HyperFrames. Use when creating deterministic Three.js scenes, WebGL canvas layers, AnimationMixer timelines, camera motion, shader-driven visuals, or canvas renders that respond to HyperFrames hf-seek events.
 ---
 
@@ -22,7 +22,7 @@ The adapter sets `window.__hfThreeTime` and dispatches `new CustomEvent("hf-seek
 ```html
 <canvas id="three-layer"></canvas>
 <script type="module">
-  import * as THREE from "https://cdn.jsdelivr.net/npm/hyperframes-three@0.181.2/+esm";
+  import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.181.2/+esm";
 
   const canvas = document.getElementById("three-layer");
   const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
@@ -101,6 +101,6 @@ npx hyperframes validate
 
 ## Credits And References
 
-- HyperFrames adapter source: `packages/core/src/runtime/adapters/hyperframes-three.ts`.
+- HyperFrames adapter source: `packages/core/src/runtime/adapters/three.ts`.
 - Three.js `WebGLRenderer` docs: https://threejs.org/docs/pages/WebGLRenderer.html
 - Three.js `AnimationMixer.setTime()` docs: https://threejs.org/docs/pages/AnimationMixer.html

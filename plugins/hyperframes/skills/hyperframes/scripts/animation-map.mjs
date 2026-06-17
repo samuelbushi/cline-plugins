@@ -1,12 +1,12 @@
 #!/usr/bin/env node
-// animation-map.mjs --- HyperFrames animation map for agents
+// animation-map.mjs -- HyperFrames animation map for agents
 //
 // Reads every GSAP timeline registered in window.__timelines, enumerates
 // tweens, samples bboxes at N points per tween, computes flags and
 // human-readable summaries. Outputs a single animation-map.json.
 //
 // Usage:
-//   node skills/hyperframes/scripts/animation-map.mjs <composition-dir> \
+//   node path/to/animation-map.mjs <composition-dir> \
 //     [--frames N] [--out <dir>] [--min-duration S] [--width W] [--height H] [--fps N]
 
 import { mkdir, writeFile } from "node:fs/promises";
@@ -25,7 +25,7 @@ const {
   })
 )["@hyperframes/producer"];
 
-// --------- CLI ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// ─── CLI ─────────────────────────────────────────────────────────────────────
 
 const args = parseArgs(process.argv.slice(2));
 if (!args.composition) die("missing <composition-dir>");
@@ -40,7 +40,7 @@ const COMP_DIR = resolve(args.composition);
 
 await mkdir(OUT_DIR, { recursive: true });
 
-// --------- Main ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// ─── Main ────────────────────────────────────────────────────────────────────
 
 const server = await createFileServer({ projectDir: COMP_DIR, port: 0 });
 const session = await createCaptureSession(
@@ -108,7 +108,7 @@ try {
     }
   }
 
-  // ------ Composition-level analysis ------
+  // ── Composition-level analysis ──
   report.choreography = buildTimeline(report.tweens, duration);
   report.density = computeDensity(report.tweens, duration);
   report.staggers = detectStaggers(report.tweens);
@@ -124,7 +124,7 @@ try {
   server.close();
 }
 
-// --------- Seek helper ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// ─── Seek helper ────────────────────────────────────────────────────────────
 
 async function seekTo(session, t) {
   await session.page.evaluate((time) => {
@@ -142,7 +142,7 @@ async function seekTo(session, t) {
   await new Promise((r) => setTimeout(r, 100));
 }
 
-// --------- Timeline introspection ------------------------------------------------------------------------------------------------------------------------------------------------------
+// ─── Timeline introspection ──────────────────────────────────────────────────
 
 async function enumerateTweens(session) {
   return await session.page.evaluate(() => {
@@ -217,7 +217,7 @@ async function measureTarget(session, selector) {
   }, selector);
 }
 
-// --------- Tween description (the key output for agents) ------------------------------------------------------------------------------
+// ─── Tween description (the key output for agents) ──────────────────────────
 
 function describeTween(tw, props, bboxes, flags) {
   const dur = (tw.end - tw.start).toFixed(2);
@@ -247,7 +247,7 @@ function describeTween(tw, props, bboxes, flags) {
     if (Math.abs(o2 - o1) > 0.1) {
       if (o1 < 0.1 && o2 > 0.5) parts.push("fades in");
       else if (o1 > 0.5 && o2 < 0.1) parts.push("fades out");
-      else parts.push(`opacity ${o1.toFixed(1)}-${o2.toFixed(1)}`);
+      else parts.push(`opacity ${o1.toFixed(1)}→${o2.toFixed(1)}`);
     }
   }
 
@@ -260,8 +260,8 @@ function describeTween(tw, props, bboxes, flags) {
   if (first && last) {
     const dw = last.w - first.w;
     const dh = last.h - first.h;
-    if (Math.abs(dw) > 5) parts.push(`width ${first.w}-${last.w}px`);
-    if (Math.abs(dh) > 5) parts.push(`height ${first.h}-${last.h}px`);
+    if (Math.abs(dw) > 5) parts.push(`width ${first.w}→${last.w}px`);
+    if (Math.abs(dh) > 5) parts.push(`height ${first.h}→${last.h}px`);
   }
 
   // Visibility
@@ -271,7 +271,7 @@ function describeTween(tw, props, bboxes, flags) {
 
   // Final position
   if (last && !last.missing) {
-    parts.push(`ends at (${last.x}, ${last.y}) ${last.w}x${last.h}px`);
+    parts.push(`ends at (${last.x}, ${last.y}) ${last.w}×${last.h}px`);
   }
 
   // Flags
@@ -282,7 +282,7 @@ function describeTween(tw, props, bboxes, flags) {
   return parts.join(". ") + ".";
 }
 
-// --------- Flag computation ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// ─── Flag computation ───────────────────────────────────────────────────────
 
 function computeFlags(tw, bboxes, { width, height }) {
   const flags = [];
@@ -344,23 +344,23 @@ function rectOverlapArea(a, b) {
   return Math.max(0, x2 - x1) * Math.max(0, y2 - y1);
 }
 
-// --------- Composition-level analysis ---------------------------------------------------------------------------------------------------------------------------------------
+// ─── Composition-level analysis ─────────────────────────────────────────────
 
 function buildTimeline(tweens, duration) {
   const cols = 60;
   const lines = [];
   const secPerCol = duration / cols;
 
-  lines.push("Timeline (" + duration.toFixed(1) + "s, each char - " + secPerCol.toFixed(2) + "s):");
+  lines.push("Timeline (" + duration.toFixed(1) + "s, each char ≈ " + secPerCol.toFixed(2) + "s):");
   lines.push("  " + "0s" + " ".repeat(cols - 8) + duration.toFixed(0) + "s");
-  lines.push("  " + "--" + "---".repeat(cols - 1) + "--");
+  lines.push("  " + "┼" + "─".repeat(cols - 1) + "┤");
 
   for (const tw of tweens) {
     const startCol = Math.floor(tw.start / secPerCol);
     const endCol = Math.min(cols, Math.ceil(tw.end / secPerCol));
     const bar =
       " ".repeat(startCol) +
-      "-".repeat(Math.max(1, endCol - startCol)) +
+      "█".repeat(Math.max(1, endCol - startCol)) +
       " ".repeat(Math.max(0, cols - endCol));
     const label = tw.selector + " " + tw.props.join("+");
     lines.push("  " + bar + "  " + label);
@@ -552,7 +552,7 @@ async function captureSnapshots(session, tweens, duration) {
   return snapshots;
 }
 
-// --------- Output ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// ─── Output ─────────────────────────────────────────────────────────────────
 
 function printSummary(report) {
   console.log(
