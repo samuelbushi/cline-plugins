@@ -1,0 +1,33 @@
+{
+  "name": "windsor-ai",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Cline plugin for Windsor.ai business data connectors and reporting workflows.",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "cline": {
+    "plugins": [
+      {
+        "paths": [
+          "./index.ts"
+        ],
+        "capabilities": [
+          "mcp",
+          "skills",
+          "commands",
+          "rules"
+        ]
+      }
+    ]
+  },
+  "peerDependencies": {
+    "@cline/sdk": "*"
+  },
+  "peerDependenciesMeta": {
+    "@cline/sdk": {
+      "optional": true
+    }
+  }
+}
