@@ -62,4 +62,6 @@ List my Pigment applications, find the revenue metrics in the FP&A model, and ex
 
 Pigment data and model changes can affect financial planning workflows. The plugin adds a rule that requires explicit confirmation before Cline uses advanced MCP tools for writes, imports, access-right changes, board or view edits, scenario or snapshot changes, and deletions.
 
+Advanced MCP search can expose block metadata and application logic, including names, data types, dimensions, and model structure, even when it does not expose actual metric data. Treat that metadata as sensitive workspace context and avoid putting secrets in Pigment block names or metadata.
+
 The bundled skills are licensed by Pigment for use with Pigment services. See `LICENSE.pigment-skills`. The bundled markdown has been format-normalized for this repository's validation rules and is not represented as an official or endorsed Pigment distribution.

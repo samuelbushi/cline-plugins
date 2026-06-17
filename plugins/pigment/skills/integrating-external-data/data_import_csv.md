@@ -19,7 +19,7 @@ Each file has:
 When multiple files share the same name:
 
 1. Examine the metadata, order and preview to differentiate files
-2. If genuinely ambiguous, use the `ask_user` tool to clarify and give it the name, metadata, preview data and order
+2. If genuinely ambiguous, ask the user to clarify and give them the name, metadata, preview data, and order
 
 ## 1. CSV Analysis
 
