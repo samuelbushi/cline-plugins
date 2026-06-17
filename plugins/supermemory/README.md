@@ -55,7 +55,7 @@ Environment variables:
 - `SUPERMEMORY_API_URL` optional. Overrides the Supermemory base URL.
 - `SUPERMEMORY_DEBUG` optional. When set, writes a debug log to `~/.cline-supermemory.log`.
 
-Optional config file at `<CLINE_DATA_DIR>/plugins/supermemory/config.json` (or `.jsonc`) can override defaults such as `similarityThreshold`, `maxMemories`, `maxProjectMemories`, `injectProfile`, `containerTagPrefix`, `keywordPatterns`, and `autoRecallEveryPrompt`. `CLINE_DATA_DIR` defaults to `~/.cline/data`.
+Optional config file at `<CLINE_DATA_DIR>/plugins/supermemory/config.json` (or `.jsonc`) can override defaults such as `similarityThreshold`, `maxMemories`, `maxProjectMemories`, `injectProfile`, `containerTagPrefix`, and `keywordPatterns`. Set `deepRecall: true` to also search your user-scoped memories (keyed on the first prompt) during first-turn recall. `CLINE_DATA_DIR` defaults to `~/.cline/data`.
 
 ## Privacy and Security Notes
 

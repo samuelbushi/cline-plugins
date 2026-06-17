@@ -203,7 +203,7 @@ interface SupermemoryConfig {
 	projectContainerTag?: string
 	filterPrompt?: string
 	keywordPatterns?: string[]
-	autoRecallEveryPrompt?: boolean
+	deepRecall?: boolean
 }
 
 const DEFAULT_KEYWORD_PATTERNS = [
@@ -234,7 +234,7 @@ const DEFAULTS = {
 	containerTagPrefix: "cline",
 	filterPrompt:
 		"You are a stateful coding agent. Remember all the information, including but not limited to the user's coding preferences, tech stack, behaviours, workflows, and any other relevant details.",
-	autoRecallEveryPrompt: false,
+	deepRecall: false,
 }
 
 function isValidRegex(pattern: string): boolean {
@@ -312,8 +312,7 @@ const CONFIG = {
 		...DEFAULT_KEYWORD_PATTERNS,
 		...(fileConfig.keywordPatterns ?? []).filter(isValidRegex),
 	],
-	autoRecallEveryPrompt:
-		fileConfig.autoRecallEveryPrompt ?? DEFAULTS.autoRecallEveryPrompt,
+	deepRecall: fileConfig.deepRecall ?? DEFAULTS.deepRecall,
 }
 
 function isConfigured(): boolean {
@@ -409,10 +408,13 @@ class SupermemoryClient {
 				baseURL: getApiBaseUrl(),
 				defaultHeaders: { "x-sm-source": "cline" },
 			})
-			this.client.settings.update({
-				shouldLLMFilter: true,
-				filterPrompt: CONFIG.filterPrompt,
-			})
+			// Best effort; never let a settings failure become an unhandled rejection.
+			void this.client.settings
+				.update({
+					shouldLLMFilter: true,
+					filterPrompt: CONFIG.filterPrompt,
+				})
+				.catch(() => {})
 		}
 		return this.client
 	}
@@ -597,38 +599,36 @@ async function buildRecallContext(
 	query: string,
 	tags: { user: string; project: string },
 ): Promise<string> {
-	if (CONFIG.autoRecallEveryPrompt) {
-		const [profileResult, userMemoriesResult, projectListResult] =
-			await Promise.all([
-				supermemoryClient.getProfile(tags.user, query),
-				supermemoryClient.searchMemories(query, tags.user),
-				supermemoryClient.listMemories(tags.project, CONFIG.maxProjectMemories),
-			])
+	// Always surface the user profile and recent project memories. Deep recall
+	// additionally searches user-scoped memories keyed on the current prompt.
+	const [profileResult, projectListResult, userMemoriesResult] =
+		await Promise.all([
+			supermemoryClient.getProfile(tags.user, CONFIG.deepRecall ? query : undefined),
+			supermemoryClient.listMemories(tags.project, CONFIG.maxProjectMemories),
+			CONFIG.deepRecall
+				? supermemoryClient.searchMemories(query, tags.user)
+				: Promise.resolve({ success: false as const, results: [] }),
+		])
 
-		const profile = profileResult.success ? profileResult : null
-		const userMemories = userMemoriesResult.success
-			? userMemoriesResult
-			: { results: [] }
-		const projectList = projectListResult.success
-			? projectListResult
-			: { memories: [] }
+	const profile = profileResult.success ? profileResult : null
+	const projectList = projectListResult.success
+		? projectListResult
+		: { memories: [] }
+	const userMemories: MemoriesResponseMinimal = userMemoriesResult.success
+		? userMemoriesResult
+		: { results: [] }
 
-		const projectMemories: MemoriesResponseMinimal = {
-			results: ((projectList.memories ?? []) as unknown as ListedMemory[]).map(
-				(m) => ({
-					id: m.id,
-					memory: m.summary || m.content || m.title || "",
-					similarity: 1,
-				}),
-			),
-		}
-
-		return formatContextForPrompt(profile, userMemories, projectMemories)
+	const projectMemories: MemoriesResponseMinimal = {
+		results: ((projectList.memories ?? []) as unknown as ListedMemory[]).map(
+			(m) => ({
+				id: m.id,
+				memory: m.summary || m.content || m.title || "",
+				similarity: 1,
+			}),
+		),
 	}
 
-	const profileResult = await supermemoryClient.getProfile(tags.user)
-	const profile = profileResult.success ? profileResult : null
-	return formatContextForPrompt(profile, { results: [] }, { results: [] })
+	return formatContextForPrompt(profile, userMemories, projectMemories)
 }
 
 // =============================================================================
@@ -642,15 +642,13 @@ const MEMORY_KEYWORD_PATTERN = new RegExp(
 	"i",
 )
 
-const MEMORY_NUDGE_MESSAGE = `[MEMORY TRIGGER DETECTED]
-The user wants you to remember something. You MUST use the \`supermemory\` tool with \`mode: "add"\` to save this information.
+const MEMORY_NUDGE_MESSAGE = `[SUPERMEMORY]
+The user's latest message may be asking you to remember something. If they are explicitly asking you to save or remember information for later, use the \`supermemory\` tool with \`mode: "add"\` to store it as a concise, searchable memory:
+- \`scope: "project"\` for workspace-specific facts (e.g., "run lint with tests")
+- \`scope: "user"\` for cross-project preferences (e.g., "prefers concise responses")
+- pick an appropriate \`type\` (preference, project-config, learned-pattern, etc.)
 
-Extract the key information the user wants remembered and save it as a concise, searchable memory.
-- Use \`scope: "project"\` for project-specific preferences (e.g., "run lint with tests")
-- Use \`scope: "user"\` for cross-project preferences (e.g., "prefers concise responses")
-- Choose an appropriate \`type\`: "preference", "project-config", "learned-pattern", etc.
-
-Do not skip this step. The user explicitly asked you to remember.`
+If the message only mentions remembering in passing and is not a request to save anything, ignore this note.`
 
 function removeCodeBlocks(text: string): string {
 	return text.replace(CODE_BLOCK_PATTERN, "").replace(INLINE_CODE_PATTERN, "")
@@ -681,6 +679,13 @@ function getMessageText(message: Message): string {
 // Tool: supermemory
 // =============================================================================
 
+function clampLimit(limit: number | undefined, fallback: number, max = 50): number {
+	if (typeof limit !== "number" || !Number.isFinite(limit)) {
+		return fallback
+	}
+	return Math.min(Math.max(Math.trunc(limit), 1), max)
+}
+
 function formatSearchResults(
 	query: string,
 	scope: string | undefined,
@@ -693,7 +698,7 @@ function formatSearchResults(
 		query,
 		scope,
 		count: memoryResults.length,
-		results: memoryResults.slice(0, limit || 10).map((r) => ({
+		results: memoryResults.slice(0, clampLimit(limit, 10)).map((r) => ({
 			id: r.id,
 			content: r.memory || r.chunk,
 			similarity: Math.round((r.similarity ?? 0) * 100),
@@ -735,7 +740,7 @@ async function executeSupermemoryTool(
 						{ command: "search", description: "Search memories", args: ["query", "scope?"] },
 						{ command: "profile", description: "View user profile", args: ["query?"] },
 						{ command: "list", description: "List recent memories", args: ["scope?", "limit?"] },
-						{ command: "forget", description: "Remove a memory", args: ["memoryId", "scope?"] },
+						{ command: "forget", description: "Remove a memory", args: ["memoryId"] },
 					],
 					scopes: {
 						user: "Cross-project preferences and knowledge",
@@ -812,7 +817,7 @@ async function executeSupermemoryTool(
 					success: true,
 					query: args.query,
 					count: combined.length,
-					results: combined.slice(0, args.limit || 10).map((r) => ({
+					results: combined.slice(0, clampLimit(args.limit, 10)).map((r) => ({
 						id: r.id,
 						content: r.memory || r.chunk,
 						similarity: Math.round((r.similarity ?? 0) * 100),
@@ -838,7 +843,7 @@ async function executeSupermemoryTool(
 
 			case "list": {
 				const scope = args.scope || "project"
-				const limit = args.limit || 20
+				const limit = clampLimit(args.limit, 20)
 				const containerTag = scope === "user" ? tags.user : tags.project
 				const result = await supermemoryClient.listMemories(containerTag, limit)
 				if (!result.success) {
@@ -851,7 +856,7 @@ async function executeSupermemoryTool(
 					count: memories.length,
 					memories: memories.map((m) => ({
 						id: m.id,
-						content: m.summary,
+						content: m.summary || m.content || m.title || "",
 						createdAt: m.createdAt,
 						metadata: m.metadata,
 					})),
@@ -862,14 +867,14 @@ async function executeSupermemoryTool(
 				if (!args.memoryId) {
 					return JSON.stringify({ success: false, error: "memoryId parameter is required for forget mode" })
 				}
-				const scope = args.scope || "project"
+				// Deletion is by global memory id; scope is not used to target the delete.
 				const result = await supermemoryClient.deleteMemory(args.memoryId)
 				if (!result.success) {
 					return JSON.stringify({ success: false, error: result.error || "Failed to delete memory" })
 				}
 				return JSON.stringify({
 					success: true,
-					message: `Memory ${args.memoryId} removed from ${scope} scope`,
+					message: `Memory ${args.memoryId} forgotten`,
 				})
 			}
 
