@@ -18,7 +18,7 @@ Use MCP when the plugin exposes a coherent external service or local capability 
 - SaaS workspaces
 - Local analysis servers
 
-Do not register multiple MCP servers just because the source plugin offered multiple variants. Pick the one that creates the clearest installed experience.
+Do not register multiple MCP servers just because the plugin you are adapting offered multiple variants. Pick the one that creates the clearest installed experience.
 
 ## Registration
 
