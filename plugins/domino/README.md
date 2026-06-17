@@ -13,13 +13,6 @@ It bundles 23 Domino skills with their supporting references and templates. The 
 - MLflow experiment tracking, GenAI tracing, model endpoints, model monitoring, governance, and taxonomy workflows.
 - Domino-ready web app bootstrap, app deployment, UI design, AI Gateway, and modeling assistant setup.
 
-The plugin also adds slash commands for common Domino setup flows:
-
-- `/domino-app-init` for Domino-ready web app scaffolding.
-- `/domino-debug-proxy` for app proxy, port, host binding, and asset path diagnosis.
-- `/domino-experiment-setup` for MLflow experiment tracking setup.
-- `/domino-trace-setup` for GenAI tracing setup.
-
 A Domino safety rule reminds Cline to ask before remote job runs, DFS uploads, forced overwrites, app or model deployments, governance/taxonomy writes, cloud changes, and secret setup.
 
 ## Requirements

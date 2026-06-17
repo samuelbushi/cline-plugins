@@ -17,7 +17,6 @@
     "plugins": [
       {
         "capabilities": [
-          "commands",
           "mcp",
           "rules",
           "skills"
