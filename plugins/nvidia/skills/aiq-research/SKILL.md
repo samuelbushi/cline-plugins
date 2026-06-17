@@ -27,7 +27,6 @@ metadata:
     - python
     - bash
   domain: "research-agents"
-allowed-tools: Read Bash
 ---
 
 # AIQ Research Skill
