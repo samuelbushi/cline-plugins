@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "Qodo review workflow skills for loading coding rules and triaging Qodo PR feedback.",
+  "description": "Qodo review workflow skills with rule-search and PR feedback resolver references.",
   "cline": {
     "plugins": [
       {
