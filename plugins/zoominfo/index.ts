@@ -14,88 +14,10 @@ const safetyRule = [
 	"- If ZoomInfo MCP auth is unavailable, explain that a ZoomInfo account with appropriate entitlements and OAuth access is required. Do not invent ZoomInfo data.",
 ].join("\n")
 
-const commands = [
-	[
-		"zoominfo-build-list",
-		"Build a targeted account or contact list from criteria.",
-		"Use the zoominfo-build-list skill",
-	],
-	[
-		"zoominfo-account-research",
-		"Create an account intelligence brief for a target company.",
-		"Use the zoominfo-account-research skill",
-	],
-	[
-		"zoominfo-competitor-analysis",
-		"Create a fact-led competitive intelligence brief.",
-		"Use the zoominfo-competitor-analysis skill",
-	],
-	[
-		"zoominfo-enrich-company",
-		"Look up a company profile and firmographic context.",
-		"Use the zoominfo-enrich-company skill",
-	],
-	[
-		"zoominfo-enrich-contact",
-		"Look up a professional contact profile when appropriate.",
-		"Use the zoominfo-enrich-contact skill",
-	],
-	[
-		"zoominfo-find-similar",
-		"Find similar companies or contacts from a reference entity.",
-		"Use the zoominfo-find-similar skill",
-	],
-	[
-		"zoominfo-meeting-prep",
-		"Prepare for a sales or account meeting with company and attendee context.",
-		"Use the zoominfo-meeting-prep skill",
-	],
-	[
-		"zoominfo-buying-committee",
-		"Map decision-makers, influencers, champions, and gaps at an account.",
-		"Use the zoominfo-buying-committee skill",
-	],
-	[
-		"zoominfo-score-leads",
-		"Prioritize inbound leads or contacts by fit, urgency, and next action.",
-		"Use the zoominfo-score-leads skill",
-	],
-	[
-		"zoominfo-score-accounts",
-		"Rank accounts by ICP fit, intent, triggers, and engagement.",
-		"Use the zoominfo-score-accounts skill",
-	],
-	[
-		"zoominfo-personalize-email",
-		"Draft personalized outreach grounded in ZoomInfo signals.",
-		"Use the zoominfo-personalize-email skill",
-	],
-	[
-		"zoominfo-recommend-contacts",
-		"Get recommended contacts at a target company.",
-		"Use the zoominfo-recommend-contacts skill",
-	],
-	[
-		"zoominfo-tam-sizer",
-		"Size a market or territory and refine an ICP filter set.",
-		"Use the zoominfo-tam-sizer skill",
-	],
-	[
-		"zoominfo-tech-stack-snapshot",
-		"Summarize detected technologies and sales angles for target companies.",
-		"Use the zoominfo-tech-stack-snapshot skill",
-	],
-] satisfies Array<[string, string, string]>
-
-function routePrompt(workflow: string, input: string): string {
-	const trimmed = input.trim()
-	return trimmed ? `${workflow}: ${trimmed}` : workflow
-}
-
 const plugin: AgentPlugin = {
 	name: PLUGIN_NAME,
 	manifest: {
-		capabilities: ["mcp", "skills", "rules", "commands"],
+		capabilities: ["mcp", "skills", "rules"],
 	},
 
 	setup(api) {
@@ -113,16 +35,6 @@ const plugin: AgentPlugin = {
 			content: safetyRule,
 		})
 
-		for (const [name, description, workflow] of commands) {
-			api.registerCommand({
-				name,
-				description,
-				handler: (input) => ({
-					reply: `Starting ${name}.`,
-					submitPrompt: routePrompt(workflow, input),
-				}),
-			})
-		}
 	},
 }
 
