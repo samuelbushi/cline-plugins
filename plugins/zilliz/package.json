@@ -1,0 +1,32 @@
+{
+  "name": "zilliz",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Zilliz Cloud and Milvus vector database skills for zilliz-cli workflows.",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "cline": {
+    "plugins": [
+      {
+        "paths": [
+          "./index.ts"
+        ],
+        "capabilities": [
+          "skills",
+          "rules",
+          "commands"
+        ]
+      }
+    ]
+  },
+  "peerDependencies": {
+    "@cline/sdk": "*"
+  },
+  "peerDependenciesMeta": {
+    "@cline/sdk": {
+      "optional": true
+    }
+  }
+}
