@@ -1,0 +1,21 @@
+{
+  "name": "snowflake-cortex-code",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Snowflake Cortex Code CLI workflows, setup guidance, and explicit command routing.",
+  "cline": {
+    "plugins": [
+      {
+        "paths": [
+          "./index.ts"
+        ],
+        "capabilities": [
+          "commands",
+          "skills",
+          "rules"
+        ]
+      }
+    ]
+  }
+}
