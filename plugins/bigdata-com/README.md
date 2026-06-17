@@ -5,24 +5,44 @@ Bigdata.com financial research workflows for Cline, backed by the Bigdata.com MC
 ## What It Adds
 
 - `bigdata.com` MCP server at `https://mcp.bigdata.com` for company, security, market, macro, news, event, filing, transcript, calendar, and sentiment research workflows exposed by Bigdata.com.
-- `bigdata-financial-research-analyst` skill for company briefs, quick takes, earnings work, valuation snapshots, risk reviews, investment memos, sector research, macro analysis, IPO research, and thematic research.
-- Curated slash commands for common workflows:
+- `bigdata-financial-research-analyst` skill for company briefs, quick takes, earnings work, valuation snapshots, risk reviews, investment memos, sector research, macro analysis, IPO research, thematic research, and deeper institutional equity-analysis workflows. The skill includes reference docs, report templates, and optional quant helper scripts.
+- Slash commands for common report workflows:
   - `/bigdata-quick-take`
   - `/bigdata-company-brief`
+  - `/bigdata-catalyst-monitor`
   - `/bigdata-investment-memo`
-  - `/bigdata-earnings`
-  - `/bigdata-valuation`
-  - `/bigdata-risk`
-  - `/bigdata-macro`
-  - `/bigdata-sector`
-  - `/bigdata-ipo`
+  - `/bigdata-earnings-preview`
+  - `/bigdata-earnings-digest`
+  - `/bigdata-earnings-reaction`
+  - `/bigdata-earnings-quality-screen`
+  - `/bigdata-valuation-snapshot`
+  - `/bigdata-peer-comparables`
+  - `/bigdata-scenario-analysis`
+  - `/bigdata-variant-perception`
+  - `/bigdata-risk-assessment`
+  - `/bigdata-moat-governance-review`
+  - `/bigdata-country-analysis`
+  - `/bigdata-regional-comparison`
+  - `/bigdata-g7-comparison`
+  - `/bigdata-country-sector-analysis`
+  - `/bigdata-cross-sector`
+  - `/bigdata-sector-analysis`
+  - `/bigdata-sector-playbook`
+  - `/bigdata-thematic-research`
+  - `/bigdata-pre-ipo-analysis`
+  - `/bigdata-post-ipo-day1`
+  - `/bigdata-post-ipo-day14`
+  - `/bigdata-post-ipo-day179`
+  - `/bigdata-post-ipo-day365`
 
-The command surface is intentionally compact, grouping related report types into broader commands.
+Commands default to markdown in chat. They ask before creating, saving, or exporting formal report files.
 
 ## Requirements
 
+- Installing or enabling this plugin registers a plugin-owned remote MCP server named `bigdata.com` at `https://mcp.bigdata.com`.
 - Network access to the Bigdata.com MCP endpoint.
 - Any Bigdata.com account, entitlement, or authorization flow required by the MCP server.
+- If the user already has an MCP server named `bigdata.com`, Cline will not replace that manual configuration.
 
 ## Trust Boundaries
 
