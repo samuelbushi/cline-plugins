@@ -37,8 +37,8 @@ When the user invokes this skill, perform the following steps:
    - If no `project_name` provided, show status for all projects
 
 3. Gather Statistics for Each Project
-   For each project (filtered or all), use the following tools: 
-   - `list-apps` 
+   For each project (filtered or all), use the following tools:
+   - `list-apps`
    - `list-products`
    - `list-entitlements`
    - `list-offerings`

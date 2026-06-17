@@ -103,12 +103,12 @@ Diagnostic Report
 =================
 Project: {project_name}
 
-Checks Passed: 
+Checks Passed:
   - Project exists and is accessible
   - 2 apps configured (iOS, Android)
   - 4 products found
 
-Issues Found: 
+Issues Found:
 
 1. CRITICAL: Product not attached to entitlement
    Product: annual_premium (prod123)
