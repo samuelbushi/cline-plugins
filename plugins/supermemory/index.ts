@@ -411,14 +411,20 @@ class SupermemoryClient {
 				apiKey: SUPERMEMORY_API_KEY,
 				baseURL: getApiBaseUrl(),
 				defaultHeaders: { "x-sm-source": "cline" },
+				// Bound every request at the SDK level so no call (including the
+				// fire-and-forget settings update below) can hold the event loop open.
+				timeout: TIMEOUT_MS,
+				maxRetries: 1,
 			})
-			// Best effort; never let a settings failure become an unhandled rejection.
-			void this.client.settings
-				.update({
+			// Best effort; bounded by withTimeout and swallowed so it never becomes an
+			// unhandled rejection or keeps the process alive.
+			void withTimeout(
+				this.client.settings.update({
 					shouldLLMFilter: true,
 					filterPrompt: CONFIG.filterPrompt,
-				})
-				.catch(() => {})
+				}),
+				TIMEOUT_MS,
+			).catch(() => {})
 		}
 		return this.client
 	}
