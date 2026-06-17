@@ -4,9 +4,11 @@ Amazon Location Service guidance and AWS MCP access for building maps, places se
 
 ## What It Does
 
-Installs the `amazon-location-service` skill. The skill helps Cline choose the right Amazon Location Service APIs, SDKs, auth pattern, coordinate format, and MapLibre setup for common geospatial app work.
+Installs the `amazon-location-service` skill. The skill helps Cline choose the right Amazon Location Service APIs, SDKs, auth pattern, coordinate format, and MapLibre setup for common geospatial app work. It also bundles focused references for address input, address verification, routes, dynamic maps, places search, and browser JavaScript integration.
 
 Registers the `aws-mcp` server through AWS's SigV4 proxy. That MCP server can expose AWS documentation, regional availability, service recommendations, and AWS API tools when the local AWS credentials allow it.
+
+The Amazon Location workflow guidance includes MIT-0 licensed skill material from AWS geospatial examples.
 
 ## Install
 
