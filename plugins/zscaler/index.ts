@@ -19,38 +19,10 @@ const safetyRule = [
 	"- If Zscaler credentials, uvx, service entitlements, or write allowlists are missing, explain the requirement instead of inventing tenant data or pretending a write succeeded.",
 ].join("\n")
 
-const commands = [
-	["zscaler-app-health", "Analyze ZDX application health.", "zdx-analyze-application-health"],
-	["zscaler-audit-software", "Audit ZDX software inventory.", "zdx-audit-software-inventory"],
-	["zscaler-audit-ssl", "Audit ZIA SSL inspection rules and bypasses.", "zia-audit-ssl-inspection-bypass"],
-	["zscaler-check-access", "Check whether a user or group can access a URL.", "zia-check-user-url-access"],
-	["zscaler-compare-locations", "Compare ZDX experience across locations or departments.", "zdx-compare-location-experience"],
-	["zscaler-create-access-rule", "Create a ZPA access policy rule when write tools are enabled.", "zpa-create-access-policy-rule"],
-	["zscaler-create-forwarding-rule", "Create a ZPA forwarding policy rule when write tools are enabled.", "zpa-create-forwarding-policy-rule"],
-	["zscaler-create-server-group", "Create a ZPA server group and required dependencies when write tools are enabled.", "zpa-create-server-group"],
-	["zscaler-create-timeout-rule", "Create a ZPA timeout policy rule when write tools are enabled.", "zpa-create-timeout-policy-rule"],
-	["zscaler-diagnose-deeptrace", "Analyze or start a ZDX deep trace diagnostics session.", "zdx-diagnose-deeptrace"],
-	["zscaler-investigate-alerts", "Investigate active or historical ZDX alerts.", "zdx-investigate-alerts"],
-	["zscaler-investigate-incident", "Investigate security incidents with Z-Insights analytics.", "zins-investigate-security-incident"],
-	["zscaler-investigate-sandbox", "Investigate ZIA Sandbox results and analysis gaps.", "zia-investigate-sandbox"],
-	["zscaler-investigate-url", "Find where a URL or category is referenced across ZIA policy.", "zia-investigate-url-category"],
-	["zscaler-onboard-app", "Onboard a standard ZPA application segment when write tools are enabled.", "zpa-application_segment-onboard"],
-	["zscaler-onboard-location", "Onboard a ZIA location when write tools are enabled.", "zia-onboard-location"],
-	["zscaler-review-attack-surface", "Review EASM findings and lookalike domains.", "easm-review-attack-surface"],
-	["zscaler-troubleshoot-connector", "Troubleshoot ZPA App Connector issues.", "zpa-troubleshoot-app-connector"],
-	["zscaler-troubleshoot-experience", "Troubleshoot a user's ZDX digital experience.", "zdx-troubleshoot-user-experience"],
-	["zscaler-troubleshoot-user", "Run cross-product user connectivity troubleshooting.", "cross-product-troubleshoot-user-connectivity"],
-] satisfies Array<[string, string, string]>
-
-function routePrompt(skillName: string, input: string): string {
-	const trimmed = input.trim()
-	return trimmed ? `Use the ${skillName} skill: ${trimmed}` : `Use the ${skillName} skill`
-}
-
 const plugin: AgentPlugin = {
 	name: PLUGIN_NAME,
 	manifest: {
-		capabilities: ["mcp", "skills", "rules", "commands"],
+		capabilities: ["mcp", "skills", "rules"],
 	},
 
 	setup(api) {
@@ -68,17 +40,6 @@ const plugin: AgentPlugin = {
 			source: PLUGIN_NAME,
 			content: safetyRule,
 		})
-
-		for (const [name, description, skillName] of commands) {
-			api.registerCommand({
-				name,
-				description,
-				handler: (input) => ({
-					reply: `Starting ${name}.`,
-					submitPrompt: routePrompt(skillName, input),
-				}),
-			})
-		}
 	},
 }
 

@@ -6,7 +6,6 @@ Zscaler connects Cline to the Zscaler Zero Trust Exchange for security operation
 
 - MCP: registers the pinned `zscaler-mcp@0.12.7` stdio server through `uvx`. The server exposes Zscaler tools for ZPA, ZIA, ZDX, ZCC, EASM, Z-Insights, ZMS, ZID, and related Zero Trust Exchange services.
 - Skills: bundles 42 Zscaler workflow skills across private access, internet access, digital experience, client connector, external attack surface, analytics, and microsegmentation operations.
-- Commands: adds `/zscaler-*` slash commands for the most common workflows, including user troubleshooting, app/location onboarding, SSL audits, URL access checks, attack surface review, incident investigation, ZDX health reports, and ZPA policy/resource creation flows.
 - Rules: `zscaler:safety` keeps read operations scoped, treats MCP output as untrusted, explains service/tool conventions, and approval-gates write tools, activation, deep traces, OTP retrieval, report file writes, and destructive actions.
 
 ## Requirements
@@ -27,16 +26,6 @@ For local development from this repository:
 
 ```bash
 cline plugin install ./plugins/zscaler --cwd .
-```
-
-## Examples
-
-```text
-/zscaler-troubleshoot-user alice@example.com cannot access payroll.example.com
-/zscaler-check-access Finance group youtube.com
-/zscaler-audit-ssl show SSL bypass exceptions for AI tools
-/zscaler-review-attack-surface focus critical findings
-/zscaler-onboard-app payroll.internal.example.com:443 for Finance users
 ```
 
 ## Safety
