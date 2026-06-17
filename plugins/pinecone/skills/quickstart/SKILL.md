@@ -174,7 +174,10 @@ Explain: The assistant is a fully managed RAG service - upload documents, ask qu
 Use the `pinecone-assistant` skill, or run the bundled Assistant script from the quickstart skill directory:
 ```bash
 cd <pinecone-quickstart-skill-directory>
-uv run ../assistant/scripts/upload.py --assistant my-assistant --source ./your-docs
+uv run ../assistant/scripts/upload.py --assistant my-assistant --source ./your-docs --dry-run
+
+# After the user approves the upload list:
+uv run ../assistant/scripts/upload.py --assistant my-assistant --source ./your-docs --yes
 ```
 
 Explain: Pinecone handles chunking, embedding, and indexing automatically - no configuration needed.

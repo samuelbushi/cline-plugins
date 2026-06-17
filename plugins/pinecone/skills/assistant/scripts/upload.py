@@ -14,7 +14,7 @@ Supported: DOCX (.docx), JSON (.json), Markdown (.md), PDF (.pdf), Text (.txt)
 Code files are NOT supported by Pinecone Assistant.
 
 Usage:
-    uv run upload.py --assistant NAME --source PATH [--patterns "*.md,*.pdf,*.docx"]
+    uv run upload.py --assistant NAME --source PATH [--patterns "*.md,*.pdf,*.docx"] [--dry-run]
 
 Environment Variables:
     PINECONE_API_KEY: Required Pinecone API key
@@ -96,6 +96,17 @@ def main(
         "-m",
         help="Additional metadata as JSON string",
     ),
+    dry_run: bool = typer.Option(
+        False,
+        "--dry-run",
+        help="Preview matching files without uploading",
+    ),
+    yes: bool = typer.Option(
+        False,
+        "--yes",
+        "-y",
+        help="Skip the confirmation prompt after the upload list has been approved",
+    ),
 ):
     """Upload documentation files to a Pinecone Assistant.
 
@@ -141,6 +152,18 @@ def main(
             return
 
         console.print(f"[green]Found {len(files)} documentation file(s) to upload[/green]\n")
+        for file_path in files[:20]:
+            console.print(f"  - {file_path}")
+        if len(files) > 20:
+            console.print(f"  ... and {len(files) - 20} more")
+
+        if dry_run:
+            console.print("\n[yellow]Dry run only - no files uploaded[/yellow]")
+            return
+
+        if not yes and not typer.confirm(f"Upload {len(files)} file(s) to assistant '{assistant}'?"):
+            console.print("[yellow]Upload canceled[/yellow]")
+            raise typer.Exit(0)
 
         # Upload files with progress bar
         uploaded = 0

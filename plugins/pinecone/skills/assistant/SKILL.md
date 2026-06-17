@@ -37,13 +37,13 @@ Upload: "upload my docs", "add files to my assistant", "index my documentation"
 -> See [references/upload.md](references/upload.md)
 
 Sync: "sync my docs", "update my assistant", "keep assistant in sync", "refresh from ./docs"
--> See [references/sync.md](references/sync.md)
+-> Use `scripts/sync.py`; run with `--dry-run` first and get approval before `--delete-missing`.
 
 Chat: "ask my assistant about X", "what does my assistant know about X", "chat with X"
 -> See [references/chat.md](references/chat.md)
 
 Context: "search my assistant for X", "find context about X"
--> See [references/context.md](references/context.md)
+-> Use `scripts/context.py`.
 
 List: "show my assistants", "what assistants do I have"
 -> From this skill directory, run `uv run scripts/list.py`
@@ -68,8 +68,9 @@ Handle chained requests naturally. Example:
 
 1. `cd` into this skill directory.
 2. `uv run scripts/create.py --name docs-bot`
-3. `uv run scripts/upload.py --assistant docs-bot --source ./docs`
-4. `uv run scripts/chat.py --assistant docs-bot --message "what are the main features?"`
+3. `uv run scripts/upload.py --assistant docs-bot --source ./docs --dry-run`
+4. After the user approves the upload list, `uv run scripts/upload.py --assistant docs-bot --source ./docs --yes`
+5. `uv run scripts/chat.py --assistant docs-bot --message "what are the main features?"`
 
 ---
 

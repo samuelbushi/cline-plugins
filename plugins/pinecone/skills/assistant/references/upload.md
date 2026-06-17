@@ -12,6 +12,8 @@ Not supported: Source code (`.py`, `.js`, `.ts`, etc.) - Assistant is optimized 
 - `--patterns` (optional): Comma-separated glob patterns - default: `*.md,*.txt,*.pdf,*.docx,*.json`
 - `--exclude` (optional): Directories to exclude - default: `node_modules,.venv,.git,build,dist`
 - `--metadata` (optional): JSON string of additional metadata
+- `--dry-run` (optional): Preview matching files without uploading
+- `--yes` (optional): Skip the confirmation prompt after the user has approved the upload
 
 ## Workflow
 
@@ -29,7 +31,15 @@ Not supported: Source code (`.py`, `.js`, `.ts`, etc.) - Assistant is optimized 
    uv run scripts/upload.py \
      --assistant "assistant-name" \
      --source "./docs" \
-     --patterns "*.md,*.pdf"
+     --patterns "*.md,*.pdf" \
+     --dry-run
+
+   # After the user approves the preview:
+   uv run scripts/upload.py \
+     --assistant "assistant-name" \
+     --source "./docs" \
+     --patterns "*.md,*.pdf" \
+     --yes
    ```
 6. Show progress and results. Remind user files are being indexed.
 

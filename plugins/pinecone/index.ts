@@ -30,6 +30,9 @@ const plugin: AgentPlugin = {
 				type: "stdio",
 				command: "npx",
 				args: ["-y", "@pinecone-database/mcp@0.2.1"],
+				env: {
+					PINECONE_API_KEY: "${env:PINECONE_API_KEY}",
+				},
 			},
 			metadata: {
 				description:

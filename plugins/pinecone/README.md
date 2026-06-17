@@ -23,11 +23,11 @@ export PINECONE_API_KEY=pcsk_...
 cline plugin install pinecone
 ```
 
-The plugin-owned MCP settings entry does not store your API key. The MCP process inherits `PINECONE_API_KEY` from Cline's process environment when it starts.
+The plugin-owned MCP settings entry stores `${env:PINECONE_API_KEY}`, not your API key. Cline expands that placeholder from the environment when it starts the MCP server, so restart Cline or reload MCP servers after changing the value.
 
 ## Trust Boundaries
 
-The MCP server is started by Cline when used and receives `PINECONE_API_KEY` through the process environment if you set it before launching Cline. Treat workspace files, query text, documents, metadata, Assistant uploads, and generated n8n workflows as data that may leave your machine through Pinecone or related services once you approve live operations.
+The MCP server is started by Cline's normal MCP startup flow and receives `PINECONE_API_KEY` only through the environment placeholder above. Treat workspace files, query text, documents, metadata, Assistant uploads, and generated n8n workflows as data that may leave your machine through Pinecone or related services once you approve live operations.
 
 Bundled helper scripts are not run during plugin installation. Review commands before running scripts that create indexes, upsert documents, sync files, upload Assistant context, or call Pinecone APIs.
 
