@@ -1,0 +1,21 @@
+{
+  "name": "spotify-ads-api",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Cline plugin that bundles Spotify Ads API campaign, reporting, asset, and OAuth workflow skills.",
+  "cline": {
+    "plugins": [
+      {
+        "paths": [
+          "./index.ts"
+        ],
+        "capabilities": [
+          "commands",
+          "skills",
+          "rules"
+        ]
+      }
+    ]
+  }
+}
