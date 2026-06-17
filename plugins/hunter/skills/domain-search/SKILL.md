@@ -41,7 +41,7 @@ Find all contacts and email addresses associated with a company domain.
    - "senior people" -> `seniority: "senior,executive"`
    - No filter specified -> show the top contacts by confidence score
 
-4. Present the results:
+3. Present the results:
 
 ```
 # Contacts at Stripe (stripe.com)
