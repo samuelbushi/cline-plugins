@@ -194,3 +194,11 @@ Documentation databases: See [reference/database-best-practices.md](reference/da
 "Content is fragmentary": Group related fragments into cohesive doc
 "Already exists": Search first, update existing if appropriate
 "Too informal": Clean up language while preserving insights
+
+## Examples
+
+See [examples/](examples/) for complete workflows:
+
+- [examples/conversation-to-faq.md](examples/conversation-to-faq.md) - FAQ from Q&A
+- [examples/decision-capture.md](examples/decision-capture.md) - Decision record
+- [examples/how-to-guide.md](examples/how-to-guide.md) - How-to from discussion

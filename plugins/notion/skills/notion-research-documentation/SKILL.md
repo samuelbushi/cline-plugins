@@ -90,3 +90,12 @@ Citation styles: See [reference/citations.md](reference/citations.md)
 "No results found": Try broader search terms or different teamspaces
 "Too many results": Add filters or search within specific pages
 "Can't access page": User may lack permissions, ask them to verify access
+
+## Examples
+
+See [examples/](examples/) for complete workflows:
+
+- [examples/competitor-analysis.md](examples/competitor-analysis.md) - Competitor analysis
+- [examples/market-research.md](examples/market-research.md) - Market research
+- [examples/technical-investigation.md](examples/technical-investigation.md) - Technical investigation
+- [examples/trip-planning.md](examples/trip-planning.md) - Trip planning

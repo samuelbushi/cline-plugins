@@ -112,10 +112,12 @@ See [reference/task-creation.md](reference/task-creation.md) for task patterns.
 ### Step 7: Begin implementation
 
 ```
-1. Update task status to "In Progress"
-2. Add initial progress note
-3. Document approach and decisions
-4. Link relevant resources
+1. Draft the status change and initial progress note
+2. Show the proposed Notion update to the user and ask for approval
+3. After approval, update task status to "In Progress"
+4. Add the approved progress note
+5. Document approach and decisions
+6. Link relevant resources
 ```
 
 ### Step 8: Track progress
@@ -156,6 +158,8 @@ By Feature Slice: Vertical slices (auth flow, data entry, report generation)
 By Priority: P0 (must have), P1 (important), P2 (nice to have)
 
 ## Progress Logging
+
+Ask for approval before writing progress notes, status changes, comments, or timeline updates into Notion.
 
 Daily Updates (active work): Add progress note with completed items, current focus, blockers
 Milestone Updates (major progress): Update plan checkboxes, add milestone summary, adjust timeline
@@ -211,3 +215,11 @@ For additional implementation patterns and techniques, see the reference files i
 "Spec unclear": Note ambiguities in plan, create clarification tasks
 "Requirements conflicting": Document conflicts, create decision task
 "Scope too large": Break into smaller specs/phases
+
+## Examples
+
+See [examples/](examples/) for complete workflows:
+
+- [examples/api-feature.md](examples/api-feature.md) - API feature implementation
+- [examples/ui-component.md](examples/ui-component.md) - Frontend component
+- [examples/database-migration.md](examples/database-migration.md) - Schema changes

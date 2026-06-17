@@ -1,5 +1,7 @@
 # Progress Tracking
 
+Before writing status changes, progress notes, blocker updates, stakeholder comments, or timeline updates into Notion, draft the exact proposed update and ask the user for approval.
+
 ## Update Frequency
 
 ### Daily Updates
@@ -285,10 +287,12 @@ Done: Complete
 When updating:
 
 ```
-1. Update Status property
-2. Add progress note explaining change
-3. Update related tasks if needed
-4. Notify relevant people via comment
+1. Draft the Status property change and progress note
+2. Ask the user for approval before writing to Notion
+3. After approval, update Status property
+4. Add progress note explaining change
+5. Update related tasks if needed
+6. Notify relevant people via comment only if the user asked for that or explicitly approves it
 
 Example:
 properties: { "Status": "In Progress" }
@@ -335,10 +339,12 @@ Impact: [Any timeline/scope impact]
 If blocker needs escalation:
 
 ```
-1. Update blocker status in task
-2. Add comment tagging stakeholder
-3. Update plan with blocker impact
-4. Propose mitigation if possible
+1. Draft the blocker status change, comment, and plan update
+2. Ask the user for approval before writing to Notion or tagging anyone
+3. After approval, update blocker status in task
+4. Add the approved comment tagging stakeholder only if requested or approved
+5. Update plan with blocker impact
+6. Propose mitigation if possible
 ```
 
 ## Metrics Tracking

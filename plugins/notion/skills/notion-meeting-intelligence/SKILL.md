@@ -290,3 +290,12 @@ Meeting templates: See [reference/template-selection-guide.md](reference/templat
 "No recent updates": Note that in pre-read, focus on historical context and strategic considerations
 "External meeting - no internal context": Create simpler structure with just agenda, skip internal pre-read or keep it minimal
 "Cline research too generic": Focus on specific insights relevant to the actual meeting topic, not general platitudes
+
+## Examples
+
+See [examples/](examples/) for complete workflows:
+
+- [examples/customer-meeting.md](examples/customer-meeting.md) - Customer meeting preparation
+- [examples/executive-review.md](examples/executive-review.md) - Executive review prep
+- [examples/project-decision.md](examples/project-decision.md) - Decision meeting prep
+- [examples/sprint-planning.md](examples/sprint-planning.md) - Sprint planning prep
