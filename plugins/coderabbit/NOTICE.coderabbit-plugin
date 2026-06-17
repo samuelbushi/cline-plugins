@@ -4,6 +4,6 @@ Portions of the review and autofix workflow are adapted from CodeRabbit AI's pub
 
 Original project: https://github.com/coderabbitai/skills
 
-Modified for Cline's plugin model with explicit slash-command invocation, bundled skills, and guarded GitHub PR review-thread handling.
+Modified for Cline's plugin model with bundled skills and guarded GitHub PR review-thread handling.
 
 License: MIT
