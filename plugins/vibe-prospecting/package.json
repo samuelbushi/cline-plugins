@@ -1,0 +1,31 @@
+{
+  "name": "vibe-prospecting",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Cline plugin for Vibe Prospecting B2B company and contact research workflows.",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "cline": {
+    "plugins": [
+      {
+        "paths": [
+          "./index.ts"
+        ],
+        "capabilities": [
+          "skills",
+          "rules"
+        ]
+      }
+    ]
+  },
+  "peerDependencies": {
+    "@cline/sdk": "*"
+  },
+  "peerDependenciesMeta": {
+    "@cline/sdk": {
+      "optional": true
+    }
+  }
+}
