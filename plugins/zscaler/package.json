@@ -1,0 +1,33 @@
+{
+  "name": "zscaler",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Cline plugin for Zscaler Zero Trust Exchange MCP workflows, security operations, policy review, troubleshooting, and tenant administration skills.",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "cline": {
+    "plugins": [
+      {
+        "paths": [
+          "./index.ts"
+        ],
+        "capabilities": [
+          "mcp",
+          "skills",
+          "rules",
+          "commands"
+        ]
+      }
+    ]
+  },
+  "peerDependencies": {
+    "@cline/sdk": "*"
+  },
+  "peerDependenciesMeta": {
+    "@cline/sdk": {
+      "optional": true
+    }
+  }
+}
