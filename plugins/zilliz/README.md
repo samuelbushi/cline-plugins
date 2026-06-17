@@ -6,7 +6,6 @@ Zilliz helps Cline work with Zilliz Cloud clusters and Milvus vector databases t
 - Skills: `zilliz-status`, `zilliz-monitoring`, and `zilliz-job` help inspect cluster context, resources, metrics, and async operation status.
 - Skills: `zilliz-cluster`, `zilliz-project-region`, `zilliz-on-demand-cluster`, `zilliz-privatelink`, and `zilliz-billing` cover Zilliz Cloud control-plane workflows.
 - Skills: `zilliz-collection`, `zilliz-database`, `zilliz-index`, `zilliz-partition`, `zilliz-vector`, `zilliz-user-role`, `zilliz-backup`, `zilliz-import`, and `zilliz-external-collection` cover Milvus data-plane and lifecycle workflows.
-- Commands: `/zilliz-quickstart` starts setup, and `/zilliz-status` gathers a structured status overview.
 - Rules: `zilliz:safety` requires explicit approval for credential changes, destructive operations, writes, and cost-affecting Zilliz actions.
 ## Requirements
 - A Zilliz Cloud account for live cloud operations.

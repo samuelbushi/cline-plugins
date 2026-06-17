@@ -12,15 +12,10 @@ const safetyRule = [
 	"- Prefer `--output json` for inventory and status checks. Do not run broad data scans, exports, or vector queries unless the scope is directly tied to the user's request.",
 ].join("\n")
 
-function routePrompt(workflow: string, input: string): string {
-	const trimmed = input.trim()
-	return trimmed ? `${workflow}: ${trimmed}` : workflow
-}
-
 const plugin: AgentPlugin = {
 	name: PLUGIN_NAME,
 	manifest: {
-		capabilities: ["skills", "rules", "commands"],
+		capabilities: ["skills", "rules"],
 	},
 
 	setup(api) {
@@ -30,23 +25,6 @@ const plugin: AgentPlugin = {
 			content: safetyRule,
 		})
 
-		api.registerCommand({
-			name: "zilliz-quickstart",
-			description: "Set up zilliz-cli authentication and cluster context.",
-			handler: (input) => ({
-				reply: "Starting Zilliz CLI setup.",
-				submitPrompt: routePrompt("Use the zilliz-quickstart skill", input),
-			}),
-		})
-
-		api.registerCommand({
-			name: "zilliz-status",
-			description: "Summarize the current Zilliz Cloud context, cluster, databases, and collections.",
-			handler: (input) => ({
-				reply: "Checking Zilliz Cloud status.",
-				submitPrompt: routePrompt("Use the zilliz-status skill", input),
-			}),
-		})
 	},
 }
 
