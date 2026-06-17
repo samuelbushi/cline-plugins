@@ -12,7 +12,6 @@ The regional MCP servers expose Vanta compliance-platform tools for failing test
 
 - MCP: `vanta-us`, `vanta-eu`, and `vanta-aus` remote MCP servers.
 - Skills: `vanta-test-remediation`, `vanta-list-tests`, and `vanta-fix-test`.
-- Commands: `/vanta-list-tests` and `/vanta-fix-test <test ID or URL>`.
 - Rule: `vanta-compliance-remediation-safety` for compliance, cloud, evidence, vendor-risk, and repository-change guardrails.
 
 ## Install
