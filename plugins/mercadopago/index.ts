@@ -38,30 +38,6 @@ Use the plugin-owned Cline MCP server named "mercadopago".
 5. If the connection still fails, explain the exact failure and suggest disabling/re-enabling the plugin or restarting the Cline session.`
 }
 
-function mpIntegratePrompt(input: string): string {
-	const args = input.trim()
-	return `Run the Mercado Pago integration workflow${args ? ` with these arguments: ${JSON.stringify(args)}` : ""}.
-
-Use the bundled mp-integrate skill unless the first argument is "webhook" or "test-setup":
-
-- "webhook": use the mp-webhooks skill.
-- "test-setup": use the mp-test-setup skill.
-- anything else: use mp-integrate.
-
-The Mercado Pago MCP server named "mercadopago" is the source of truth for current documentation and product constraints. If it is not authenticated, start the OAuth flow with mercadopago__authenticate and never ask me to paste a callback URL.
-
-Do not hardcode access tokens, public keys, webhook secrets, or payment IDs. Do not create or overwrite .env. Use .env.example for placeholders and ask before writing files, installing SDKs, creating test users, loading test funds, configuring webhooks, or making any payment-affecting API call.`
-}
-
-function mpReviewPrompt(input: string): string {
-	const scope = input.trim() || "full"
-	return `Review this project's Mercado Pago integration with scope ${JSON.stringify(scope)}.
-
-Use the bundled mp-review skill. Pull the official quality checklist from the Mercado Pago MCP server named "mercadopago"; there is no offline substitute for the official checklist.
-
-Also perform the fixed security floor: credentials are environment-backed, HTTPS is used, webhook signatures are validated, post-payment status is verified server-side, idempotency keys are sent on create calls, and test-user credentials are not committed to production deployment. Do not mutate Mercado Pago state during the review.`
-}
-
 function hasMercadoPagoManifestSignal(root: string): boolean {
 	let current = root
 	const stop = parse(current).root
@@ -139,24 +115,6 @@ const plugin: AgentPlugin = {
 			handler: () => ({
 				reply: "Starting Mercado Pago MCP connection check.",
 				submitPrompt: mpConnectPrompt(),
-			}),
-		})
-
-		api.registerCommand({
-			name: "mp-integrate",
-			description: "Run the Mercado Pago integration wizard, webhook flow, or test-user setup.",
-			handler: (input) => ({
-				reply: "Starting Mercado Pago integration workflow.",
-				submitPrompt: mpIntegratePrompt(input),
-			}),
-		})
-
-		api.registerCommand({
-			name: "mp-review",
-			description: "Review a Mercado Pago integration against MCP-backed quality and security checks.",
-			handler: (input) => ({
-				reply: "Starting Mercado Pago integration review.",
-				submitPrompt: mpReviewPrompt(input),
 			}),
 		})
 

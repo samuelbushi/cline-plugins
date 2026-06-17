@@ -13,7 +13,7 @@ It also bundles four skills:
 - `mp-test-setup` for creating Mercado Pago test users, loading test-user funds, and finding current test-card guidance.
 - `mp-review` for reviewing an integration against the MCP-backed quality checklist and a fixed security floor.
 
-The plugin registers three slash commands: `/mp-connect`, `/mp-integrate`, and `/mp-review`.
+The plugin registers `/mp-connect` for MCP OAuth/status checks. The integration and review workflows are directly slash-invokable through their bundled skill names, such as `mp-integrate`, `mp-webhooks`, `mp-test-setup`, and `mp-review`.
 
 It also adds a payment-safety rule and a lightweight runtime hook that blocks Mercado Pago credential patterns from tool inputs and blocks `.env` reads in Mercado Pago workspaces.
 
