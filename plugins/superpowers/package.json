@@ -1,0 +1,20 @@
+{
+  "name": "superpowers",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Cline plugin that bundles Superpowers development workflow skills.",
+  "cline": {
+    "plugins": [
+      {
+        "paths": [
+          "./index.ts"
+        ],
+        "capabilities": [
+          "skills",
+          "rules"
+        ]
+      }
+    ]
+  }
+}
