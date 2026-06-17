@@ -5,7 +5,7 @@ const PLUGIN_NAME = "nimble"
 const plugin: AgentPlugin = {
 	name: PLUGIN_NAME,
 	manifest: {
-		capabilities: ["mcp", "skills", "rules", "commands"],
+		capabilities: ["mcp", "skills", "rules"],
 	},
 
 	setup(api) {
@@ -14,20 +14,6 @@ const plugin: AgentPlugin = {
 			transport: {
 				type: "streamableHttp",
 				url: "https://mcp.nimbleway.com/mcp",
-			},
-		})
-
-		api.registerCommand({
-			name: "nimble-search",
-			description: "Search the web with Nimble.",
-			handler: (input) => {
-				const query = input.trim()
-				if (!query) {
-					return "Usage: /nimble-search <query>"
-				}
-				return {
-					submitPrompt: `Use the nimble-web-expert skill to search the web for: ${query}`,
-				}
 			},
 		})
 

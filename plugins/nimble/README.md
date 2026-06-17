@@ -11,7 +11,7 @@ This plugin registers the Nimble remote MCP server and bundles Nimble skills for
 - Company deep dives, competitor intelligence, market discovery, meeting prep, local places research, and competitor positioning.
 - SEO intelligence, talent sourcing, and healthcare provider extraction, enrichment, and verification workflows.
 
-It also adds `/nimble-search`, a namespaced slash command that routes a query into the Nimble web expert skill, plus a safety rule for web-data collection, credentials, persistent reports, and untrusted web content.
+It also adds a safety rule for web-data collection, credentials, persistent reports, and untrusted web content.
 
 ## Install
 
