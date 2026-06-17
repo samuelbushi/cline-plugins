@@ -31,3 +31,7 @@ cline plugin install ./plugins/neon --cwd .
 ## Security Notes
 
 Neon connection strings and API keys are secrets. Do not paste them into chat, commit them, or store them in generated files unless the user explicitly asks for a specific safe location. The skills ask before modifying `.env` files, creating projects or branches, changing database resources, provisioning auth, or running potentially expensive database diagnostics.
+
+## Attribution
+
+The bundled Neon workflow skill material is derived from Neon agent skill material published by Neon under Apache-2.0 and adapted for Cline's plugin-owned MCP and skill model. See `LICENSE.neon` and `NOTICE.neon.md`.
