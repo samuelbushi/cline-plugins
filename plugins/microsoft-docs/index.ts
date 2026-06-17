@@ -3,7 +3,7 @@ import type { AgentPlugin } from "@cline/sdk"
 const plugin: AgentPlugin = {
 	name: "microsoft-docs",
 	manifest: {
-		capabilities: ["mcp"],
+		capabilities: ["mcp", "skills"],
 	},
 	setup(api) {
 		api.registerMcpServer({
