@@ -50,7 +50,7 @@ Standing rule: if a tool call didn't prove the access surface, don't link to it.
 
 ## Presentation
 
--   Markdown link with a descriptive label. Every host (Claude Code, Cowork, Codex, Claude.ai) renders these. Bare URLs render too but read worse.
+-   Markdown link with a descriptive label. Cline and other Markdown-capable clients render these. Bare URLs render too but read worse.
     -   Good: `[Sales Pipeline base](https://airtable.com/appEXAMPLEbase001)`
     -   Acceptable: `View in Airtable: [Sales Pipeline](https://airtable.com/appEXAMPLEbase001)` -- matches Airtable's existing internal handoff label
     -   Bad: `https://airtable.com/appEXAMPLEbase001` -- bare URL with no context
