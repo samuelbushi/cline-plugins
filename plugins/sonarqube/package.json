@@ -1,0 +1,22 @@
+{
+  "name": "sonarqube",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "SonarQube MCP, quality/security skills, and workflow commands.",
+  "cline": {
+    "plugins": [
+      {
+        "paths": [
+          "./index.ts"
+        ],
+        "capabilities": [
+          "mcp",
+          "commands",
+          "skills",
+          "rules"
+        ]
+      }
+    ]
+  }
+}
