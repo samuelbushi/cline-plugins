@@ -2,7 +2,7 @@
 
 > Condensed from microsoft-azure-webjobs-extensions-authentication-events-dotnet.
 > Full patterns (attribute collection, OTP customization, external data enrichment)
-> in the source plugin skill if installed.
+> are covered by the bundled Entra app registration skill.
 
 ## Install
 dotnet add package Microsoft.Azure.WebJobs.Extensions.AuthenticationEvents
