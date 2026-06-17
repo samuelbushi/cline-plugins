@@ -1,0 +1,19 @@
+{
+  "name": "spanner",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Cline plugin that bundles Spanner data exploration and SQL workflow skills.",
+  "cline": {
+    "plugins": [
+      {
+        "paths": [
+          "./index.ts"
+        ],
+        "capabilities": [
+          "skills",
+          "rules"
+        ]
+      }
+    ]
+  }
+}
