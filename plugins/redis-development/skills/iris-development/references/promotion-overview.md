@@ -4,18 +4,13 @@
 Every successful `add_session_event` / `addSessionEvent` enqueues a promote-working-memory job, fire-and-forget. The data plane never blocks on the LLM call; Redis Cloud's worker pool consumes the job, reads the session's events, calls an LLM to extract durable facts, and writes resulting records into long-term memory.
 
 ```
-  addSessionEvent     enqueue   
-  Agent      Data plane    Job queue   
-   200 OK                         (managed)   
-                                                       
-                                                               poll
-                                                              
-                                                       
-                                                          Worker     
-                                                         read session
-                                                         call LLM   
-                                                         write LTM  
-                                                       
+Agent -> Data plane: addSessionEvent
+Data plane -> Job queue: enqueue
+Data plane -> Agent: 200 OK
+Worker -> Job queue: poll
+Worker -> Data plane: read session
+Worker -> LLM: call LLM
+Worker -> Long-term memory: write LTM
 ```
 
 ### Deduplication window
