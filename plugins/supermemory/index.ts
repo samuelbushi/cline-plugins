@@ -385,12 +385,16 @@ function isFullyPrivate(content: string): boolean {
 const TIMEOUT_MS = 30_000
 
 function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
-	return Promise.race([
-		promise,
-		new Promise<T>((_, reject) =>
-			setTimeout(() => reject(new Error(`Timeout after ${ms}ms`)), ms),
-		),
-	])
+	let timer: ReturnType<typeof setTimeout> | undefined
+	const timeout = new Promise<never>((_, reject) => {
+		timer = setTimeout(() => reject(new Error(`Timeout after ${ms}ms`)), ms)
+	})
+	// Always clear the timer so a settled request never keeps the event loop alive.
+	return Promise.race([promise, timeout]).finally(() => {
+		if (timer) {
+			clearTimeout(timer)
+		}
+	})
 }
 
 class SupermemoryClient {
