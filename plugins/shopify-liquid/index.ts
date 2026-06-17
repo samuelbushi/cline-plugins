@@ -1,5 +1,5 @@
 import { spawn } from "node:child_process";
-import { existsSync, statSync } from "node:fs";
+import { existsSync, realpathSync, statSync } from "node:fs";
 import { isAbsolute, relative, resolve } from "node:path";
 import { type AgentPlugin, createTool } from "@cline/core";
 
@@ -22,7 +22,7 @@ const DEFAULT_TIMEOUT_MS = 55_000;
 const MAX_TIMEOUT_MS = 55_000;
 const MAX_OUTPUT_CHARS = 20_000;
 
-let workspaceRoot = process.cwd();
+let workspaceRoot = realpathSync(process.cwd());
 
 function clampTimeout(value: unknown): number {
 	if (typeof value !== "number" || !Number.isFinite(value)) {
@@ -55,19 +55,21 @@ function assertWithinWorkspace(path: string): void {
 }
 
 function resolveThemeDirectory(rawPath: string | undefined): string {
-	const target = rawPath
+	const requestedPath = rawPath
 		? isAbsolute(rawPath)
 			? resolve(rawPath)
 			: resolve(workspaceRoot, rawPath)
 		: workspaceRoot;
-	assertWithinWorkspace(target);
-	if (!existsSync(target)) {
-		throw new Error(`Theme path does not exist: ${target}`);
+	assertWithinWorkspace(requestedPath);
+	if (!existsSync(requestedPath)) {
+		throw new Error(`Theme path does not exist: ${requestedPath}`);
 	}
-	if (!statSync(target).isDirectory()) {
-		throw new Error(`Theme path must be a directory: ${target}`);
+	if (!statSync(requestedPath).isDirectory()) {
+		throw new Error(`Theme path must be a directory: ${requestedPath}`);
 	}
-	return target;
+	const realTarget = realpathSync(requestedPath);
+	assertWithinWorkspace(realTarget);
+	return realTarget;
 }
 
 function appendBoundedOutput(
@@ -214,7 +216,9 @@ const plugin: AgentPlugin = {
 	},
 
 	setup(api, ctx) {
-		workspaceRoot = ctx.workspaceInfo?.rootPath?.trim() || process.cwd();
+		workspaceRoot = realpathSync(
+			resolve(ctx.workspaceInfo?.rootPath?.trim() || process.cwd()),
+		);
 		api.registerTool(liquidThemeDiagnostics);
 	},
 };

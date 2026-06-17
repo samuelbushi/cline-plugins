@@ -1,0 +1,11 @@
+Shopify Liquid skill content
+
+This plugin includes Shopify Liquid theme skill material adapted for the Cline
+plugin ecosystem. The source manifest identifies the material as authored by
+Shopify and licensed under the MIT License.
+
+Source repository: https://github.com/Shopify/liquid-skills
+
+Adaptations for this plugin include Cline package metadata, bounded local
+diagnostics via `liquid_theme_diagnostics`, Markdown style normalization for
+this repository, and Cline workflow notes for local theme-check usage.
