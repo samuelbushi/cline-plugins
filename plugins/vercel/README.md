@@ -6,7 +6,8 @@ Vercel platform guidance for Cline. This plugin adds the official Vercel MCP ser
 
 - MCP: registers the `vercel` Streamable HTTP MCP server at `https://mcp.vercel.com`. The server uses Vercel OAuth and, when the Vercel MCP server accepts the Cline client, gives Cline access to platform context such as docs, projects, deployments, and logs according to the account permissions granted during authorization. If OAuth is unavailable for the client, the bundled skills and CLI workflows still work without MCP.
 - Skills: bundles Vercel-focused skills for Next.js, Vercel CLI, deployments and CI/CD, environment variables, Marketplace integrations, AI SDK, AI Gateway, Workflow, Functions, storage, routing middleware, firewall, Turbopack, shadcn/ui, React best practices, and end-to-end verification.
-- Commands: adds `/vercel-bootstrap`, `/vercel-deploy`, `/vercel-env`, `/vercel-marketplace`, and `/vercel-status`. The commands route common workflows into the relevant bundled skills and keep risky operations behind confirmation gates.
+- Commands: adds `/vercel-deploy`, `/vercel-env`, and `/vercel-status`. The commands route common operations into the relevant bundled skills and keep risky operations behind confirmation gates.
+- Skills: direct slash-invokable workflows include `vercel-bootstrap`, `vercel-marketplace`, and the rest of the Vercel skill pack.
 - Rules: adds Vercel platform safety guidance for deploys, production changes, environment variables, domains, firewall rules, Marketplace provisioning, logs, and secrets.
 
 ## Requirements

@@ -22,12 +22,6 @@ const vercelSafetyRule = [
 ].join("\n")
 
 const commandPrompts = {
-	bootstrap: (input: string) => [
-		`Use the vercel-bootstrap skill to bootstrap this repository for Vercel${input ? ` with this context: ${input}` : "."}`,
-		"Run preflight checks first: Vercel CLI availability, login state, project linkage, monorepo/package scope, env templates, and package scripts.",
-		"Do not run db migrations, seed scripts, package installs, dev servers, project linking, integration provisioning, or env pulls until the user approves the exact action.",
-		"Never print secret values. Show environment variable names and missing keys only.",
-	],
 	deploy: (input: string) => [
 		`Use the vercel-deployments-cicd and vercel-cli skills to prepare a Vercel deployment${input ? ` with this request: ${input}` : "."}`,
 		"If the request asks for prod or production, stop and ask for explicit production approval before running any production deploy, promote, or rollback command.",
@@ -39,12 +33,6 @@ const commandPrompts = {
 		"Default to listing or diffing names only. Never print variable values from local files, CLI output, MCP output, or user messages.",
 		"Before adding, removing, pulling, or overwriting environment files, state the target file/environment/project/team and wait for explicit approval.",
 		"Production environment mutations require separate explicit production approval.",
-	],
-	marketplace: (input: string) => [
-		`Use the vercel-marketplace skill to discover, inspect, or install Vercel Marketplace integrations${input ? ` for: ${input}` : "."}`,
-		"Start with read-only discovery and project linkage checks. Prefer Vercel-managed integration flows when the user approves provisioning.",
-		"Before installing integrations, provisioning resources, pulling env vars, installing SDK packages, or editing project code, state the exact action and wait for explicit approval.",
-		"Never expose provisioned secret values.",
 	],
 	status: (input: string) => [
 		`Use the vercel-cli, vercel-deployments-cicd, vercel-env-vars, and vercel-functions skills to report Vercel project status${input ? ` with this focus: ${input}` : "."}`,
@@ -70,12 +58,6 @@ const plugin: AgentPlugin = {
 		})
 
 		api.registerCommand({
-			name: "vercel-bootstrap",
-			description: "Bootstrap a repository for Vercel-linked resources with safe preflight checks.",
-			handler: (input) => submitPrompt("Preparing a Vercel bootstrap plan.", commandPrompts.bootstrap(clean(input))),
-		})
-
-		api.registerCommand({
 			name: "vercel-deploy",
 			description: "Deploy the current project to Vercel, defaulting to preview deployment.",
 			handler: (input) => submitPrompt("Preparing a Vercel deployment workflow.", commandPrompts.deploy(clean(input))),
@@ -86,13 +68,6 @@ const plugin: AgentPlugin = {
 			description: "List, diff, pull, add, or remove Vercel environment variables with secret-safe handling.",
 			handler: (input) =>
 				submitPrompt("Preparing Vercel environment variable workflow.", commandPrompts.env(clean(input))),
-		})
-
-		api.registerCommand({
-			name: "vercel-marketplace",
-			description: "Discover and install Vercel Marketplace integrations with approval gates.",
-			handler: (input) =>
-				submitPrompt("Preparing Vercel Marketplace integration workflow.", commandPrompts.marketplace(clean(input))),
 		})
 
 		api.registerCommand({
