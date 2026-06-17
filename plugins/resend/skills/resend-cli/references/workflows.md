@@ -11,9 +11,9 @@ Multi-step recipes for common Resend CLI tasks.
 npm install -g resend-cli                          # npm
 brew install resend/cli/resend                     # Homebrew (macOS / Linux)
 
-# Authenticate - pass the key from an env var or secret manager;
-# never type a literal key (it lands in shell history)
-resend login --key "$RESEND_API_KEY"
+# Authenticate agent-run commands with RESEND_API_KEY from the environment.
+# Use `resend login --key "$RESEND_API_KEY"` only when the user explicitly
+# wants a human-managed stored CLI profile.
 
 # Verify setup
 resend doctor -q

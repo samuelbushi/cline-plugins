@@ -18,11 +18,8 @@ const plugin: AgentPlugin = {
 				command: "node",
 				args: ["./node_modules/resend-mcp/dist/index.js"],
 				cwd: PLUGIN_DIR,
-			},
-			env: {
-				RESEND_API_KEY: {
-					fromEnv: "RESEND_API_KEY",
-					required: true,
+				env: {
+					RESEND_API_KEY: "${env:RESEND_API_KEY}",
 				},
 			},
 			metadata: {

@@ -1,20 +1,20 @@
 # Resend
 
-Resend adds email API, CLI, deliverability, React Email, and agent inbox guidance to Cline, plus a plugin-owned Resend MCP server when `RESEND_API_KEY` is available.
+Resend adds email API, CLI, deliverability, React Email, and agent inbox guidance to Cline, plus a plugin-owned Resend MCP server.
 
 ## Install
 
 ```bash
-RESEND_API_KEY=your_resend_api_key cline plugin install resend
+cline plugin install resend
 ```
 
 For local development:
 
 ```bash
-RESEND_API_KEY=your_resend_api_key cline plugin install ./plugins/resend --cwd .
+cline plugin install ./plugins/resend --cwd .
 ```
 
-If `RESEND_API_KEY` is not set during install or enable, the bundled skills and safety rule still install, and the MCP server is skipped until the plugin is re-enabled or reinstalled with the environment variable available.
+Set `RESEND_API_KEY` through your shell session, shell profile, or secret manager before using MCP tools. The plugin-owned MCP settings entry stores `${env:RESEND_API_KEY}`, not your API key, so keep the variable available in the environment that starts Cline and reload MCP servers after changing it.
 
 ## Cline Primitives
 
@@ -24,7 +24,7 @@ If `RESEND_API_KEY` is not set during install or enable, the bundled skills and 
 
 ## Requirements
 
-Set `RESEND_API_KEY` in the environment before installing or enabling the plugin if you want MCP tools. Use the narrowest practical key, ideally scoped to the domain or environment being worked on.
+Set `RESEND_API_KEY` in the environment before using MCP tools. Keep that variable available when Cline starts the MCP server. Use the narrowest practical key, ideally scoped to the domain or environment being worked on.
 
 Some workflows may also require the Resend CLI, Resend SDK packages, React Email packages, DNS access for domain authentication, webhook endpoint access, or a Resend account with the relevant permissions. The plugin does not create accounts, run CLI login, or send email at install time.
 

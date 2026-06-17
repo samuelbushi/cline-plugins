@@ -106,10 +106,10 @@ Rules for agents:
 
 ## Authentication
 
-Auth resolves: `--api-key` flag > `RESEND_API_KEY` env > config file (`resend login --key`). Use `--profile` or `RESEND_PROFILE` for multi-profile.
+Auth resolves: `--api-key` flag > `RESEND_API_KEY` env > config file (`resend login --key`). For agent-run workflows, prefer `RESEND_API_KEY` from the environment. Treat stored profiles as human-managed opt-in state, not an agent default. Use `--profile` or `RESEND_PROFILE` only when the user explicitly asks for a named stored profile.
 
 Credential safety:
-- Never write a literal API key into a command, script, or file - it ends up in shell history, logs, and transcripts. Reference the environment (`"$RESEND_API_KEY"`) or use a stored profile (`resend login`).
+- Never write a literal API key into a command, script, or file - it ends up in shell history, logs, and transcripts. Reference the environment (`"$RESEND_API_KEY"`) and avoid creating stored profiles unless the user explicitly wants one.
 - Never echo or print an API key back to the user or into output.
 
 ## Global Flags
