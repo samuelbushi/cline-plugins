@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "Cline plugin that bundles AlloyDB Omni container, Kubernetes, and database operations skills.",
+  "description": "Cline plugin that bundles AlloyDB Omni container, Kubernetes, database, and helper-script workflow skills.",
   "cline": {
     "plugins": [
       {
@@ -11,7 +11,8 @@
           "./index.ts"
         ],
         "capabilities": [
-          "skills"
+          "skills",
+          "rules"
         ]
       }
     ]
