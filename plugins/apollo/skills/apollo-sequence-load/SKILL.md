@@ -1,45 +1,124 @@
 ---
 name: apollo-sequence-load
-description: Prepare and safely enroll approved Apollo contacts into an outreach sequence, including candidate search, preview, enrichment, dedupe, sender selection, and confirmation.
+description: "Prepare and safely enroll approved Apollo contacts into an outreach sequence, including candidate search, preview, enrichment, dedupe, sender selection, and confirmation."
 ---
 
-# Apollo Sequence Load
+# Sequence Load
 
-Use this skill when the user wants to add Apollo contacts or prospects to an outreach sequence.
-
-## Safety First
+Find, enrich, and load contacts into an outreach sequence end to end. Use Apollo MCP tools exposed by Cline; tool names below refer to Apollo MCP tool IDs after the `apollo` server is connected.
 
 Sequence enrollment can trigger outbound messages depending on Apollo sequence and sending-account settings. Always require explicit confirmation before creating contacts or adding anyone to a sequence.
 
-## Workflow
+Before calling a named Apollo MCP tool, inspect the connected MCP server's available tools and schemas. Use the named tool only if it is available; otherwise use the closest supported Apollo MCP workflow or ask the user how to proceed.
 
-1. Parse the target audience, desired contact count, sequence name, and any sender requirement.
-2. If the user asks to list sequences, list available sequences and stop.
-3. Resolve the target sequence through Apollo MCP. If there are multiple matches, ask the user to choose.
-4. Resolve the sending account. If there are multiple senders, show choices and ask the user to choose.
-5. Search for candidate contacts or use the lead list already in the conversation.
-6. Show a preview table before enrichment or enrollment.
-7. Resolve existing contacts and dedupe the candidate list before enrichment where Apollo MCP supports it.
-8. State the expected credit usage and outbound risk, then ask for confirmation.
-9. After confirmation, enrich only approved leads that still need enrichment, create missing contacts as needed, and add only the approved contacts to the selected sequence.
-10. Return an enrollment summary with contact count, sequence, sender, credits used, and any failures.
+## Examples
 
-## Preview Table
+- "Add 20 VP Sales at SaaS companies to my Q1 Outbound sequence."
+- "Find SDR managers at fintech startups for Cold Outreach v2."
+- "List my Apollo sequences."
+- "Add directors of engineering, 500+ employees, US, to Demo Follow-up."
+- "Load 15 more approved leads into Enterprise Pipeline."
 
-| # | Name | Title | Company | Location | Reason |
-| --- | --- | --- | --- | --- | --- |
+## Step 1 - Parse Input
 
-## Confirmation Language
+From the user's request, extract:
 
-Before enrollment, use a direct confirmation prompt:
+Targeting criteria:
+- Job titles -> `person_titles`
+- Seniority levels -> `person_seniorities`
+- Industry keywords -> `q_organization_keyword_tags`
+- Company size -> `organization_num_employees_ranges`
+- Locations -> `person_locations` or `organization_locations`
 
-```text
-Confirm that you want me to enrich these N leads and add them to the sequence "Sequence Name" from sender@example.com. This may consume about N Apollo credits, and outbound may begin depending on the sequence settings.
-```
+Sequence info:
+- Sequence name (text after "to", "into", or "->")
+- Volume - how many contacts to add (default: 10 if not specified)
 
-## Guardrails
+If the user just says "list sequences", skip to Step 2 and show all available sequences.
 
-- Do not infer approval from earlier broad intent. Require a final confirmation after showing the exact sequence, sender, volume, and contacts.
-- Default to small batches.
-- Deduplicate before enrichment, contact creation, or enrollment where possible.
-- If a contact is already active in another sequence, do not force enrollment unless the user explicitly approves that risk.
+## Step 2 - Find the Sequence
+
+Use the Apollo MCP `apollo_emailer_campaigns_search` tool to find the target sequence:
+- Set `q_name` to the sequence name from input
+
+If no match or multiple matches:
+- Show all available sequences in a table: | Name | ID | Status |
+- Ask the user to pick one
+
+## Step 3 - Get Email Account
+
+Use the Apollo MCP `apollo_email_accounts_index` tool to list linked email accounts.
+
+- If one account -> use automatically
+- If multiple -> show them and ask which to send from
+
+## Step 4 - Find Matching People
+
+Use the Apollo MCP `apollo_mixed_people_api_search` tool with the targeting criteria.
+- Set `per_page` to the requested volume (or 10 by default)
+
+Present the candidates in a preview table:
+
+| # | Name | Title | Company | Location |
+|---|---|---|---|---|
+
+Ask: "Enrich these [N] candidates and create any missing Apollo contacts for [Sequence Name] from [sender]? This may consume about [N] Apollo credits or reveal allowances. I will ask again before enrolling anyone into the sequence."
+
+Wait for confirmation before proceeding.
+
+## Step 5 - Enrich and Create Contacts
+
+For each approved lead:
+
+1. Enrich - Use the Apollo MCP `apollo_people_bulk_match` tool (batch up to 10 per call) with:
+   - `first_name`, `last_name`, `domain` for each person
+   - `reveal_personal_emails` set to `true` only when the user explicitly approved personal email reveal; otherwise omit it or set it to `false`
+
+2. Create contacts - For each enriched person, use the Apollo MCP `apollo_contacts_create` tool with:
+   - `first_name`, `last_name`, `email`, `title`, `organization_name`
+   - `direct_phone` or `mobile_phone` if available
+   - `run_dedupe` set to `true`
+
+Collect all created contact IDs.
+
+## Step 6 - Add to Sequence
+
+Before adding contacts to the sequence, show the final enrollable contact table with name, title, company, email, Apollo contact ID, sequence, sender, and count. Ask for final explicit confirmation that these exact contacts should be enrolled. Do not infer this approval from the earlier enrichment/contact-creation confirmation.
+
+Use the Apollo MCP `apollo_emailer_campaigns_add_contact_ids` tool with:
+- `id`: the sequence ID
+- `emailer_campaign_id`: same sequence ID
+- `contact_ids`: array of created contact IDs
+- `send_email_from_email_account_id`: the chosen email account ID
+- `sequence_active_in_other_campaigns`: `false` (safe default)
+
+## Step 7 - Confirm Enrollment
+
+Show a summary:
+
+---
+
+Sequence loaded successfully
+
+| Field | Value |
+|---|---|
+| Sequence | [Name] |
+| Contacts added | [count] |
+| Sending from | [email address] |
+| Credits used | [count] |
+
+Contacts enrolled:
+
+| Name | Title | Company | Email |
+|---|---|---|---|
+
+---
+
+## Step 8 - Offer Next Actions
+
+Ask the user:
+
+1. Load more - Find and preview another batch of leads
+2. Review sequence - Show sequence details and all enrolled contacts
+3. Remove a contact - Use `apollo_emailer_campaigns_remove_or_stop_contact_ids` to remove specific contacts
+4. Pause a contact - Re-add with `status: "paused"` and an `auto_unpause_at` date

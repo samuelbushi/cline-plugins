@@ -13,6 +13,8 @@ Installs these bundled skills:
 - `apollo-sequence-load`: prepare, preview, and enroll approved contacts into an Apollo sequence.
 - `apollo-analytics`: answer supported Apollo sales performance questions with focused reporting tables and follow-up actions.
 
+The bundled Apollo workflow guidance includes material from Apollo.io's MIT-licensed plugin source. See `LICENSE.apollo`.
+
 ## Install
 
 ```bash
@@ -55,7 +57,7 @@ Apollo MCP can expose prospect records, company records, emails, phone numbers, 
 
 Review your AI client's model-training and data-retention settings before connecting Apollo MCP. Prospect, CRM, email, and analytics data may be sent to the model provider during tool use.
 
-Use least-privilege Apollo access where possible. Confirm before using enrichment, revealing contact details, creating contacts, editing CRM records, creating or modifying sequences, or enrolling contacts into sequences.
+Use least-privilege Apollo access where possible. Confirm before using enrichment, revealing contact details, bulk-enriching companies, creating contacts, exporting contact data, editing CRM records, creating or modifying sequences, or enrolling contacts into sequences.
 
 Sequence enrollment can trigger outbound messages depending on the sequence and sending account configuration. Always verify the sequence, sender, contact list, and volume before approving enrollment.
 

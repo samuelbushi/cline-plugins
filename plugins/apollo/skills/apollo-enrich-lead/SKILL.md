@@ -1,41 +1,80 @@
 ---
 name: apollo-enrich-lead
-description: Enrich a lead in Apollo from a name, company, email, LinkedIn URL, title, or other identifier, then present a contact card with company context and safe next actions.
+description: "Enrich a lead in Apollo from a name, company, email, LinkedIn URL, title, or other identifier, then present a contact card with company context and safe next actions."
 ---
 
-# Apollo Enrich Lead
+# Enrich Lead
 
-Use this skill for one-off lead lookup and enrichment.
+Turn an identifier into a contact dossier. Use Apollo MCP tools exposed by Cline; tool names below refer to Apollo MCP tool IDs after the `apollo` server is connected.
 
-## Workflow
+Before calling a named Apollo MCP tool, inspect the connected MCP server's available tools and schemas. Use the named tool only if it is available; otherwise use the closest supported Apollo MCP workflow or ask the user how to proceed.
 
-1. Extract every identifier the user provided: name, company, domain, email, LinkedIn URL, job title, location, or seniority.
-2. If the identifier is ambiguous, search first and show the top candidates. Ask the user to pick before enrichment when multiple people could match.
-3. Before any credit-consuming enrichment or contact reveal, tell the user what will likely consume credits and ask for confirmation.
-4. Enrich the selected person through Apollo MCP using the most specific identifiers available.
-5. Enrich the company when firmographic context would help the user decide what to do next.
-6. Present the result as a contact card, omitting fields Apollo did not return.
-7. Offer safe next actions such as saving the contact, finding colleagues, finding similar people, or preparing a sequence-load preview.
+## Examples
 
-## Contact Card
+- "Enrich Tim Zheng at Apollo."
+- "Enrich https://www.linkedin.com/in/timzheng."
+- "Enrich sarah@stripe.com."
+- "Enrich Jane Smith, VP Engineering, Notion."
+- "Find and enrich the CEO of Figma."
 
-Use this shape when data is available:
+## Step 1 - Parse Input
+
+From the user's request, extract every identifier available:
+- First name, last name
+- Company name or domain
+- LinkedIn URL
+- Email address
+- Job title (use as a matching hint)
+
+If the input is ambiguous, for example just "CEO of Figma", first use the Apollo MCP `apollo_mixed_people_api_search` tool with relevant title and domain filters to identify the person. Show likely matches and ask the user to choose before enrichment.
+
+## Step 2 - Enrich the Person
+
+> Credit warning: Tell the user enrichment or reveal actions may consume Apollo credits or reveal allowances. Wait for explicit confirmation before proceeding.
+
+Use the Apollo MCP `apollo_people_match` tool with all available identifiers:
+- `first_name`, `last_name` if name is known
+- `domain` or `organization_name` if company is known
+- `linkedin_url` if LinkedIn is provided
+- `email` if email is provided
+- Set `reveal_personal_emails` to `true` only when the user explicitly approved personal email reveal; otherwise omit it or set it to `false`
+
+If the match fails, try the Apollo MCP `apollo_mixed_people_api_search` tool with looser filters and present the top 3 candidates. Ask the user to pick one, then re-enrich after confirmation.
+
+## Step 3 - Enrich Their Company
+
+Use the Apollo MCP `apollo_organizations_enrich` tool with the person's company domain to pull firmographic context when it helps the user decide what to do next.
+
+## Step 4 - Present the Contact Card
+
+Format the output exactly like this:
+
+---
+
+[Full Name] | [Title]
+[Company Name]  -  [Industry]  -  [Employee Count] employees
 
 | Field | Detail |
-| --- | --- |
-| Name | Full name |
-| Title | Role and seniority |
-| Company | Company name and domain |
-| Location | City, state, country |
-| Email | Work or revealed email |
-| Phone | Direct, mobile, or corporate phone |
-| LinkedIn | Profile URL |
-| Company context | Industry, size, revenue, funding, HQ, or technologies |
-| Suggested next step | One practical action |
+|---|---|
+| Email (work) | ... |
+| Email (personal) | ... (if revealed) |
+| Phone (direct) | ... |
+| Phone (mobile) | ... |
+| Phone (corporate) | ... |
+| Location | City, State, Country |
+| LinkedIn | URL |
+| Company Domain | ... |
+| Company Revenue | Range |
+| Company Funding | Total raised |
+| Company HQ | Location |
 
-## Guardrails
+---
 
-- Never reveal or enrich more contacts than the user requested.
-- Confirm before revealing personal emails, phone numbers, or any other credit-consuming data.
-- Confirm before creating contacts or adding them to sequences.
-- Treat enriched contact data as sensitive. Do not write it into committed files.
+## Step 5 - Offer Next Actions
+
+Ask the user which action to take:
+
+1. Save to Apollo - After explicit approval, create this person as a contact via `apollo_contacts_create` with `run_dedupe: true`
+2. Add to a sequence - Ask which sequence, then run the sequence-load flow
+3. Find colleagues - Search for more people at the same company using `apollo_mixed_people_api_search` with `q_organization_domains_list` set to this company
+4. Find similar people - Search for people with the same title/seniority at other companies
