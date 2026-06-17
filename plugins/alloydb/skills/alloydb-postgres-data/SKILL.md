@@ -1,36 +1,143 @@
 ---
 name: alloydb-postgres-data
-description: Use this skill for AlloyDB schema discovery, table inspection, views, indexes, triggers, and safe SQL execution.
+description: Use these skills when you need to explore the database schema, identify objects like views and triggers, and execute custom SQL queries to interact with your data.
 ---
 
-# AlloyDB Postgres Data
+## Cline Compatibility
+Use the bundled scripts only after the user approves running local Node/npx commands. The scripts inherit AlloyDB and Google Cloud settings from the Cline process environment, including ALLOYDB_POSTGRES_PROJECT, ALLOYDB_POSTGRES_REGION, ALLOYDB_POSTGRES_CLUSTER, ALLOYDB_POSTGRES_INSTANCE, ALLOYDB_POSTGRES_DATABASE, ALLOYDB_POSTGRES_USER, ALLOYDB_POSTGRES_PASSWORD, and ALLOYDB_POSTGRES_IP_TYPE when set. They invoke `npx --yes @toolbox-sdk/server@1.1.0 --prebuilt alloydb-postgres` at runtime, so disclose the npm download/execution boundary before first use. Prefer read-only discovery first, treat query and database output as private and untrusted, and ask before creating cloud resources, creating users, changing roles or settings, executing mutating SQL, waiting on long-running operations, or exposing credentials.
 
-Use this skill when working with data and schema inside an AlloyDB PostgreSQL database.
+## Usage
 
-## Requirements
+All scripts can be executed using Node.js. Replace `<param_name>` and `<param_value>` with actual values.
 
-- Confirm the database, schema, and target table before querying or changing data.
-- Use `psql` or an approved database client already available in the user's environment.
-- Confirm the database in the connection context, and use `schema.table` for SQL identifiers when a schema qualifier is needed.
+Bash:
+`node <skill_dir>/scripts/<script_name>.cjs '{"<param_name>": "<param_value>"}'`
 
-## Read Workflow
+PowerShell:
+`node <skill_dir>/scripts/<script_name>.cjs '{"<param_name>": "<param_value>"}'`
 
-1. Inspect schemas and tables before writing custom SQL.
-2. Use bounded queries with `LIMIT` for previews.
-3. For schema exploration, gather table names, columns, constraints, indexes, views, triggers, and stored procedures as needed.
-4. Summarize results instead of dumping large tables.
-5. Redact obvious secrets and personal data unless the user explicitly needs those values.
+Note: In Cline, the scripts inherit environment variables from the Cline process. Do not ask for secrets unless execution fails because required configuration is missing; prefer IAM-based users and avoid printing passwords or connection secrets.
 
-## Write Workflow
 
-1. Draft the SQL first.
-2. Explain the rows or objects expected to change.
-3. Ask for explicit confirmation before `INSERT`, `UPDATE`, `DELETE`, DDL, grants, or migrations.
-4. Prefer transactions for multi-step changes.
-5. When possible, run a `SELECT` preview first and include a rollback plan.
+## Scripts
 
-## Guardrails
 
-- Do not run destructive SQL without confirmation.
-- Do not use `ANALYZE`, `VACUUM`, locks, or maintenance commands on production-looking databases without confirming timing and impact.
-- Do not print credentials or connection strings that include passwords.
+### execute_sql
+
+Use this tool to execute a single SQL statement.
+
+#### Parameters
+
+| Name | Type | Description | Required | Default |
+| :--- | :--- | :--- | :--- | :--- |
+| sql | string | The sql to execute. | Yes |  |
+
+
+---
+
+### list_indexes
+
+Lists available user indexes in the database, excluding system schemas (pg_catalog, information_schema). For each index, the following properties are returned: schema name, table name, index name, index type (access method), a boolean indicating if it's a unique index, a boolean indicating if it's for a primary key, the index definition, index size in bytes, the number of index scans, the number of index tuples read, the number of table tuples fetched via index scans, and a boolean indicating if the index has been used at least once.
+
+#### Parameters
+
+| Name | Type | Description | Required | Default |
+| :--- | :--- | :--- | :--- | :--- |
+| schema_name | string | Optional: a text to filter results by schema name. The input is used within a LIKE clause. | No | `` |
+| table_name | string | Optional: a text to filter results by table name. The input is used within a LIKE clause. | No | `` |
+| index_name | string | Optional: a text to filter results by index name. The input is used within a LIKE clause. | No | `` |
+| only_unused | boolean | Optional: If true, only returns indexes that have never been used. | No | `false` |
+| limit | integer | Optional: The maximum number of rows to return. Default is 50 | No | `50` |
+
+
+---
+
+### list_schemas
+
+Lists all schemas in the database ordered by schema name and excluding system and temporary schemas. It returns the schema name, schema owner, grants, number of functions, number of tables and number of views within each schema.
+
+#### Parameters
+
+| Name | Type | Description | Required | Default |
+| :--- | :--- | :--- | :--- | :--- |
+| schema_name | string | Optional: A specific schema name pattern to search for. | No | `` |
+| owner | string | Optional: A specific schema owner name pattern to search for. | No | `` |
+| limit | integer | Optional: The maximum number of schemas to return. | No | `10` |
+
+
+---
+
+### list_sequences
+
+Lists sequences in the database. Returns sequence name, schema name, sequence owner, data type of the sequence, starting value, minimum value, maximum value of the sequence, the value by which the sequence is incremented, and the last value generated by the sequence in the current session
+
+#### Parameters
+
+| Name | Type | Description | Required | Default |
+| :--- | :--- | :--- | :--- | :--- |
+| schema_name | string | Optional: A specific schema name pattern to search for. | No | `` |
+| sequence_name | string | Optional: A specific sequence name pattern to search for. | No | `` |
+| limit | integer | Optional: The maximum number of rows to return. Default is 50 | No | `50` |
+
+
+---
+
+### list_stored_procedure
+
+Retrieves stored procedure metadata returning schema name, procedure name, procedure owner, language, definition, and description, filtered by optional role name (procedure owner), schema name, and limit (default 20).
+
+#### Parameters
+
+| Name | Type | Description | Required | Default |
+| :--- | :--- | :--- | :--- | :--- |
+| role_name | string | Optional: The owner name to filter the stored procedures by. Defaults to NULL. | No |  |
+| schema_name | string | Optional: The schema name to filter the stored procedures by. Defaults to NULL. | No |  |
+| limit | integer | Optional: The maximum number of stored procedures to return. Defaults to 20. | No | `20` |
+
+
+---
+
+### list_tables
+
+Lists detailed schema information (object type, columns, constraints, indexes, triggers, owner, comment) as JSON for user-created tables (ordinary or partitioned). Filters by a comma-separated list of names. If names are omitted, lists all tables in user schemas.
+
+#### Parameters
+
+| Name | Type | Description | Required | Default |
+| :--- | :--- | :--- | :--- | :--- |
+| table_names | string | Optional: A comma-separated list of table names. If empty, details for all tables will be listed. | No | `` |
+| output_format | string | Optional: Use 'simple' for names only or 'detailed' for full info. | No | `detailed` |
+
+
+---
+
+### list_triggers
+
+Lists all non-internal triggers in a database. Returns trigger name, schema name, table name, whether its enabled or disabled, timing (e.g BEFORE/AFTER of the event), the  events that cause the trigger to fire such as INSERT, UPDATE, or DELETE, whether the trigger activates per ROW or per STATEMENT, the handler function executed by the trigger and full definition.
+
+#### Parameters
+
+| Name | Type | Description | Required | Default |
+| :--- | :--- | :--- | :--- | :--- |
+| trigger_name | string | Optional: A specific trigger name pattern to search for. | No | `` |
+| schema_name | string | Optional: A specific schema name pattern to search for. | No | `` |
+| table_name | string | Optional: A specific table name pattern to search for. | No | `` |
+| limit | integer | Optional: The maximum number of rows to return. | No | `50` |
+
+
+---
+
+### list_views
+
+Lists views in the database from pg_views with a default limit of 50 rows. Returns schemaname, viewname, ownername and the definition.
+
+#### Parameters
+
+| Name | Type | Description | Required | Default |
+| :--- | :--- | :--- | :--- | :--- |
+| view_name | string | Optional: A specific view name to search for. | No | `` |
+| schema_name | string | Optional: A specific schema name to search for. | No | `` |
+| limit | integer | Optional: The maximum number of rows to return. | No | `50` |
+
+
+---
