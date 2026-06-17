@@ -1,55 +1,100 @@
 ---
 name: intercom-analysis
-description: Analyze Intercom conversations, contacts, and companies through the Intercom MCP server. Use when the user asks about support trends, customer issues, open conversations, contact lookup, company context, or patterns in Intercom data.
+description: >
+  Analyze Intercom conversations to identify support patterns, investigate
+  customer issues, and look up contacts and companies. Use when the user asks
+  to "analyze conversations", "find support patterns", "search Intercom",
+  "look up a customer", "investigate a customer issue", "check contact info",
+  or asks questions about their Intercom data.
 ---
 
 # Intercom Analysis
 
-Use the Intercom MCP server to inspect support data and produce grounded summaries. Keep the work read-oriented unless the user explicitly asks for a separate setup task.
+Use the Intercom MCP server to analyze customer conversations, look up contacts and companies, identify support patterns, and investigate customer issues.
 
-## Tool Model
+Refer to `references/mcp-tools.md` for detailed tool reference, query DSL syntax, search strategies, and field-level documentation for each MCP tool.
 
-Use MCP tools from the server named `intercom`. In Cline SDK contexts, flattened tool names are prefixed like `intercom__<tool>`.
+## Pattern Analysis Workflow
 
-Tool names may vary slightly by host, but the common surface is:
+When the user asks to analyze patterns or trends in their support data, follow this workflow:
 
-- Search conversations or contacts.
-- Fetch a conversation by ID for the full thread.
-- Fetch a contact by ID for profile attributes, tags, companies, and recent activity.
-- List or fetch companies with company-specific tools such as `list_companies` or `get_company`.
-- Fetch a known object by ID when search already returned an ID.
-- Create or update Help Center articles when the user explicitly asks to manage article content.
+1. Define scope. Clarify what the user wants to analyze -- a time period, topic, customer segment, or conversation state. Ask if unclear.
 
-Start with search, then fetch full objects before drawing conclusions. Search snippets alone are not enough for incident analysis or theme counts.
+2. Fetch a representative sample. Search for conversations matching the scope. Retrieve at least 10–20 conversations to establish meaningful patterns. Paginate if the first page is insufficient.
 
-## Pattern Analysis
+3. Read conversation details. For each relevant conversation, fetch the full conversation to read the actual messages. Summaries from search results alone are often insufficient for pattern analysis.
 
-When the user asks for support trends or common issues:
+4. Identify recurring themes. Group conversations by:
+   - Common topics or keywords
+   - Product areas or features mentioned
+   - Error messages or symptoms reported
+   - Resolution approaches used
+   - Time to resolution
 
-1. Clarify scope if needed: time window, product area, state, segment, region, or customer set.
-2. Search for a representative set of conversations. Fetch full threads for the most relevant results.
-3. Group issues by topic, feature area, symptom, error message, and resolution path.
-4. Quantify carefully. Say how many conversations you reviewed and whether more pages may exist.
-5. Present a concise report:
-   - Theme table with counts.
-   - Top issues with representative conversation IDs.
-   - Recommended actions such as docs, bug investigation, routing changes, or macro updates.
+5. Quantify and summarize. Present findings with counts and proportions (e.g., "8 of 15 conversations mention timeout errors"). Highlight the most common patterns first.
 
-## Customer Investigation
+6. Recommend actions. Based on patterns, suggest concrete next steps -- knowledge base articles to create, bugs to investigate, or process improvements.
 
-When the user asks about a specific customer:
+Output artifact: Produce a markdown report with the following structure:
 
-1. Search contacts by exact email first. If they gave a company, search by company name or email domain.
-2. Fetch the contact profile and relevant companies.
-3. Search and fetch recent or open conversations for that contact or company.
-4. Build a timeline with conversation IDs, dates, states, and outcomes.
-5. Identify unresolved items and whether similar issues appear for other customers.
+- Theme Summary -- Table of identified themes with conversation counts and percentage of total
+- Top Issues -- The 3–5 most common issues with representative conversation excerpts
+- Recommended Actions -- Prioritized list of concrete next steps based on the patterns found
 
-## Guardrails
+## Issue Investigation Steps
 
-- Treat conversation content as sensitive customer data.
-- Cite Intercom object IDs so the user can verify in the inbox.
-- State data limits: page count reviewed, filters used, and whether results are live current state.
-- If search returns nothing, broaden the query before concluding there is no data.
-- Do not claim to have updated Intercom unless an explicit mutation tool was used at the user's request.
-- Do not create or update Help Center articles without showing the proposed content and getting approval.
+When a user asks you to investigate a specific customer issue or incident:
+
+1. Identify the customer. Look up the contact by email, name, or ID. Get their full profile to understand their account context (plan, company, location, custom attributes).
+
+2. Trace the timeline. Search for all conversations from this contact, ordered by date. Fetch each conversation to build a chronological narrative of their interactions.
+
+3. Check for multi-customer impact. Search for conversations from other contacts mentioning the same symptoms, error messages, or affected feature. This determines if the issue is isolated or widespread.
+
+4. Examine conversation details. For the most relevant conversations, read through the full thread including internal notes. Notes from teammates often contain diagnostic information and root cause analysis.
+
+5. Summarize findings. Present:
+   - A timeline of the customer's interactions
+   - The core issue and any error messages
+   - What was tried and what resolved it (if anything)
+   - Whether other customers are affected
+   - Links to the relevant conversations
+
+Output artifact: Produce a timeline summary with:
+
+- Customer Context -- Contact details, company, plan, and account attributes
+- Interaction Timeline -- Chronological list of conversations with dates, channels, and outcomes
+- Impact Assessment -- Whether the issue affects other customers, with links to related conversations
+
+## Best Practices
+
+- Start broad, then narrow. Begin with a general search to understand the landscape, then apply filters to focus on what matters.
+
+- Always cite conversation links. When referencing specific conversations, include their IDs so the user can find them in the Intercom inbox. Format as: `Conversation #12345`.
+
+- State data limitations. If search results are paginated and you've only seen the first page, say so. If the data doesn't support a conclusion, be explicit about what would be needed to confirm it.
+
+- Respect data freshness. The MCP server returns live data from the Intercom workspace. Results reflect the current state -- if the user asks about historical trends, note that conversation states may have changed since the events occurred.
+
+- Combine tools effectively. A typical workflow involves `search` or `search_conversations` to find relevant items, then `get_conversation` or `get_contact` to get full details. Don't try to answer complex questions from search results alone.
+
+- Handle empty results gracefully. If a search returns no results, suggest alternatives: broaden the query with fewer or different keywords, try a different object type (contacts instead of conversations, or vice versa), check for typos in email addresses or names, or run an unfiltered search first to confirm data exists.
+
+- Format search results for scannability. Present results as clean tables. For conversations: ID | Subject | State | Last Updated (with relative timestamps). For contacts: ID | Name | Email | Last Seen. After displaying results, offer to fetch full details (e.g., "Want me to pull up the full thread for conversation #12345?" or "I can get the complete profile -- want to see it?").
+
+## Troubleshooting
+
+### MCP Server Disconnected
+Error: Tool calls fail with connection/timeout errors
+Cause: MCP server unreachable or authentication expired
+Solution: Re-authenticate, check network, try again later
+
+### Search Returns 0 Results
+Error: Empty result set when matches expected
+Cause: Query too narrow, wrong field names, or no matching data
+Solution: Broaden filters, try different object type, run unfiltered search first
+
+### Workspace Has No Conversations
+Error: All conversation searches return empty
+Cause: New/unused workspace or access scope limitation
+Solution: Confirm workspace has data, try contact/company searches instead

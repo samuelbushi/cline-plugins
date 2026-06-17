@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "Cline plugin that adds Intercom MCP tools and support workflow skills.",
+  "description": "Cline plugin that adds Intercom MCP tools, support workflow skills, and a customer-data safety rule.",
   "cline": {
     "plugins": [
       {
@@ -12,7 +12,8 @@
         ],
         "capabilities": [
           "mcp",
-          "skills"
+          "skills",
+          "rules"
         ]
       }
     ]
