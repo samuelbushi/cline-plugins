@@ -1,51 +1,50 @@
 ---
 name: memory-leak-debugging
-description: Diagnose browser JavaScript memory leaks with Chrome DevTools MCP, heap snapshots, repeated interaction scenarios, and safe analysis practices.
+description: Diagnoses and resolves memory leaks in JavaScript/Node.js applications. Use when a user reports high memory usage, OOM errors, or wants to analyze heapsnapshots or run memory leak detection tools like memlab.
 ---
 
 # Memory Leak Debugging
 
-Use this skill when the user reports growing memory usage, out of memory crashes, slowdowns after repeated interactions, detached DOM nodes, or suspected frontend leaks.
+This skill provides expert guidance and workflows for finding, diagnosing, and fixing memory leaks in JavaScript and Node.js applications.
 
-## Principles
+## Core Principles
 
-- Determine whether the leak is in browser code, server code, or test tooling.
-- Reproduce the smallest interaction loop that grows memory.
-- Do not read raw `.heapsnapshot` files directly into the conversation. They are too large and can contain sensitive page data.
-- Save heap snapshots to files and analyze them with tools or targeted scripts.
-- Treat page data and heap data as sensitive project data.
+- Prefer `memlab`: Do NOT attempt to read raw `.heapsnapshot` files directly, as they are extremely large and will consume too many tokens. Always recommend and use `memlab` to process snapshots and identify leak traces.
+- Isolate the Leak: Determine if the leak is in the browser (client-side) or Node.js (server-side).
+- Common Culprits: Look for detached DOM nodes, unhandled closures, global variables, event listeners not being removed, and caches growing unbounded. _Note: Detached DOM nodes are sometimes intentional caches; always ask the user before nulling them._
 
-## Browser Leak Workflow
+## Workflows
 
-1. Navigate to the page and state where the leak appears.
-2. Capture a baseline heap snapshot to a file.
-3. Repeat the suspected leaking interaction enough times to amplify retained objects.
-4. Capture a target heap snapshot to a file.
-5. Reverse or reset the interaction when possible.
-6. Capture a final heap snapshot to a file.
-7. Compare retained objects, detached DOM nodes, listeners, timers, closures, caches, and framework component instances.
-8. Tie findings back to source code and propose a bounded fix.
+### 1. Capturing Snapshots
 
-## Common Leak Sources
+When investigating a frontend web application memory leak, utilize the `chrome-devtools-mcp` tools to interact with the application and take snapshots.
 
-- Event listeners not removed on unmount.
-- Timers, intervals, observers, or subscriptions left running.
-- Detached DOM nodes retained by closures or caches.
-- Global arrays, maps, or module-level caches that never evict.
-- Large response data kept after navigation.
-- Framework components retaining stale references.
-- Repeated rendering that creates new objects without cleanup.
+- Use tools like `click`, `navigate_page`, `fill`, etc., to manipulate the page into the desired state.
+- Revert the page back to the original state after interactions to see if memory is released.
+- Repeat the same user interactions 10 times to amplify the leak.
+- Use `take_heapsnapshot` to save `.heapsnapshot` files to disk at baseline, target (after actions), and final (after reverting actions) states.
 
-## Fix Patterns
+### 2. Using Memlab to Find Leaks (Recommended)
 
-- Return cleanup functions from effects and lifecycle hooks.
-- Remove event listeners with the same target, event name, and handler reference.
-- Disconnect observers.
-- Clear timers and intervals.
-- Bound cache size and lifetime.
-- Null out references only when ownership is clear.
-- Add regression tests that repeat the leaking flow.
+Once you have generated `.heapsnapshot` files using `take_heapsnapshot`, use `memlab` to automatically find memory leaks.
 
-## Reporting
+- Read [references/memlab.md](references/memlab.md) for how to use `memlab` to analyze the generated heapsnapshots.
+- Do not read raw `.heapsnapshot` files using `read_file` or `cat`.
 
-Report the reproduction steps, evidence from snapshots, suspected retaining path, source files involved, and the smallest safe fix. Ask before deleting or rewriting intentional caches.
+### 3. Identifying Common Leaks
+
+When you have found a leak trace (e.g., via `memlab` output), you must identify the root cause in the code.
+
+- Read [references/common-leaks.md](references/common-leaks.md) for examples of common memory leaks and how to fix them.
+
+### 4. Fallback: Comparing Small Sanitized Snapshots Manually
+
+If `memlab` is not available, ask before using the bundled fallback script. The script parses full heap snapshot JSON and can fail or be too expensive on realistic snapshots, so only use it for small, sanitized snapshots when the user accepts that limitation.
+
+Locate the installed plugin file or copy the script to a temporary working directory, then run it with explicit snapshot paths:
+
+```bash
+node /path/to/compare_snapshots.js <baseline.heapsnapshot> <target.heapsnapshot>
+```
+
+The script outputs the top growing objects by size and highlights common leak-like object types if they are present. Treat the output as a rough triage aid, not proof of a leak.

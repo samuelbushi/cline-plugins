@@ -1,56 +1,125 @@
 ---
 name: debug-optimize-lcp
-description: Debug and optimize Largest Contentful Paint with Chrome DevTools MCP performance traces, network analysis, and targeted frontend fixes.
+description: Guides debugging and optimizing Largest Contentful Paint (LCP) using Chrome DevTools MCP tools. Use this skill whenever the user asks about LCP performance, slow page loads, Core Web Vitals optimization, or wants to understand why their page's main content takes too long to appear. Also use when the user mentions "largest contentful paint", "page load speed", "CWV", or wants to improve how fast their hero image or main content renders.
 ---
 
-# Debug And Optimize LCP
+## What is LCP and why it matters
 
-Use this skill when the user asks about slow page loads, Largest Contentful Paint, Core Web Vitals, hero image loading, render blocking resources, or main content appearing too late.
+Largest Contentful Paint (LCP) measures how quickly a page's main content becomes visible. It's the time from navigation start until the largest image or text block renders in the viewport.
 
-## LCP Targets
+- Good: 2.5 seconds or less
+- Needs improvement: 2.5-4.0 seconds
+- Poor: greater than 4.0 seconds
 
-- Good: 2.5 seconds or less.
-- Needs improvement: more than 2.5 seconds and up to 4.0 seconds.
-- Poor: more than 4.0 seconds.
+LCP is a Core Web Vital that directly affects user experience and search ranking. On 73% of mobile pages, the LCP element is an image.
 
-LCP is the time from navigation start until the largest visible image or text block renders.
+## LCP Subparts Breakdown
+
+Every page's LCP breaks down into four sequential subparts with no gaps or overlaps. Understanding which subpart is the bottleneck is the key to effective optimization.
+
+| Subpart                       | Ideal % of LCP | What it measures                               |
+| ----------------------------- | -------------- | ---------------------------------------------- |
+| Time to First Byte (TTFB) | ~40%           | Navigation start -> first byte of HTML received |
+| Resource load delay       | <10%           | TTFB -> browser starts loading the LCP resource |
+| Resource load duration    | ~40%           | Time to download the LCP resource              |
+| Element render delay      | <10%           | LCP resource downloaded -> LCP element rendered |
+
+The "delay" subparts should be as close to zero as possible. If either delay subpart is large relative to the total LCP, that's the first place to optimize.
+
+Common Pitfall: Optimizing one subpart (like compressing an image to reduce load duration) without checking others. If render delay is the real bottleneck, a smaller image won't help - the saved time just shifts to render delay.
+
+For deeper definitions, read [references/lcp-breakdown.md](references/lcp-breakdown.md) and [references/elements-and-size.md](references/elements-and-size.md).
 
 ## Debugging Workflow
 
-1. Navigate to the target page.
-2. Record a performance trace with reload so the full page load is captured.
-3. Inspect trace insights for LCP breakdown, document latency, render blocking resources, and LCP discovery.
-4. Identify the LCP element with trace output and targeted `evaluate_script` when needed.
-5. Use network tools to inspect the LCP resource request, timing, size, priority, and cache behavior.
-6. Map the bottleneck to a specific code, asset, server, or rendering fix.
-7. Rerun the trace after changes to verify the bottleneck moved or improved.
+Follow these steps in order. Each step builds on the previous one.
 
-## LCP Subparts
+### Step 1: Record a Performance Trace
 
-Every LCP result is usually explained by four parts:
+Navigate to the page, then record a trace with reload to capture the full page load including LCP:
 
-| Subpart | What it measures | Common fix |
-| --- | --- | --- |
-| TTFB | Time until first byte of HTML | cache, edge rendering, backend latency, fewer redirects |
-| Resource load delay | Time before the LCP resource starts loading | discover image earlier, remove lazy loading, preload |
-| Resource load duration | Time to download the LCP resource | compress, resize, CDN, modern image format |
-| Element render delay | Time after resource load before render | reduce render blocking CSS or JS, SSR main content |
+1. `navigate_page` to the target URL.
+2. `performance_start_trace` with `reload: true` and `autoStop: true`.
 
-The delay subparts should usually be close to zero.
+The trace results will include LCP timing and available insight sets. Note the insight set IDs from the output - you'll need them in the next step.
 
-## Common Fixes
+### Step 2: Analyze LCP Insights
 
-- Do not lazy-load the LCP image.
-- Use a normal `src` on the LCP image when possible.
-- Add `fetchpriority="high"` to the LCP image.
-- Preload the LCP image when it is not discoverable early in HTML.
-- Serve correctly sized responsive images.
-- Use WebP or AVIF when supported.
-- Inline critical CSS or reduce blocking CSS.
-- Defer non-critical JavaScript.
-- Render the main content in the initial HTML when possible.
-- Improve server response time and cacheability.
+Use `performance_analyze_insight` to drill into LCP-specific insights. Look for these insight names in the trace results:
 
-## Verification
+- LCPBreakdown - Shows the four LCP subparts with timing for each.
+- DocumentLatency - Server response time issues affecting TTFB.
+- RenderBlocking - Resources blocking the LCP element from rendering.
+- LCPDiscovery - Whether the LCP resource was discoverable early.
 
-Do not stop at a single audit score. Compare before and after traces, including the LCP element and subpart timings. If lab results are inconsistent, explain the variance and use repeated measurements.
+Call `performance_analyze_insight` with the insight set ID and the insight name from the trace results.
+
+### Step 3: Identify the LCP Element
+
+Use `evaluate_script` with the "Identify LCP Element" snippet found in [references/lcp-snippets.md](references/lcp-snippets.md) to reveal the LCP element's tag, resource URL, and raw timing data.
+
+The `url` field tells you what resource to look for in the network waterfall. If `url` is empty, the LCP element is text-based (no resource to load).
+
+### Step 4: Check the Network Waterfall
+
+Use `list_network_requests` to see when the LCP resource loaded relative to other resources:
+
+- Call `list_network_requests` filtered by `resourceTypes: ["Image", "Font"]` (adjust based on Step 3).
+- Then use `get_network_request` with the LCP resource's request ID for full details.
+
+Key Checks:
+
+- Start Time: Compare against the HTML document and the first resource. If the LCP resource starts much later than the first resource, there's resource load delay to eliminate.
+- Duration: A large resource load duration suggests the file is too big or the server is slow.
+
+### Step 5: Inspect HTML for Common Issues
+
+Use `evaluate_script` with the "Audit Common Issues" snippet found in [references/lcp-snippets.md](references/lcp-snippets.md) to check for lazy-loaded images in the viewport, missing fetchpriority, and render-blocking scripts.
+
+## Optimization Strategies
+
+After identifying the bottleneck subpart, apply these prioritized fixes.
+
+For a compact optimization reference, read [references/optimization-strategies.md](references/optimization-strategies.md).
+
+### 1. Eliminate Resource Load Delay (target: <10%)
+
+The most common bottleneck. The LCP resource should start loading immediately.
+
+- Root Cause: LCP image loaded via JS/CSS, `data-src` usage, or `loading="lazy"`.
+- Fix: Use standard `<img>` with `src`. Never lazy-load the LCP image.
+- Fix: Add `<link rel="preload" fetchpriority="high">` if the image isn't discoverable in HTML.
+- Fix: Add `fetchpriority="high"` to the LCP `<img>` tag.
+
+### 2. Eliminate Element Render Delay (target: <10%)
+
+The element should render immediately after loading.
+
+- Root Cause: Large stylesheets, synchronous scripts in `<head>`, or main thread blocking.
+- Fix: Inline critical CSS, defer non-critical CSS/JS.
+- Fix: Break up long tasks blocking the main thread.
+- Fix: Use Server-Side Rendering (SSR) so the element exists in initial HTML.
+
+### 3. Reduce Resource Load Duration (target: ~40%)
+
+Make the resource smaller or faster to deliver.
+
+- Fix: Use modern formats (WebP, AVIF) and responsive images (`srcset`).
+- Fix: Serve from a CDN.
+- Fix: Set `Cache-Control` headers.
+- Fix: Use `font-display: swap` if LCP is text blocked by a web font.
+
+### 4. Reduce TTFB (target: ~40%)
+
+The HTML document itself takes too long to arrive.
+
+- Fix: Minimize redirects and optimize server response time.
+- Fix: Cache HTML at the edge (CDN).
+- Fix: Ensure pages are eligible for back/forward cache (bfcache).
+
+## Verifying Fixes & Emulation
+
+- Verification: Re-run the trace (`performance_start_trace` with `reload: true`) and compare the new subpart breakdown. The bottleneck should shrink.
+- Emulation: Lab measurements differ from real-world experience. Use `emulate` to test under constraints:
+  - `emulate` with `networkConditions: "Fast 3G"` and `cpuThrottlingRate: 4`.
+  - This surfaces issues visible only on slower connections/devices.
