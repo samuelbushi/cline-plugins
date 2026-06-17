@@ -34,7 +34,7 @@ Cline can use the `qt-docs` MCP server for live Qt documentation lookup and the 
 
 - Outbound HTTPS access to `https://qt-docs-mcp.qt.io/mcp` for live Qt documentation lookup.
 - Local Qt tools only when the corresponding skill is used: examples include Qt 6, CMake, Python 3, `qmltestrunner`, and `qmlprofiler`.
-- A user-configured Figma MCP connection for Figma token extraction and component generation. Some token extraction workflows can also use local `curl` with a Figma Personal Access Token; keep that token secret and do not commit or paste it into generated files.
+- A user-configured Figma MCP connection for Figma component generation. Token extraction can use Figma MCP or a local `curl` export with a Figma Personal Access Token; keep that token out of chat, shell history, generated files, and commits.
 - Review Qt AI Services terms and your project licensing requirements before using the skills or MCP tools in a commercial Qt context.
 
 ## Trust Boundaries

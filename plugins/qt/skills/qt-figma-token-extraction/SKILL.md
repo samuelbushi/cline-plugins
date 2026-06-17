@@ -218,7 +218,7 @@ If any variable value references another variable (an alias), resolve it to its 
 
 Requires: Terminal access (curl is built into macOS and Linux; available on Windows 10+), and a Figma Personal Access Token (viewer scope is enough).
 
-Important: Complete all steps in this section -- especially PAT setup and verification -- before running any curl commands. Running curl with an invalid token will create broken output files.
+Important: Complete all steps in this section -- especially PAT setup and verification -- before running any curl commands. Running curl with an invalid token will create broken output files. Do not ask the user to paste the token into chat, write it into a file, or put it directly in a command. Use the shell-variable plus `curl --config -` form below so the token is not stored in shell history or visible as a command-line argument.
 
 > Community files are not supported. The curl commands only work on Figma files that are in your own account (files you own or have been invited to). Community files you are viewing but have not duplicated will return a 403 error. If the user is working from a community file, ask them to duplicate it to their account first: in Figma, open the community file -> click Duplicate to your drafts -> use the duplicated file's URL instead.
 
@@ -243,7 +243,13 @@ If no, guide them through creating one:
 If the PAT was recently verified (within the last 90 days), the user can skip this step. Otherwise, ask the user to run this verification command in their terminal:
 
 ```bash
-curl -H "X-Figma-Token: YOUR_TOKEN" "https://api.figma.com/v1/me"
+read -rsp "Figma PAT: " FIGMA_TOKEN
+printf '\n'
+curl --config - <<EOF
+header = "X-Figma-Token: ${FIGMA_TOKEN}"
+url = "https://api.figma.com/v1/me"
+EOF
+unset FIGMA_TOKEN
 ```
 
 Expected result: a JSON response containing their Figma account email (e.g. `"email": "name@example.com"`).
@@ -255,7 +261,14 @@ If the response contains `"status": 403` or `"Invalid token"`: the token is wron
 Ask the user to run in their terminal:
 
 ```bash
-curl -H "X-Figma-Token: YOUR_TOKEN" "https://api.figma.com/v1/files/FILE_KEY/variables/local" -o design-tokens-raw.json
+read -rsp "Figma PAT: " FIGMA_TOKEN
+printf '\n'
+curl --config - <<EOF
+header = "X-Figma-Token: ${FIGMA_TOKEN}"
+url = "https://api.figma.com/v1/files/FILE_KEY/variables/local"
+output = "design-tokens-raw.json"
+EOF
+unset FIGMA_TOKEN
 ```
 
 This saves the complete raw variable export -- all collections, all modes, all values -- to `design-tokens-raw.json`.
@@ -292,13 +305,24 @@ From the response, extract for each text style: the style name, font family, fon
 Text styles require two curl calls -- one to get the style list with node IDs, then one to fetch the actual property values for those nodes. The PAT from Step 1a is already verified, so proceed directly:
 
 ```bash
-curl -H "X-Figma-Token: YOUR_TOKEN" "https://api.figma.com/v1/files/FILE_KEY/styles" -o text-styles-list.json
+read -rsp "Figma PAT: " FIGMA_TOKEN
+printf '\n'
+curl --config - <<EOF
+header = "X-Figma-Token: ${FIGMA_TOKEN}"
+url = "https://api.figma.com/v1/files/FILE_KEY/styles"
+output = "text-styles-list.json"
+EOF
 ```
 
 Then extract the `node_id` values from `text-styles-list.json`, join them with commas, and run:
 
 ```bash
-curl -H "X-Figma-Token: YOUR_TOKEN" "https://api.figma.com/v1/files/FILE_KEY/nodes?ids=NODE_IDS" -o text-styles-nodes.json
+curl --config - <<EOF
+header = "X-Figma-Token: ${FIGMA_TOKEN}"
+url = "https://api.figma.com/v1/files/FILE_KEY/nodes?ids=NODE_IDS"
+output = "text-styles-nodes.json"
+EOF
+unset FIGMA_TOKEN
 ```
 
 From `text-styles-nodes.json`, extract for each text style: font family, font size, font weight, line height, letter spacing, and any text decoration or text transform applied.

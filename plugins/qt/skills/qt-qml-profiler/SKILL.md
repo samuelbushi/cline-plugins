@@ -318,8 +318,8 @@ From the parser JSON output, take the top 5 hotspots. For each hotspot:
 #### Source location links
 
 Render every locally-resolved source location in the report as a
-clickable markdown link: `[File.qml:<line>](<relative-path>#L<line>)` --
-e.g. `[Main.qml:42](../../src/ui/Main.qml#L42)`. The path is relative to
+clickable markdown link with a file-and-line label, for example label
+`Main.qml:42` pointing at the matching workspace path with a line anchor. The path is relative to
 the report's directory (`profiler/reports/`); the `#L<line>` anchor
 points to the hotspot's line. Leave Qt-internal
 (`qrc:/qt-project.org/...`), `[source unresolved]`, and skipped locations

@@ -172,7 +172,7 @@ and every `import <URI>` resolves to "module is not installed".
 For any `tst_*.qml` that uses `import <URI>` against such a
 module, wire-up is the only working path; skip the Step 4b
 direct-mode offer and route straight to Step 5. See
-[qt-quick-test-cmake.md section Additional detection -- backing target type](references/qt-quick-test-cmake.md#additional-detection--backing-target-type).
+[qt-quick-test-cmake.md section Additional detection -- backing target type](references/qt-quick-test-cmake.md#additional-detection----backing-target-type).
 
 ### Step 4 -- Detect existing CMake test wiring
 
@@ -192,7 +192,7 @@ targets external sources or a vendored module. In that case:
 
 CMake project present. Grep the project's CMakeLists.txt
 files (root + one level deep) for the patterns in
-[qt-quick-test-cmake.md section Detection patterns](references/qt-quick-test-cmake.md#detection-patterns--is-wiring-already-present).
+[qt-quick-test-cmake.md section Detection patterns](references/qt-quick-test-cmake.md#detection-patterns----is-wiring-already-present).
 
 If any pattern matches, treat the infrastructure as
 present and skip Steps 4b and 5. Proceed to Step 6.

@@ -210,7 +210,7 @@ Apply every rule relevant to the component under test.
     Destroy `win` and `comp` at the end of each test function.
 
     URL form: see
-    [qt-quick-test-template.md section Variant 7 section URL form by source location](qt-quick-test-template.md#variant-7--window--applicationwindow).
+    [qt-quick-test-template.md section Variant 7 section URL form by source location](qt-quick-test-template.md#variant-7----window-applicationwindow).
     The table there distinguishes static/shared library
     backings, `qt_add_executable`-backed modules (whose
     sources are not in the test binary's `qrc:/`), and

@@ -116,7 +116,7 @@ test code as a fenced Markdown code block in the chat response.
 4. Classify the source's top-level type to pick a
    template variant before applying test rules:
    - `Window` / `ApplicationWindow` (or a derivative) ->
-     [variant 7](references/qt-quick-test-template.md#variant-7--window--applicationwindow) (rule 41).
+     [variant 7](references/qt-quick-test-template.md#variant-7----window-applicationwindow) (rule 41).
    - `pragma Singleton` (or `QT_QML_SINGLETON_TYPE TRUE` in
      CMake) -> variant 8 (rule 42).
    - Qt Quick 3D graphical node (`Model`, `Node`, `*Camera`,
