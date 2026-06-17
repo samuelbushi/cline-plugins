@@ -49,3 +49,5 @@ Create a sequence diagram for the login flow on this Miro board: https://miro.co
 ## Security Notes
 
 The MCP server can read and modify boards according to the permissions granted to the authenticated Miro account. Ask before overwriting local `.miro/specs/` content, changing PR or MR descriptions, or creating large sets of board artifacts.
+
+Bundled Miro skill material is listed as MIT-licensed in the source package metadata. See `NOTICE.miro.md`.
