@@ -2,8 +2,7 @@
  * Supermemory Plugin
  *
  * Gives Cline persistent, cross-session memory backed by Supermemory
- * (https://supermemory.ai). Ported from the OpenCode Supermemory plugin and
- * adapted to Cline's plugin primitives.
+ * (https://supermemory.ai), adapted to Cline's plugin primitives.
  *
  * What it does:
  *   - Registers a `supermemory` tool the agent can call to add / search / list /
