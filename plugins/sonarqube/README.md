@@ -4,9 +4,9 @@ SonarQube integration for Cline code quality, security, coverage, duplication, d
 
 ## What It Adds
 
-This plugin registers the local SonarQube MCP server through the SonarQube CLI and bundles workflow skills for common SonarQube tasks. Installing or enabling the plugin may start the MCP server immediately; `/sonar-integrate` is the explicit setup and verification workflow for CLI auth, project context, and troubleshooting. It also adds slash commands for setup, listing projects and issues, fixing findings, checking quality gates, analyzing files, coverage, duplication, and dependency risks.
+This plugin registers the local SonarQube MCP server through the SonarQube CLI and bundles workflow skills for common SonarQube tasks. Installing or enabling the plugin may start the MCP server immediately; the `sonar-integrate` skill is the explicit setup and verification workflow for CLI auth, project context, and troubleshooting.
 
-The source integration includes host-specific startup hooks for status reporting. This Cline plugin intentionally does not run those hooks at startup; status checks are explicit through `/sonar-integrate`.
+The source integration includes host-specific startup hooks for status reporting. This Cline plugin intentionally does not run those hooks at startup; status checks are explicit through the setup skill.
 
 ## Install
 
@@ -24,7 +24,6 @@ cline plugin install ./plugins/sonarqube --cwd .
 
 - MCP: `sonarqube` starts `sonar run mcp` through the local SonarQube CLI.
 - Skills: SonarQube setup, project discovery, issue search, issue fixing, quality gate, analysis, coverage, duplication, and dependency-risk workflows.
-- Commands: `/sonar-integrate`, `/sonar-list-projects`, `/sonar-list-issues`, `/sonar-fix-issue`, `/sonar-quality-gate`, `/sonar-analyze`, `/sonar-coverage`, `/sonar-duplication`, and `/sonar-dependency-risks`.
 - Rules: safety guidance for authentication, external analysis, code upload, source changes, and untrusted SonarQube output.
 
 ## Requirements

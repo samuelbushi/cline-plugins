@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "SonarQube MCP, quality/security skills, and workflow commands.",
+  "description": "SonarQube MCP plus quality, security, coverage, and dependency-risk skills.",
   "cline": {
     "plugins": [
       {
@@ -12,7 +12,6 @@
         ],
         "capabilities": [
           "mcp",
-          "commands",
           "skills",
           "rules"
         ]
