@@ -8,9 +8,6 @@
 		"typecheck": "tsc --noEmit",
 		"clean": "rm -rf node_modules dist"
 	},
-	"exports": {
-		".": "./index.ts"
-	},
 	"cline": {
 		"plugins": [
 			{
