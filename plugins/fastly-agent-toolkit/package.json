@@ -11,6 +11,7 @@
           "./index.ts"
         ],
         "capabilities": [
+          "rules",
           "skills"
         ]
       }

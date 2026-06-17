@@ -4,13 +4,15 @@ Bundle Fastly workflow skills as an installable Cline plugin.
 
 ## What It Does
 
-Installs five Fastly skills:
+Installs seven Fastly skills plus a production-change safety rule:
 
 - `fastly-platform` for CDN service design, caching, TLS, origin, security, observability, and API workflows.
 - `fastly-cli` for safe terminal workflows with the `fastly` CLI.
-- `fastly-vcl` for VCL, XVCL, Falco linting, local simulation, and VCL deployment review.
-- `fastly-compute-local` for local Fastly Compute development with Viceroy, Fastlike, and `fastly compute serve`.
-- `fastly-ngwaf-audit` for read-oriented Next-Gen WAF posture checks.
+- `fastly-falco` for Fastly VCL linting, testing, formatting, local simulation, and Falco source-code lookup.
+- `fastly-xvcl` for XVCL metaprogramming, generated VCL, compile-time loops, constants, functions, and tables.
+- `fastly-viceroy` for local Fastly Compute testing with Viceroy, especially Rust and Component Model projects.
+- `fastly-fastlike` for Fastly Compute ABI/runtime internals, local WASM serving, and profiling.
+- `fastly-ngwaf` for read-oriented Next-Gen WAF posture checks with a bundled audit script.
 
 The plugin does not register an MCP server, run background processes, or perform install-time Fastly calls. It gives Cline concise operational guidance for using tools the user already controls.
 
