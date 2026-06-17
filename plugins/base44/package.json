@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "Cline plugin that bundles Base44 CLI, SDK, and troubleshooting skills.",
+  "description": "Cline plugin that bundles Base44 CLI, SDK, troubleshooting, and reference skills.",
   "cline": {
     "plugins": [
       {
@@ -11,7 +11,8 @@
           "./index.ts"
         ],
         "capabilities": [
-          "skills"
+          "skills",
+          "rules"
         ]
       }
     ]
