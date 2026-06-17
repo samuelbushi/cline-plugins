@@ -71,24 +71,6 @@ const plugin: AgentPlugin = {
 		})
 
 		api.registerCommand({
-			name: "logfire-query",
-			description: "Query and analyze Logfire telemetry with the Logfire MCP server.",
-			handler: (input) => ({
-				submitPrompt: buildPrompt(
-					"Query Logfire telemetry.",
-					input,
-					[
-						"Use the logfire-query skill if available.",
-						"Use Logfire MCP tools for interactive analysis when they are connected and authenticated.",
-						"Ask for the project, service, trace id, or time range when needed.",
-						"Write bounded SQL with a LIMIT and a clear time window.",
-						"Return concise findings, evidence, and sensible next queries.",
-					].join("\n"),
-				),
-			}),
-		})
-
-		api.registerCommand({
 			name: "logfire-debug",
 			description: "Investigate production errors or slow traces using Logfire telemetry.",
 			handler: (input) => ({

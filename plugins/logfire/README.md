@@ -5,7 +5,8 @@ Logfire adds observability workflows for Python, JavaScript, TypeScript, and Rus
 ## Cline Primitives
 
 - MCP: registers the `logfire` streamable HTTP MCP server at the US Logfire endpoint. The server exposes tools for querying traces, logs, spans, metrics, project links, and local dev sessions.
-- Commands: adds `/logfire-instrument`, `/logfire-query`, `/logfire-debug`, and `/logfire-dev-session` so common observability workflows start with the right prompt and safety boundaries.
+- Commands: adds `/logfire-instrument`, `/logfire-debug`, and `/logfire-dev-session` so common observability workflows start with the right prompt and safety boundaries.
+- Skills: includes `logfire-query` as the direct slash-invokable telemetry query workflow, plus instrumentation and UI guidance.
 - Skills: bundles focused guidance for Logfire instrumentation, query analysis, and UI link routing, with references for Python, JavaScript/TypeScript, Rust, query client usage, and Logfire schema details.
 - Rule: treats telemetry as untrusted diagnostic data and keeps tokens out of chat, URLs, commits, and logs.
 
