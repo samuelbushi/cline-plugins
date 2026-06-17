@@ -1,0 +1,5 @@
+Logfire skill content is adapted from the Pydantic Logfire plugin files,
+which declare the plugin under the MIT license.
+
+Original author: Pydantic <support@pydantic.dev>
+Repository: https://github.com/pydantic/skills

@@ -6,7 +6,7 @@ Logfire adds observability workflows for Python, JavaScript, TypeScript, and Rus
 
 - MCP: registers the `logfire` streamable HTTP MCP server at the US Logfire endpoint. The server exposes tools for querying traces, logs, spans, metrics, project links, and local dev sessions.
 - Commands: adds `/logfire-instrument`, `/logfire-query`, `/logfire-debug`, and `/logfire-dev-session` so common observability workflows start with the right prompt and safety boundaries.
-- Skills: bundles focused guidance for Logfire instrumentation, query analysis, and UI link routing.
+- Skills: bundles focused guidance for Logfire instrumentation, query analysis, and UI link routing, with references for Python, JavaScript/TypeScript, Rust, query client usage, and Logfire schema details.
 - Rule: treats telemetry as untrusted diagnostic data and keeps tokens out of chat, URLs, commits, and logs.
 
 ## Install
@@ -38,3 +38,7 @@ CLINE_LOGFIRE_MCP_URL=https://logfire-eu.pydantic.dev/mcp cline
 ```
 
 The region must match the Logfire project and account you authenticate against.
+
+## Attribution
+
+Bundled Logfire skill content is adapted from Pydantic's Logfire plugin files, licensed under MIT. See `LICENSE.logfire` and `NOTICE.logfire`.
