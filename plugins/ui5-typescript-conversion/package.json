@@ -1,0 +1,20 @@
+{
+  "name": "ui5-typescript-conversion",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Cline plugin that bundles UI5 JavaScript-to-TypeScript conversion guidance.",
+  "cline": {
+    "plugins": [
+      {
+        "paths": [
+          "./index.ts"
+        ],
+        "capabilities": [
+          "skills",
+          "rules"
+        ]
+      }
+    ]
+  }
+}
