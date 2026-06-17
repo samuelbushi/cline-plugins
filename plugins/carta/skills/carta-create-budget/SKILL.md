@@ -33,7 +33,7 @@ Claude for Excel. Audience is an accountant.
 - Status vocabulary: ✅ Match | ⚠ Mismatch ($X diff) | ❌ Missing in Carta | ❌ Missing in Client Doc.
 - No environment URLs. Output goes into Excel cells, not Carta dashboard links.
 - Closing summary link is a workbook citation (`<citation:Sheet!Range>`) in
-  Claude for Excel mode, and a `file://` path in Claude Code / Cowork mode.
+  Claude for Excel mode, and a `file://` path in Cline local-file mode.
   Never both.
 - Every numbered choice in this skill -- including the closing
   next-step menu -- must be presented as an explicit user choice. In Cline,

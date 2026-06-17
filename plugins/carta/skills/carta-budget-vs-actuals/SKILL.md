@@ -32,7 +32,7 @@ Currency: `<CCY>X,XXX` positive, `(<CCY>X,XXX)` negative, totals bolded -- use t
 Differences are absolute. Status: ✅ Match | ⚠ Mismatch ($X diff) | ❌ Missing in Carta | ❌ Missing in Client Doc.
 
 Closing summary link is a workbook citation (`<citation:Sheet!Range>`) in
-Claude for Excel mode, and a `file://` path in Claude Code / Cowork mode.
+Claude for Excel mode, and a `file://` path in Cline local-file mode.
 Chat-only mode produces neither -- just the analysis.
 
 Every numbered choice in this skill -- including the closing

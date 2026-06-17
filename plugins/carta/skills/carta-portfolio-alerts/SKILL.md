@@ -41,7 +41,7 @@ The gateway defaults to `detail=summary` for list commands. All four commands us
 
 If the user asks about a specific check only (e.g. "any expiring 409As?"), fetch only the relevant command per company.
 
-> Parallel execution: The `fetch` tool has `readOnlyHint=true`, so Claude Code executes parallel fetch calls concurrently. Issue ALL fetch calls for ALL companies in a single response -- do NOT loop company-by-company. See Workflow Step 2.
+> Parallel execution: Issue ALL fetch calls for ALL companies in a single response when the host supports parallel tool calls -- do NOT loop company-by-company. See Workflow Step 2.
 
 ## Key Fields
 

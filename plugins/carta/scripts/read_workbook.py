@@ -4,8 +4,7 @@
 # ///
 """
 Read an .xlsx file and emit a JSON description of its sheets, used by
-the budget skills when they run outside Claude for Excel (Claude Code /
-Cowork / any local-file context).
+the budget skills when they run in Cline local-file mode.
 
 Usage:
     uv run read_workbook.py <path> [--sheet <name>] [--max-rows N]

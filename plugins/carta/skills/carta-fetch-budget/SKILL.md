@@ -37,7 +37,7 @@ Claude for Excel. Audience is an accountant.
   from the data -- never default to USD (see Hard rules).
 - Closing summary link is a workbook citation
   (`<citation:Sheet!Range>`) in Claude for Excel mode, and a `file://`
-  path in Claude Code / Cowork mode. Never both.
+  path in Cline local-file mode. Never both.
 - Every numbered choice in this skill -- including the closing
   next-step menu -- must be presented as an explicit user choice. In Cline,
   ask in chat or use the host question UI when available. Do not bury

@@ -39,7 +39,7 @@ For each company, the relevant commands are:
 
 The gateway defaults to `detail=summary` for all three commands. The enriched summaries include all fields needed for portfolio benchmarks -- no individual records required.
 
-> Parallel execution: The `fetch` tool has `readOnlyHint=true`, so Claude Code executes parallel fetch calls concurrently. Issue ALL fetch calls for ALL companies in a single response -- do NOT loop company-by-company. See Workflow Step 2.
+> Parallel execution: Issue ALL fetch calls for ALL companies in a single response when the host supports parallel tool calls -- do NOT loop company-by-company. See Workflow Step 2.
 
 ## Key Fields
 

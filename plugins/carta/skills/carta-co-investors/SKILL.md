@@ -199,25 +199,21 @@ a right-side drawer with the full investor breakdown for that company (investors
 
 Resolve a stable, cross-platform working directory once before fetching.
 The intermediate response files and the final HTML artifact all live under
-`$WORKSPACE`. Both the Claude process AND the preview-panel host must be
-able to read this path -- on Cowork demo VMs running macOS 26.5+ the host
-can no longer see `~/.cache/...` or `/tmp/...`. The probe below picks the
-right path automatically: Cowork sandboxes get `$HOME/mnt/outputs/` (the
-bind-mounted session outputs dir, visible from both VM and host), regular
-Claude Code CLI laptops get `carta workspace cache`, and anything else
+`$WORKSPACE`. The Cline session and any local preview/open-file workflow must
+be able to read this path. The probe below picks a readable path automatically:
+sandboxed runtimes with `$HOME/mnt/outputs/` use that shared output mount,
+local Carta CLI environments use `carta workspace cache`, and anything else
 falls back to `$TMPDIR`.
 
 ```bash
 # --- Workspace probe -------------------------------------------------
 if [ -d "${HOME}/mnt/outputs" ] && [ -w "${HOME}/mnt/outputs" ]; then
-  # Cowork sandbox: $HOME is the session root (/sessions/<name>) and
-  # mnt/outputs/ is the bind mount the macOS host sees as
-  # ~/Library/Application Support/Claude/.../outputs/. Writes here are
-  # readable by both the sandboxed Claude process and the host
-  # preview-panel process.
+  # Sandboxed runtime with a shared output mount. Writes here are
+  # readable by both the sandboxed process and the host preview/open-file
+  # workflow.
   WORKSPACE="${HOME}/mnt/outputs/carta-co-investors"
 elif command -v carta >/dev/null 2>&1; then
-  # Regular Claude Code CLI on a developer laptop.
+  # Local Carta CLI on a developer laptop.
   WORKSPACE=$(carta workspace cache carta-co-investors | jq -r .)
 else
   # Last-resort fallback (e.g. CI / hosted runtimes without Carta CLI).
@@ -226,16 +222,13 @@ fi
 mkdir -p "$WORKSPACE"
 
 # --- Plugin install probe (SKILL_DIR) --------------------------------
-# Claude Code CLI exports CLAUDE_PLUGIN_ROOT and substitutes it inline
-# in skill content. Cowork's harness DOES NOT export this variable and
-# does not substitute ${CLAUDE_PLUGIN_ROOT}, so any literal reference
-# would resolve to an empty string or a host-side macOS path the
-# sandbox can't read. This probe resolves the install path in both
-# environments without depending on harness substitution.
+# Resolve the installed skill directory without depending on a
+# source-host-specific plugin root variable. Cline users can also resolve
+# bundled scripts and references relative to this skill directory.
 if [ -n "${CLAUDE_PLUGIN_ROOT:-}" ] && [ -d "$CLAUDE_PLUGIN_ROOT/skills/carta-co-investors" ]; then
   SKILL_DIR="$CLAUDE_PLUGIN_ROOT/skills/carta-co-investors"
 else
-  # Cowork: the plugin is bind-mounted at $HOME/mnt/.remote-plugins/plugin_*/skills/carta-co-investors
+  # Some sandboxed runtimes bind-mount plugin files under $HOME/mnt.
   SKILL_DIR=$(find "${HOME}/mnt/.remote-plugins" -maxdepth 3 -type d -name "carta-co-investors" 2>/dev/null | head -1)
 fi
 if [ -z "${SKILL_DIR:-}" ] || [ ! -d "$SKILL_DIR/scripts" ]; then
@@ -248,10 +241,9 @@ fi
 # MCP client auto-persists. The tool result surfaces the host path in a
 # "saved to <PATH>" line. resolve_blob translates that to a path THIS
 # shell can read:
-#   * Claude Code CLI -- bash runs on the host, so the saved path is
-#     directly readable; use it as-is.
-#   * Cowork sandbox -- bash can't see the macOS host path (/var/folders/...),
-#     but the SAME blob is exposed read-only at a bindfs mount under
+#   * Local host execution -- the saved path is directly readable; use it as-is.
+#   * Sandboxed execution -- bash may not see the host path (/var/folders/...),
+#     but the same blob can be exposed read-only at a bindfs mount under
 #     $HOME/mnt/.claude/projects/. The blob filename is unique
 #     (mcp-...-blob-<ts>-<rand>.bin), so locate it by basename.
 # Prints the readable path and returns 0, or prints nothing and returns 1.
@@ -284,8 +276,9 @@ auto-persists to disk. The tool result is a small ack plus a line of the form:
 The row data never enters your context -- only that path does. Capture the
 `<ABSOLUTE_PATH>` from each query's `saved to ...` line, then resolve it to a
 readable path with the `resolve_blob` function defined in the Step A1 probe
-block above (it handles Claude Code CLI, where the path is directly readable,
-and Cowork, where the same blob is exposed at a bind-mounted sandbox path):
+block above (it handles local host execution, where the path is directly
+readable, and sandboxed execution, where the same blob may be exposed at a
+bind-mounted path):
 
 ```bash
 QUERY_S_BLOB=$(resolve_blob "<query_s_saved_path>")

@@ -5,7 +5,7 @@
 """
 Apply a JSON payload of operations to an .xlsx file (creating it if
 missing). Used by the budget skills when they run outside Claude for
-Excel (Claude Code / Cowork / any local-file context).
+Excel in Cline local-file mode.
 
 Usage:
     uv run write_workbook.py <payload_json_path>
