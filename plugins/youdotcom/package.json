@@ -1,0 +1,31 @@
+{
+  "name": "youdotcom",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "You.com skills for web search, research, content extraction, MCP, and agent framework integrations.",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "cline": {
+    "plugins": [
+      {
+        "paths": [
+          "./index.ts"
+        ],
+        "capabilities": [
+          "skills",
+          "rules"
+        ]
+      }
+    ]
+  },
+  "peerDependencies": {
+    "@cline/sdk": "*"
+  },
+  "peerDependenciesMeta": {
+    "@cline/sdk": {
+      "optional": true
+    }
+  }
+}
