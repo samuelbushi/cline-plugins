@@ -650,10 +650,17 @@ async function buildRecallContext(
 
 const CODE_BLOCK_PATTERN = /```[\s\S]*?```/g
 const INLINE_CODE_PATTERN = /`[^`]+`/g
-const MEMORY_KEYWORD_PATTERN = new RegExp(
-	`\\b(${CONFIG.keywordPatterns.join("|")})\\b`,
-	"i",
-)
+function buildKeywordPattern(patterns: string[]): RegExp {
+	try {
+		return new RegExp(`\\b(${patterns.join("|")})\\b`, "i")
+	} catch {
+		// Individually valid custom patterns can be invalid once joined (e.g.
+		// duplicate named capture groups); fall back to the known-good defaults.
+		return new RegExp(`\\b(${DEFAULT_KEYWORD_PATTERNS.join("|")})\\b`, "i")
+	}
+}
+
+const MEMORY_KEYWORD_PATTERN = buildKeywordPattern(CONFIG.keywordPatterns)
 
 const MEMORY_NUDGE_MESSAGE = `[SUPERMEMORY]
 The user's latest message may be asking you to remember something. If they are explicitly asking you to save or remember information for later, use the \`supermemory\` tool with \`mode: "add"\` to store it as a concise, searchable memory:
