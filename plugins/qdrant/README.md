@@ -6,7 +6,7 @@ Qdrant vector search guidance for Cline. This plugin bundles skills for designin
 
 - Bundled skills for Qdrant SDK usage, deployment options, scaling, performance optimization, monitoring, search quality, embedding model migration, and version upgrades.
 
-The bundled guidance treats live Qdrant collection, index, sharding, replica, migration, upgrade, and scaling changes as production database operations that need explicit user confirmation.
+The bundled skills treat live Qdrant collection, index, sharding, replica, migration, upgrade, and scaling changes as production database operations that need explicit user confirmation.
 
 ## Requirements
 
