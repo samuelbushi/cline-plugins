@@ -45,7 +45,6 @@ Run a 42Crunch scan against my local API at http://localhost:8080.
 
 - Skills: bundles six workflow skills: `42crunch-setup`, `code-to-oas`, `postman-to-oas`, `42crunch-audit`, `42crunch-scan`, and `42crunch-api-security-testing`.
 - References: includes the detailed 42Crunch audit, scan, setup, tag, reachability, and scan configuration workflow references used by the skills.
-- Rule: adds guardrails for credentials, binary installation, live scan traffic, generated fixes, and untrusted OpenAPI/report content.
 
 ## Requirements
 
