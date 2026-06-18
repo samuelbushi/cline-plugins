@@ -7,7 +7,7 @@ UI5 adds SAPUI5 and OpenUI5 development guidance plus the UI5 MCP server for API
 - `ui5-mcp-server`, a stdio MCP server launched with `npx --yes @ui5/mcp-server@0.2.12`.
 - `ui5-best-practices`, a skill for UI5 coding standards, async loading, data binding, i18n, CSP, TypeScript event handling, CAP integration, and form layout rules.
 - `ui5-best-practices-integration-cards`, a skill for UI Integration Card manifests, Configuration Editor files, validation, previewing, destination binding, chart feeds, and analytical chart references.
-- A safety rule for scaffolding, package installs, project scripts and CLIs, linter fixes, local servers, generated code, and production translation files.
+- Bundled guidance for scaffolding, package installs, project scripts and CLIs, linter fixes, local servers, generated code, and production translation files.
 
 ## Requirements
 
