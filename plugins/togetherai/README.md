@@ -8,7 +8,7 @@ This plugin bundles Together AI skills for chat completions, batch inference, em
 
 Each skill includes workflow guidance plus local reference files and example Python or TypeScript scripts. The plugin does not register an MCP server and does not run Together AI calls during install.
 
-The plugin also adds a Together AI safety rule so Cline asks before running scripts, installing SDKs, spending credits, uploading data, creating or deleting endpoints, launching clusters, or using remote execution.
+The bundled skills ask Cline to get approval before running scripts, installing SDKs, spending credits, uploading data, creating or deleting endpoints, launching clusters, or using remote execution.
 
 ## Install
 
