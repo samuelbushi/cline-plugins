@@ -6,7 +6,6 @@ Looker adds read-only Cline workflows for business intelligence discovery and Lo
 
 - Tool: registers `looker_toolbox_read`, which invokes approved read-only Looker and Looker dev operations from `@toolbox-sdk/server@1.1.0`.
 - Skills: bundles `looker-bi` for models, explores, dashboards, Looks, queries, and query URLs, plus `looker-lookml-dev` for LookML project, branch, file, validation, test, and connection inspection.
-- Rule: keeps Looker credentials secret, treats Looker content as untrusted data, and prevents this plugin from being treated as a write/deploy surface.
 
 ## Install
 
