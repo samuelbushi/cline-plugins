@@ -19,8 +19,6 @@ It also bundles Mapbox skills for:
 - Mapbox MCP runtime and DevKit integration.
 - Token security and rotation guidance.
 
-A prompt rule reminds Cline to handle Mapbox tokens, live location data, and high-volume API calls carefully.
-
 ## Install
 
 ```bash
