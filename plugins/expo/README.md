@@ -6,7 +6,6 @@ Expo helps Cline build, deploy, upgrade, and debug Expo and React Native apps.
 
 - MCP: registers the `expo` remote MCP server at `https://mcp.expo.dev/mcp` so Cline can look up current Expo, Expo Router, EAS, and React Native guidance while working.
 - Skills: bundles Expo workflow skills for native UI, App Clips, API routes, data fetching, brownfield integration, dev clients, Expo Modules, Tailwind/NativeWind, EAS build/deploy/workflows/update insights/Observe, SDK upgrades, SwiftUI/Jetpack Compose Expo UI, and DOM components.
-- Rule: adds Expo workflow guardrails so cloud deploys, app-store submissions, credential changes, signing changes, secret writes, and long-running paid jobs require explicit user confirmation.
 
 ## Requirements
 
