@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "Cline plugin with Bright Data workflow skills and web data collection guardrails.",
+  "description": "Cline plugin with Bright Data workflow skills for web data collection.",
   "cline": {
     "plugins": [
       {
@@ -11,8 +11,7 @@
           "./index.ts"
         ],
         "capabilities": [
-          "skills",
-          "rules"
+          "skills"
         ]
       }
     ]

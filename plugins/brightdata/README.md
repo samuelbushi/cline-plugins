@@ -5,7 +5,6 @@ Bright Data adds Cline skills for building and operating web data collection wor
 ## Cline Primitives
 
 - `skills`: 21 workflow skills cover onboarding, CLI/API/MCP setup, search, scraping, data feeds, Discover, SDK usage, proxy patterns, Scraper Studio, browser session debugging, design capture, live research, RAG pipelines, brand listening, competitive intelligence, price comparison, and SEO audits.
-- `rules`: a web data guardrail keeps Bright Data work scoped, authorized, cost-aware, and careful with credentials.
 
 This plugin does not auto-register a Bright Data MCP server. Bright Data MCP requires user-specific credentials or URL parameters, so the MCP skill explains how to configure it explicitly when the user wants that surface.
 
