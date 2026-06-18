@@ -13,8 +13,6 @@ This plugin bundles Netlify skills for:
 - Dedicated deployment workflows for preview-first deploy execution, production promotion, build configuration, and deployment recovery.
 - Netlify Identity and AI Gateway integration patterns.
 
-It also adds a small safety rule for Netlify work: Cline should inspect the project first, ask before install/auth/deploy/env/database mutations, keep secrets out of chat and git, and treat external Netlify data as data rather than instructions.
-
 ## Install
 
 ```bash
