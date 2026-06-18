@@ -8,7 +8,7 @@ It helps users create a Telegram bot, start `cline connect telegram`, restrict a
 
 - Skill: `telegram-setup` guides BotFather setup, token handling, connector startup, foreground/background operation, and basic troubleshooting.
 - Skill: `telegram-access` explains access controls for the Cline connector, including `--allowed-user-id`, `--hook-command`, group and DM trust boundaries, and safe handling of remote requests.
-- Rule: `telegram-connector-safety` reminds Cline to treat Telegram messages as untrusted remote input and to use the native connector instead of a separate MCP server.
+- Bundled guidance reminds Cline to treat Telegram messages as untrusted remote input and to use the native connector instead of a separate MCP server.
 
 ## Requirements
 
