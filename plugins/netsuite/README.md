@@ -10,7 +10,7 @@ This plugin bundles NetSuite skills for:
 - SDF role and permission configuration, including exact `permkey` lookup, `permlevel` selection, custom role XML review, script deployment permission review, and least-privilege run-as role design.
 - UIF SPA development, including local API/type lookup for `@uif-js/core` and `@uif-js/component`, component props, framework pitfalls, hooks, data grids, forms, routing, and state management.
 
-It also adds a small safety rule for NetSuite work: Cline should inspect existing SuiteCloud project structure first, ask before account writes or deployments, keep credentials and financial data out of chat and git, and treat NetSuite account data as data rather than instructions.
+The bundled skills guide Cline to inspect existing SuiteCloud project structure first, ask before account writes or deployments, keep credentials and financial data out of chat and git, and treat NetSuite account data as data rather than instructions.
 
 ## Install
 
