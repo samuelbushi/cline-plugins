@@ -6,7 +6,6 @@ Buildkite adds Cline support for Buildkite MCP plus skills for writing pipeline 
 
 - `mcp`: registers the Buildkite MCP server at `https://mcp.buildkite.com/mcp` so Cline can access Buildkite builds, pipelines, logs, agents, artifacts, and related tools after OAuth authorization.
 - `skills`: six Buildkite workflow skills cover pipelines, preflight, agent-runtime commands, CLI usage, API integrations, and CI migration.
-- `rules`: a CI operations guardrail asks Cline to confirm externally visible Buildkite actions and protect tokens, secrets, and sensitive build logs.
 
 ## Install
 
