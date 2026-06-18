@@ -20,7 +20,7 @@ Project configuration changes depend on the user's RevenueCat account permission
 
 ## Safety Notes
 
-RevenueCat controls monetization and customer access. The plugin includes a rule that asks Cline to confirm before changing projects, apps, products, entitlements, offerings, packages, webhooks, API keys, pricing, or SDK configuration.
+RevenueCat controls monetization and customer access. The bundled skills ask Cline to confirm before changing projects, apps, products, entitlements, offerings, packages, webhooks, API keys, pricing, or SDK configuration.
 
 Public SDK keys are safe to embed in client apps. Secret API keys are server-side only and should never be written into client code.
 
