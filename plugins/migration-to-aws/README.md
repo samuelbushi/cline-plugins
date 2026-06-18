@@ -10,7 +10,6 @@ This plugin adds a `gcp-to-aws` skill for assessing GCP infrastructure, Terrafor
 
 - MCP: registers `aws-knowledge` for AWS documentation, regional availability, and architecture guidance.
 - Skill: bundles `gcp-to-aws`, a phased migration workflow for Discover, Clarify, Design, Estimate, and Generate.
-- Rule: adds migration defaults for re-platforming, development-tier sizing, Terraform output, and cost-before-code sequencing.
 
 ## Requirements
 
