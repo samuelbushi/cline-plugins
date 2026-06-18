@@ -73,7 +73,7 @@ Track retries across resume invocations. After 3 failures, ask the user.
 ## Guidelines
 
 - Use plain language - no Kubernetes jargon.
-- Run commands only after the main NVIDIA safety rule is satisfied.
+- Run commands only after the main NVIDIA safety guidance is satisfied.
 - When in doubt about user intent, ask before submitting.
 
 ## Learnings to Report

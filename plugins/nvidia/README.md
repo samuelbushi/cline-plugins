@@ -22,7 +22,7 @@ This plugin bundles skill and reference material only. It does not register MCP 
 
 Requirements depend on the selected skill. Common workflows may need NVIDIA API keys, NGC credentials, Hugging Face access, CUDA/GPU drivers, Docker, NVIDIA Container Toolkit, Kubernetes, Helm, Terraform, Azure CLI, Python, uv, Node.js, Omniverse/OpenUSD tooling, or access to NVIDIA service endpoints.
 
-The plugin adds a safety rule requiring explicit approval before installs, remote scripts, containers, cluster/cloud changes, paid services, model or dataset downloads, credential writes, or destructive asset changes.
+The bundled skills include guidance to ask for explicit approval before installs, remote scripts, containers, cluster/cloud changes, paid services, model or dataset downloads, credential writes, or destructive asset changes.
 
 ## Trust Boundaries
 
