@@ -6,13 +6,12 @@ Sonatype Guide integration for dependency security, version recommendations, lic
 
 This plugin bundles a Sonatype Guide dependency review skill and conditionally registers the `sonatype-guide` remote MCP server when `SONATYPE_GUIDE_TOKEN` is available in the Cline environment.
 
-If the token is missing, the plugin still installs the skill and safety rule, but it does not register the MCP server. Set the token, then reinstall or re-enable the plugin so Cline can sync the plugin-owned MCP settings entry.
+If the token is missing, the plugin still installs the skill, but it does not register the MCP server. Set the token, then reinstall or re-enable the plugin so Cline can sync the plugin-owned MCP settings entry.
 
 ## Cline Primitives
 
 - MCP: `sonatype-guide` connects to Sonatype Guide over Streamable HTTP with a bearer token from `SONATYPE_GUIDE_TOKEN`.
 - Skills: dependency evaluation, upgrade advice, project audits, package comparisons, PURL construction, vulnerability interpretation, and policy compliance review.
-- Rules: dependency mutation guardrails, token handling, untrusted output handling, and guidance for missing MCP configuration.
 
 ## Requirements
 
