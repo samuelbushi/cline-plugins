@@ -6,7 +6,6 @@ Qodo review workflow guidance for Cline. This plugin helps Cline use Qodo coding
 
 - Bundled skill `qodo-get-rules` for loading relevant Qodo coding rules when the user has configured Qodo and explicitly wants rule guidance for a task. The skill includes reference docs for query generation, repository scoping, search endpoint behavior, and output formatting.
 - Bundled skill `qodo-pr-resolver` for triaging Qodo PR/MR comments, planning local fixes, and preparing replies. The skill includes provider-specific GitHub, GitLab, Bitbucket, Azure DevOps, and Gerrit reference docs.
-- A safety rule that keeps Qodo API calls, git-provider API calls, PR comments, commits, and pushes explicit and user-approved.
 
 ## Requirements
 
