@@ -9,7 +9,7 @@ This plugin bundles skills for two related workflows:
 - Generating media directly with Runway's API, including text/image/video generation, audio generation, uploads, organization details, and general API calls.
 - Integrating Runway features into server-side apps, including compatibility checks, API key setup, video/image/audio endpoints, uploads, real-time avatar characters, document knowledge, and React avatar embeds.
 
-The plugin also includes the Python and Node helper scripts used by the direct-generation skills, plus a safety rule for paid API calls, media uploads, outbound URL fetches, and API-key handling.
+The plugin also includes the Python and Node helper scripts used by the direct-generation skills, plus bundled guidance for paid API calls, media uploads, outbound URL fetches, and API-key handling.
 
 ## Install
 
