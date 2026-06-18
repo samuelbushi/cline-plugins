@@ -8,7 +8,6 @@ This is a consolidated Cline plugin because Carta cap table, CRM, and investors 
 
 - `mcp`: registers the Carta MCP server at `https://mcp.app.carta.com/mcp`. Interactive Cline sessions can prompt for OAuth authorization before live Carta access.
 - `skills`: bundles focused skills for cap table topics, compensation benchmarks and role mapping, Carta CRM search/create/update workflows, investor data exploration, fund benchmarks, tearsheets, Form ADV support, co-investor analysis, and workbook-based budgeting/accounting reports. The plugin also keeps small router skills for common Carta domains so Cline can choose the right detailed workflow.
-- `rules`: a sensitive financial data guardrail asks Cline to confirm ambiguous targets, protect confidential data, ask before writes or exports, and label Cline analysis separately from Carta data.
 
 ## Install
 
@@ -44,4 +43,4 @@ If a user already has a manual MCP server named `carta`, Cline keeps that server
 
 Carta data can include confidential ownership, compensation, fund, investor, company, contact, deal, note, and signature information. The plugin keeps live Carta access behind OAuth, avoids duplicate MCP registrations, and tells Cline to protect credentials and sensitive data while avoiding legal, tax, investment, compensation, or securities advice.
 
-The source Carta workflows include host-specific runtime helpers for automatic session hooks, Excel add-ins, and live artifact sidebars. This Cline plugin does not run those hooks or expose unsupported artifact surfaces. Skills that generate reports or workbooks use explicit user-approved local files instead.
+Some Carta workflows rely on host-specific runtime helpers for automatic session hooks, Excel add-ins, and live artifact sidebars. This Cline plugin does not run those hooks or expose unsupported artifact surfaces. Skills that generate reports or workbooks use explicit user-approved local files instead.

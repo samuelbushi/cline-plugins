@@ -21,8 +21,7 @@
         ],
         "capabilities": [
           "mcp",
-          "skills",
-          "rules"
+          "skills"
         ]
       }
     ]
