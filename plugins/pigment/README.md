@@ -35,7 +35,7 @@ export CLINE_PIGMENT_MCP_URL="https://pigment.app/api/mcp/public/your-mcp-id"
 cline plugin install pigment
 ```
 
-If `CLINE_PIGMENT_MCP_URL` is not set, the plugin still installs the Pigment skills and safety rule, but it does not create a Pigment MCP settings entry.
+If `CLINE_PIGMENT_MCP_URL` is not set, the plugin still installs the Pigment skills, but it does not create a Pigment MCP settings entry.
 
 ## Example Usage
 
@@ -60,7 +60,7 @@ List my Pigment applications, find the revenue metrics in the FP&A model, and ex
 
 ## Security Notes
 
-Pigment data and model changes can affect financial planning workflows. The plugin adds a rule that requires explicit confirmation before Cline uses advanced MCP tools for writes, imports, access-right changes, board or view edits, scenario or snapshot changes, and deletions.
+Pigment data and model changes can affect financial planning workflows. The bundled skills require explicit confirmation before Cline uses advanced MCP tools for writes, imports, access-right changes, board or view edits, scenario or snapshot changes, and deletions.
 
 Advanced MCP search can expose block metadata and application logic, including names, data types, dimensions, and model structure, even when it does not expose actual metric data. Treat that metadata as sensitive workspace context and avoid putting secrets in Pigment block names or metadata.
 
