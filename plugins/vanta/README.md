@@ -12,7 +12,7 @@ The regional MCP servers expose Vanta compliance-platform tools for failing test
 
 - MCP: `vanta-us`, `vanta-eu`, and `vanta-aus` remote MCP servers.
 - Skills: `vanta-test-remediation`, `vanta-list-tests`, and `vanta-fix-test`.
-- Rule: `vanta-compliance-remediation-safety` for compliance, cloud, evidence, vendor-risk, and repository-change guardrails.
+- Bundled guidance for compliance, cloud, evidence, vendor-risk, and repository-change guardrails.
 
 ## Install
 
@@ -50,7 +50,7 @@ or:
 
 Setup registers remote MCP servers and bundled guidance only. It does not call Vanta APIs, inspect compliance data, change infrastructure, upload policies, create branches, or open PRs during installation.
 
-Remediation work can touch compliance posture, cloud resources, security controls, evidence, vendors, and repository code. The bundled rule requires explicit approval before live changes and forbids weakening security controls for convenience.
+Remediation work can touch compliance posture, cloud resources, security controls, evidence, vendors, and repository code. The bundled skills require explicit approval before live changes and forbid weakening security controls for convenience.
 
 ## Attribution
 
