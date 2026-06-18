@@ -36,7 +36,7 @@ Create a small Val Town HTTP val with a React UI and SQLite-backed state.
 
 ## Security Notes
 
-Setup registers the remote Val Town MCP server and bundled guidance only. It does not create vals, call Val Town APIs, send email, start schedules, create databases, upload blobs, or store secrets during installation.
+Setup registers the remote Val Town MCP server and installs bundled skills only. It does not create vals, call Val Town APIs, send email, start schedules, create databases, upload blobs, or store secrets during installation.
 
 Live Val Town work can create public URLs, send mail, change schedules, persist data, and call external services. The bundled skills require explicit approval for those actions and keep credentials in Val Town environment variables rather than source, blobs, logs, or public output.
 
