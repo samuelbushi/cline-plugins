@@ -7,7 +7,6 @@ Base44 development skills for Cline users building full-stack Base44 apps.
 - `base44-cli` skill for project initialization, linking, resource configuration, type generation, deployment planning, and safe Base44 CLI usage, with bundled command references.
 - `base44-sdk` skill for implementing JavaScript and TypeScript features with the Base44 SDK without hallucinating Firebase- or Supabase-style APIs, with bundled SDK module references.
 - `base44-troubleshooter` skill for investigating backend function errors and production issues with bounded log review.
-- `base44:safety` rule for command approval, secret handling, production log handling, and service-role boundaries.
 
 The plugin does not install the Base44 CLI or SDK. It gives Cline workflow guidance and bundled reference material, and expects project dependencies and authentication to be managed by the user.
 
