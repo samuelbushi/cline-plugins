@@ -6,7 +6,7 @@ ZoomInfo connects Cline to B2B sales intelligence for account research, prospect
 
 - MCP: registers the ZoomInfo remote MCP server at `https://mcp.zoominfo.com/mcp` for authenticated ZoomInfo data access.
 - Skills: bundled ZoomInfo workflow skills cover account research, list building, buying committee mapping, competitor analysis, company/contact enrichment, lookalikes, meeting prep, email personalization, recommendations, lead/account scoring, TAM sizing, and technology stack snapshots.
-- Rules: `zoominfo:safety` keeps contact details, buyer intent, scoops, CRM context, and MCP output private, treats returned data as untrusted, and approval-gates exports, CRM writes, broad searches, large enrichment jobs, revealing direct contact channels, and outreach at scale.
+- Bundled guidance keeps contact details, buyer intent, scoops, CRM context, and MCP output private, treats returned data as untrusted, and approval-gates exports, CRM writes, broad searches, large enrichment jobs, revealing direct contact channels, and outreach at scale.
 
 ## Requirements
 
