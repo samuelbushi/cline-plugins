@@ -6,7 +6,7 @@ WorkOS adds Cline skills for implementing and debugging enterprise identity work
 
 - Skills: `workos` routes WorkOS AuthKit, SSO/SAML, Directory Sync, RBAC, FGA, MFA, Vault, Audit Logs, Admin Portal, Pipes, Feature Flags, Radar, Events, Custom Domains, API references, CLI lifecycle, and migration requests to bundled WorkOS references.
 - Skills: `workos-widgets` helps integrate WorkOS widgets such as User Management, User Profile, Admin Portal SSO Connection, and Admin Portal Domain Verification across common frontend and backend stacks.
-- Rules: the WorkOS safety rule protects secrets and production identity resources, requires verified CLI/dashboard guidance, and gates mutating WorkOS operations behind explicit user confirmation.
+- The bundled skills protect secrets and production identity resources, require verified CLI/dashboard guidance, and gate mutating WorkOS operations behind explicit user confirmation.
 
 ## Requirements
 
@@ -16,6 +16,6 @@ WorkOS adds Cline skills for implementing and debugging enterprise identity work
 
 ## Trust Boundaries
 
-The plugin does not register an MCP server, start background services, install dependencies, or call WorkOS at install time. It only contributes skills and a prompt rule. Live WorkOS changes remain user-approved runtime actions.
+The plugin does not register an MCP server, start background services, install dependencies, or call WorkOS at install time. It only contributes bundled skills. Live WorkOS changes remain user-approved runtime actions.
 
 Bundled WorkOS skill material is from WorkOS plugin metadata declaring MIT licensing. See `NOTICE.workos-skills`.
