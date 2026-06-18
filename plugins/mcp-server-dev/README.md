@@ -1,15 +1,13 @@
 # mcp-server-dev
 
-Adds Cline skills and a guardrail rule for designing, building, and packaging MCP servers.
+Adds Cline skills for designing, building, and packaging MCP servers.
 
 ## What It Does
 
 The plugin bundles two skills:
 
 - `build-mcp-server` helps choose the right server shape, design tools, handle auth, and scaffold a maintainable MCP integration.
-- `package-local-mcp-server` helps package or distribute local MCP servers that must read local files, call localhost services, or interact with desktop or OS APIs.
-
-It also adds a prompt rule that nudges MCP server work toward clear deployment decisions, narrow schemas, explicit side effects, recoverable errors, and safe token storage.
+- `build-mcpb` helps package or distribute local MCP servers that must read local files, call localhost services, or interact with desktop or OS APIs.
 
 For rich interactive MCP UI work, use the separate `mcp-apps` plugin. This plugin intentionally avoids duplicating MCP App authoring guidance.
 
