@@ -7,7 +7,6 @@ Forge helps Cline build, review, debug, and secure Atlassian Forge apps for Jira
 - MCP: registers the `forge` Streamable HTTP MCP server at `https://mcp.atlassian.com/v1/forge/mcp` for current Forge documentation, templates, modules, manifest guidance, UI Kit guidance, and backend API guidance.
 - MCP: registers the `atlassian-design-system` Streamable HTTP MCP server at `https://mcp.atlassian.com/v1/ads/public/mcp` for Atlassian Design System components, tokens, icons, and Custom UI guidance.
 - Skills: bundles focused Forge skills for app building, release review, debugging, connector development, security review, and cost optimization.
-- Rule: adds guardrails for Forge CLI auth, developer spaces, site selection, deploy/install operations, production changes, external egress, web triggers, and untrusted Atlassian content.
 
 ## Install
 
@@ -44,7 +43,7 @@ Review this Forge app before deploy and focus on manifest scopes, resolver wirin
 - Forge CLI authentication with `forge login`. Enter Atlassian API tokens only in the terminal prompt, never in chat.
 - Network access to Atlassian developer services and the target Jira, Confluence, or Rovo site.
 
-Installing this plugin only registers MCP servers, skills, and guardrails. It does not install the Forge CLI, run `forge login`, create apps, deploy, install, or upgrade a Forge app.
+Installing this plugin only registers MCP servers and skills. It does not install the Forge CLI, run `forge login`, create apps, deploy, install, or upgrade a Forge app.
 
 ## Trust Boundaries
 
