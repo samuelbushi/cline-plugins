@@ -6,7 +6,7 @@ Twilio bundles workflow skills for building with Twilio and SendGrid, plus the p
 
 - 55 Twilio and SendGrid skills covering SMS, WhatsApp, RCS, Voice, Verify, Lookup, Messaging Services, regulatory onboarding, webhooks, Conversation Orchestrator, Conversation Intelligence, Customer Memory, SendGrid sending, deliverability, inbound parse, suppressions, and event webhooks.
 - `twilio-docs`, a streamable HTTP MCP server at `https://mcp.twilio.com/docs` for semantic Twilio documentation search and API operation retrieval. The docs MCP does not require authentication.
-- Bundled guidance for live messaging, email, voice, verification, compliance, and customer-data workflows.
+- Bundled skills cover live messaging, email, voice, verification, compliance, and customer-data workflows.
 
 ## Requirements
 
