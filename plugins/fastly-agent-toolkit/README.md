@@ -4,7 +4,7 @@ Bundle Fastly workflow skills as an installable Cline plugin.
 
 ## What It Does
 
-Installs seven Fastly skills plus a production-change safety rule:
+Installs seven Fastly skills:
 
 - `fastly-platform` for CDN service design, caching, TLS, origin, security, observability, and API workflows.
 - `fastly-cli` for safe terminal workflows with the `fastly` CLI.
