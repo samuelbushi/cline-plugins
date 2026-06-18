@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "Datadog MCP plugin with observability workflow skills and safety guardrails.",
+  "description": "Datadog MCP plugin with setup, domain, and toolset workflow skills.",
   "cline": {
     "plugins": [
       {
@@ -12,7 +12,6 @@
         ],
         "capabilities": [
           "mcp",
-          "rules",
           "skills"
         ]
       }
