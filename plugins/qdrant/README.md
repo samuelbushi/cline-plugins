@@ -5,7 +5,8 @@ Qdrant vector search guidance for Cline. This plugin bundles skills for designin
 ## Cline Primitives
 
 - Bundled skills for Qdrant SDK usage, deployment options, scaling, performance optimization, monitoring, search quality, embedding model migration, and version upgrades.
-- A safety rule that treats live Qdrant collection, index, sharding, replica, migration, upgrade, and scaling changes as production database operations that need explicit user confirmation.
+
+The bundled guidance treats live Qdrant collection, index, sharding, replica, migration, upgrade, and scaling changes as production database operations that need explicit user confirmation.
 
 ## Requirements
 
