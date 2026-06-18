@@ -1,6 +1,6 @@
 # Intercom
 
-Adds Intercom support workflows to Cline through Intercom's remote MCP server, bundled guidance skills, and customer-data safety guidance.
+Adds Intercom support workflows to Cline through Intercom's remote MCP server, bundled skills, and customer-data safety guidance inside those skills.
 
 ## Cline Primitives
 
