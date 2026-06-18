@@ -8,7 +8,6 @@ You.com adds Cline skills for web search, research with citations, content extra
 - Skills: `youdotcom-cli` provides curl and jq workflows for search, research, and content extraction.
 - Skills: `ydc-ai-sdk-integration`, `ydc-langchain-integration`, `ydc-crewai-mcp-integration`, `ydc-claude-agent-sdk-integration`, and `ydc-openai-agent-sdk-integration` guide You.com tool or MCP integration into common agent frameworks.
 - Skills: `teams-anthropic-integration` helps add Anthropic Claude models to Microsoft Teams.ai apps, with optional You.com MCP search/content tools.
-- Rules: `youdotcom:safety` keeps API keys and fetched web content within explicit trust boundaries and requires approval before package installs, project writes, or live integration runs.
 
 ## Requirements
 
@@ -18,6 +17,6 @@ You.com adds Cline skills for web search, research with citations, content extra
 
 ## Trust Boundaries
 
-The plugin does not register an MCP server, install dependencies, call You.com, or write MCP settings at install time. It contributes skills and a safety rule only. You.com API and MCP calls are user-requested runtime actions.
+The plugin does not register an MCP server, install dependencies, call You.com, or write MCP settings at install time. It contributes bundled skills only. You.com API and MCP calls are user-requested runtime actions.
 
 Bundled skill material is MIT licensed by You.com. See `LICENSE.youdotcom-agent-skills`.
