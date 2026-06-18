@@ -4,14 +4,12 @@ Adds Intercom support workflows to Cline through Intercom's remote MCP server, b
 
 ## Cline Primitives
 
-This plugin registers the `intercom` Streamable HTTP MCP server at `https://mcp.intercom.com/mcp`, bundles four skills, and adds a safety rule for customer data and Intercom write operations:
+This plugin registers the `intercom` Streamable HTTP MCP server at `https://mcp.intercom.com/mcp` and bundles four skills:
 
 - `intercom-analysis` for support trend analysis, customer issue investigation, and contact or company lookup.
 - `intercom-customer-360` for building customer profiles from contact, company, and conversation history.
 - `intercom-install-messenger` for adding the Intercom Messenger to a web app with JWT identity verification.
 - `intercom-install-cli` for installing and authenticating the optional `@intercom/cli`.
-
-The safety rule requires explicit approval before article publishing, Intercom record/configuration mutations, CLI installs, workspace provisioning, shell profile edits, or credential persistence.
 
 ## Requirements
 
