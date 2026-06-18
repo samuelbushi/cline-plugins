@@ -44,7 +44,6 @@ Make a flyer from an Adobe Express template for my launch event.
 - MCP: registers the `Adobe for creativity` Streamable HTTP MCP server at `https://adobe-creativity.adobe.io/mcp`.
 - Skills: bundles six workflow skills for Adobe creative tasks: `adobe-design-from-template`, `adobe-resize-photos-and-videos`, `adobe-create-social-variations`, `adobe-edit-quick-cut`, `adobe-batch-edit-photos`, and `adobe-retouch-portraits`.
 - Asset: includes the resize workflow's bundled intake form.
-- Rule: adds a media safety rule for Adobe MCP outputs, uploaded media, Creative Cloud assets, previews, template text, and private URLs.
 
 ## Requirements
 
