@@ -37,7 +37,7 @@ No external runtime is required to install the plugin. Some workflows may ask th
 
 ## Safety Notes
 
-The plugin includes a rule for live Redis safety. Cline should confirm the target environment and ask before destructive, broad, blocking, administrative, credential-changing, SDK/REST write, delete, bulk-read, or production smoke-test operations.
+The bundled skills include live Redis safety guidance. Cline should confirm the target environment and ask before destructive, broad, blocking, administrative, credential-changing, SDK/REST write, delete, bulk-read, or production smoke-test operations.
 
 The plugin does not connect to Redis or start local services at install time. It is an offline skill pack plus safety guidance.
 
