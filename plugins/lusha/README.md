@@ -15,8 +15,6 @@ It also bundles four Cline skills with reference guides for filter resolution an
 - `lusha-signal-prospect` for trigger-based prospecting from company or contact signals.
 - `lusha-lookalike-prospect` for expansion from reference companies or contacts.
 
-A prompt rule reminds Cline to treat contact reveals and enrichment batches as credit-consuming operations that need clear user intent, and to avoid exporting or persisting contact data unless the user asks.
-
 ## Install
 
 ```bash
