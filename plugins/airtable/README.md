@@ -22,7 +22,6 @@ It also bundles nine Airtable skills:
 - `airtable-marketing-ops`: shape campaign, content, asset, creative, and launch workflows.
 - `airtable-sales-ops`: shape CRM, pipeline, deal desk, renewal, and partner workflows.
 - Bundled reference material for product, marketing, and sales workflow schemas, migrations, integrations, vertical shapes, and build handoffs.
-- A business-data safety rule for Airtable reads, writes, schema changes, bulk operations, permissions, automations, and external-facing surfaces.
 
 ## Install
 
