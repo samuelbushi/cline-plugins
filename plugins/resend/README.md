@@ -20,7 +20,6 @@ Set `RESEND_API_KEY` through your shell session, shell profile, or secret manage
 
 - MCP: registers the package-local `resend-mcp` server for Resend account operations such as sending email, managing domains, contacts, broadcasts, templates, webhooks, logs, automations, and events.
 - Skills: bundles five Resend skills for the Resend API, Resend CLI, React Email templates, email best practices, and secure agent email inbox workflows.
-- Rule: adds safety guidance for sends, broadcasts, contact imports, domain/webhook/API-key changes, inbound email processing, logs, and credentials.
 
 ## Requirements
 
