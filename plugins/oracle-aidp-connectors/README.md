@@ -27,7 +27,7 @@ After installing the plugin, ask Cline to run the `aidp-connectors-bootstrap` sk
 
 Installation is passive. The plugin does not run Spark, upload files to Workbench, read databases, call REST APIs, or write to user data stores.
 
-Live connector workflows can expose private data or mutate tables, buckets, streams, catalogs, shared workspace files, and SaaS systems. The bundled safety rule requires explicit approval before writes, helper uploads, credential storage, or broad data access.
+Live connector workflows can expose private data or mutate tables, buckets, streams, catalogs, shared workspace files, and SaaS systems. The bundled skills require explicit approval before writes, helper uploads, credential storage, or broad data access.
 
 ## Attribution
 
