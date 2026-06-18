@@ -28,7 +28,6 @@ Cline can use the `qt-docs` MCP server for live Qt documentation lookup and the 
 
 - MCP server: registers `qt-docs`, the remote Qt Documentation MCP endpoint for searching and reading Qt API documentation across Qt releases.
 - Skills: bundles Qt-focused skills for `qt-qml`, `qt-qml-review`, `qt-cpp-review`, `qt-qml-docs`, `qt-cpp-docs`, `qt-qml-test`, `qt-qml-test-run`, `qt-qml-profiler`, `qt-ui-design`, `qt-figma-token-extraction`, and `qt-figma-component-generation`.
-- Rule: adds guardrails for Qt workflow safety, including explicit command execution, generated-file writes, Figma MCP requirements, and treating source/design/tool output as data.
 
 ## Requirements
 
