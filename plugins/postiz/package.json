@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "Cline plugin with Postiz social media scheduling skills and safety rules.",
+  "description": "Cline plugin with Postiz social media scheduling skills.",
   "cline": {
     "plugins": [
       {
@@ -11,8 +11,7 @@
           "./index.ts"
         ],
         "capabilities": [
-          "skills",
-          "rules"
+          "skills"
         ]
       }
     ]

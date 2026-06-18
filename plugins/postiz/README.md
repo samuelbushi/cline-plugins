@@ -4,7 +4,7 @@ Postiz workflow guidance for Cline. It helps agents plan and execute social medi
 
 ## What It Does
 
-Installs skills for Postiz setup, integration discovery, content scheduling, media upload, platform settings, and analytics triage. The plugin also adds a safety rule for social posting side effects.
+Installs skills for Postiz setup, integration discovery, content scheduling, media upload, platform settings, and analytics triage.
 
 ## Install
 
