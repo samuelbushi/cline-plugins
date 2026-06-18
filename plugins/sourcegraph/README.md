@@ -6,13 +6,12 @@ Sourcegraph integration for repository-scale code search, navigation, references
 
 This plugin bundles the `searching-sourcegraph` skill with query patterns, common examples, and workflow guides for feature implementation, unfamiliar-code exploration, debugging, bug fixing, and code review. It conditionally registers the `sourcegraph` remote MCP server when `SOURCEGRAPH_ENDPOINT` and `SOURCEGRAPH_ACCESS_TOKEN` are available in the Cline environment.
 
-If either environment variable is missing, the plugin still installs the skill and safety rule, but it does not register the MCP server. Set both values, then reinstall or re-enable the plugin so Cline can sync the plugin-owned MCP settings entry.
+If either environment variable is missing, the plugin still installs the skill, but it does not register the MCP server. Set both values, then reinstall or re-enable the plugin so Cline can sync the plugin-owned MCP settings entry.
 
 ## Cline Primitives
 
 - MCP: `sourcegraph` connects to `<SOURCEGRAPH_ENDPOINT>/.api/mcp` over Streamable HTTP with `Authorization: token <SOURCEGRAPH_ACCESS_TOKEN>`.
 - Skills: disciplined Sourcegraph search, exact keyword search, natural-language search, Deep Search, references, definitions, file reads, commit/diff history, and code-review/debugging workflows.
-- Rules: credential handling, untrusted repository output handling, missing-MCP guidance, and scope discipline for private repository search.
 
 ## Requirements
 
