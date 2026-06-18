@@ -12,7 +12,7 @@ It uses Cline's MCP authorization flow. It does not install the Supabase CLI, ru
 
 - MCP: `supabase` connects to `https://mcp.supabase.com/mcp` for Supabase project, docs, SQL, advisor, logs, migration, and management tools.
 - Skills: `supabase` for general Supabase workflows and `supabase-postgres-best-practices` for Postgres schema, query, connection, RLS, locking, monitoring, and data-access guidance.
-- Rules: credential masking, read/plan defaults, approval gates for SQL/project mutations, private/untrusted MCP output handling, migration review discipline, and official-doc verification.
+- Bundled guidance for credential masking, read/plan defaults, approval gates for SQL/project mutations, private/untrusted MCP output handling, migration review discipline, and official-doc verification.
 
 ## Requirements
 
