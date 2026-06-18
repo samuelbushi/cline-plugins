@@ -5,7 +5,7 @@ Zoom helps Cline plan, build, and debug Zoom integrations across REST APIs, SDKs
 - Skills: Zoom implementation packs cover REST APIs, OAuth, Meeting SDK, Video SDK, Zoom Apps SDK, Team Chat, Phone, Contact Center, Virtual Agent, Cobrowse, Probe SDK, Rivet SDK, RTMS, webhooks, and WebSockets.
 - Skills: AI service packs cover Zoom Scribe, Summarizer, and Translator workflows.
 - Skills: `setup-zoom-mcp`, `zoom-mcp`, `zoom-mcp-team-chat`, and `zoom-mcp-whiteboard` explain when MCP is appropriate and how to plan user-managed Zoom MCP access.
-- Bundled guidance keeps Zoom credentials, meeting content, recordings, transcripts, chat messages, docs, whiteboards, and MCP results private and approval-gates live writes or sensitive setup.
+- Bundled skills keep Zoom credentials, meeting content, recordings, transcripts, chat messages, docs, whiteboards, and MCP results private and approval-gate live writes or sensitive setup.
 ## Requirements
 - A Zoom account and relevant Zoom app permissions for live integrations.
 - OAuth app, SDK key/secret, webhook secret token, or other Zoom credentials depending on the workflow.
