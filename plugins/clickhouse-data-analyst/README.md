@@ -32,13 +32,13 @@ Cline automatically uses the `data-analyst` skill and its supporting ClickHouse 
 
 ## Requirements
 
-- `clickhousectl` for ClickHouse Cloud, local, and host/port workflows.
-- Per-user ClickHouse Cloud API credentials (`CH_API_KEY` / `CH_API_SECRET`) and a service name or ID for Cloud analytics.
+- Per-user ClickHouse Cloud API credentials (`CH_API_KEY` / `CH_API_SECRET`) authorized on the configured Prod Query API endpoint for Cloud analytics.
+- `clickhousectl` for local and host/port ClickHouse workflows.
 - Python dependencies as required by the bundled chDB skills when analyzing local files.
 
 ## Security Notes
 
-The bundled skill instructs agents to avoid ClickHouse MCP tools, use explicit per-user API key/secret credentials for ClickHouse Cloud analytics, avoid requiring `CH_QUERY_API_URL` for the default analyst workflow, ask before expensive or unbounded queries, and avoid echoing credentials or secrets.
+The bundled skill instructs agents to avoid ClickHouse MCP tools, use the configured direct Query API endpoint with per-user API key/secret credentials for ClickHouse Cloud analytics, avoid `clickhousectl cloud service query` and its automatic service-query-key provisioning, ask before expensive or unbounded queries, and avoid echoing credentials or secrets.
 
 ## Attribution
 
