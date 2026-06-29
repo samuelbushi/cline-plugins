@@ -1,18 +1,19 @@
 ---
 name: clickhouse
-description: Connect to and query ClickHouse (a local server or a ClickHouse Cloud service) from the terminal. For ClickHouse Cloud production analytics, use the direct Query API with CH_API_KEY and CH_API_SECRET. For local or host/port servers, use the clickhousectl CLI. Use when the user wants to run SQL against ClickHouse, explore schemas and tables, inspect Cloud services, or authenticate. For building a local dev environment or deploying to Cloud, defer to the official ClickHouse skills (see Scope).
+description: Connect to and query ClickHouse (a local server or a ClickHouse Cloud service) from the terminal. For ClickHouse Cloud analytics, use clickhousectl cloud service query with explicit CH_API_KEY and CH_API_SECRET credentials plus a service name or ID; do not require CH_QUERY_API_URL. For local or host/port servers, use clickhousectl local client. Use saved-query Query API endpoint URLs only when the user explicitly provides an endpoint for the exact preconfigured query needed. Use when the user wants to run SQL against ClickHouse, explore schemas and tables, inspect Cloud services, or authenticate. For building a local dev environment or deploying to Cloud, defer to the official ClickHouse skills (see Scope).
 ---
 
 # ClickHouse Connection and Queries
 
-Two access paths - pick the right one for the target:
+Pick the right access path for the target:
 
 | Target | Path |
 | ------ | ---- |
-| ClickHouse Cloud (production analytics) | Direct Query API - `CH_API_KEY` / `CH_API_SECRET` via `curl` |
-| Local server or any host/port | clickhousectl CLI - `clickhousectl local client` |
+| ClickHouse Cloud analytics | `clickhousectl cloud service query` with explicit `CH_API_KEY` / `CH_API_SECRET` and service `--name` or `--id` |
+| Local server or any host/port | `clickhousectl local client` |
+| Saved-query Query API endpoint URL | Only for the exact preconfigured query or parameterized query exposed by that endpoint |
 
-Do not use `clickhousectl cloud service query` for production analytics. It auto-provisions per-service query-endpoint keys on first use, which creates key sprawl and fails without local state.
+Do not require or recommend `CH_QUERY_API_URL` for the analyst workflow. Saved-query Query API endpoint URLs are not the default path for open-ended analysis or schema exploration.
 
 This skill does not use the ClickHouse MCP server.
 
@@ -29,53 +30,77 @@ These are vendored from https://github.com/ClickHouse/agent-skills (Apache-2.0).
 
 ---
 
-## Path A: ClickHouse Cloud - Direct Query API (production analytics)
+## Path A: ClickHouse Cloud - clickhousectl with API key/secret
+
+Use `clickhousectl cloud service query` with explicit per-user ClickHouse Cloud API credentials. This path supports the analyst workflow's ad-hoc SQL, including schema discovery, previews, metric queries, and sanity checks, without asking the user for a Query API endpoint URL.
+
+Do not require or recommend `CH_QUERY_API_URL` for open-ended analysis. Saved-query Query API endpoint URLs are a narrow exception for preconfigured queries only.
 
 ### Credentials
 
 Read from the local environment:
 
 ```bash
-CH_API_KEY       # required - ClickHouse Cloud API key ID
-CH_API_SECRET    # required - ClickHouse Cloud API key secret
-CH_QUERY_API_URL # optional - override the default endpoint
+CH_API_KEY    # required - ClickHouse Cloud API key ID
+CH_API_SECRET # required - ClickHouse Cloud API key secret
+CH_SERVICE    # required unless passing --id - ClickHouse Cloud service name
+CH_SERVICE_ID # required unless passing --name - ClickHouse Cloud service ID
+CH_DATABASE   # optional - target database
 ```
 
 If `CH_API_KEY` or `CH_API_SECRET` is missing, stop and tell the user:
 
 ```text
-Missing ClickHouse Query API credentials.
+Missing ClickHouse Cloud API credentials.
 Set CH_API_KEY and CH_API_SECRET in your local environment.
-Use your per-user ClickHouse Cloud API key. Do not use a shared key
-or clickhousectl cloud service query for production analytics.
+Use your per-user ClickHouse Cloud API key. Do not paste secrets into chat.
 ```
+
+If neither `CH_SERVICE` nor `CH_SERVICE_ID` is available, ask the user which ClickHouse Cloud service to query.
 
 Never print `CH_API_SECRET`.
 
 ### Running queries
 
-```bash
-curl -X POST -s \
-  --user "$CH_API_KEY:$CH_API_SECRET" \
-  "${CH_QUERY_API_URL:-<your-query-api-endpoint>}?format=JSONEachRow" \
-  -H 'Content-Type: application/json' \
-  -d '{ "sql": "SELECT 1 AS ok" }'
-```
+Use a service name or service ID. Prefer service ID when available because names can be ambiguous.
 
-> Replace `<your-query-api-endpoint>` with your org's ClickHouse Cloud Query API endpoint URL, or set `CH_QUERY_API_URL` in the environment.
-
-Output format: `JSONEachRow` - parse line-by-line; each non-empty line is a JSON object.
-
-Connectivity check:
+By service name:
 
 ```bash
-curl -X POST -s \
-  --user "$CH_API_KEY:$CH_API_SECRET" \
-  "${CH_QUERY_API_URL:-<your-query-api-endpoint>}?format=JSONEachRow" \
-  -H 'Content-Type: application/json' \
-  -d '{ "sql": "SELECT 1 AS ok" }'
-# Expected: {"ok":1}
+clickhousectl cloud service query \
+  --api-key "$CH_API_KEY" \
+  --api-secret "$CH_API_SECRET" \
+  --name "$CH_SERVICE" \
+  ${CH_DATABASE:+--database "$CH_DATABASE"} \
+  -q "SELECT 1 AS ok" \
+  --format JSONEachRow
 ```
+
+By service ID:
+
+```bash
+clickhousectl cloud service query \
+  --api-key "$CH_API_KEY" \
+  --api-secret "$CH_API_SECRET" \
+  --id "$CH_SERVICE_ID" \
+  ${CH_DATABASE:+--database "$CH_DATABASE"} \
+  -q "SELECT 1 AS ok" \
+  --format JSONEachRow
+```
+
+Expected connectivity-check output:
+
+```json
+{"ok":1}
+```
+
+Prefer `--format JSONEachRow`, `CSV`, or `TabSeparated` when you need to parse results in a later step. SQL precedence for query commands is `--query` > `--queries-file` > stdin.
+
+### Query endpoint provisioning note
+
+`clickhousectl cloud service query` runs SQL over the Cloud Query API and does not require a local `clickhouse-client` binary or database password. Depending on local state, the first query for a service may provision or reuse a per-service query endpoint binding managed by `clickhousectl`. Use explicit per-user API credentials and avoid shared/default credentials.
+
+If a workflow must fail instead of provisioning missing query-endpoint state, add `--no-auto-enable` and surface the error to the user. Do not silently retry without it.
 
 ### Read-only guardrails (defense-in-depth)
 
@@ -85,18 +110,22 @@ Before sending any query, check that the first SQL token is not one of:
 INSERT, ALTER, DROP, TRUNCATE, CREATE, DELETE, SYSTEM, OPTIMIZE, RENAME, GRANT, REVOKE
 ```
 
-If it is, refuse. The real enforcement layer is the read-only endpoint database role in ClickHouse Cloud - client-side checks are defense-in-depth only.
+If it is, refuse. The real enforcement layer should be least-privilege credentials and service-side access controls - client-side checks are defense-in-depth only.
 
 ### Error handling
 
-| HTTP status | Likely cause | Action |
-| ----------- | ------------ | ------ |
-| `{"ok":1}` | Success | Proceed |
-| 401 | Wrong key ID or secret; extra whitespace; key disabled | Re-check credentials |
-| 403 | Key not authorized on this endpoint; IP allowlist | Confirm key is in endpoint's authorized list |
-| 4xx/5xx | Query error or service issue | Surface full error body to user |
+Surface the full command error and exit status on errors, but redact secrets. Do not retry silently.
 
-Surface the full HTTP status and response body on errors. Do not retry silently.
+### Saved-query Query API endpoint URLs - narrow exception
+
+Use a ClickHouse Cloud saved-query Query API endpoint URL only when the user explicitly provides an endpoint for the exact saved query or parameterized saved query needed. Do not use this path for schema discovery or open-ended analyst SQL.
+
+When using this exception:
+
+- Treat the endpoint URL as required and endpoint-specific; do not invent or require `CH_QUERY_API_URL` as part of the default analyst setup.
+- Confirm that the saved query's semantics, parameters, and output format match the user's request.
+- Do not send arbitrary `{ "sql": "..." }` payloads; the endpoint runs its configured query.
+- Keep credentials in local environment variables and never print secrets.
 
 ---
 
@@ -168,7 +197,7 @@ Safety checks:
 - Filter by time window whenever possible.
 - Avoid `SELECT *` except tiny schema previews.
 - Check row counts before exporting large result sets.
-- Add `--format` or `?format=JSONEachRow` for machine-readable output you intend to parse downstream.
+- Add `--format JSONEachRow` or another machine-readable output format you intend to parse downstream.
 
 ## Bounded queries and large tables
 
@@ -194,6 +223,7 @@ When returning query results, include:
 ## Auth and secret handling
 
 - Never print API keys, secrets, or passwords into the conversation or commit them.
-- For Cloud: use `CH_API_KEY` / `CH_API_SECRET` from local environment variables. If missing, stop and prompt the user to set them. Do not fall back to shared or default credentials.
+- For Cloud analytics: use explicit per-user `CH_API_KEY` / `CH_API_SECRET` credentials with `clickhousectl cloud service query`. If required connection details are missing, stop and prompt the user to set them. Do not fall back to shared or default credentials.
+- For saved-query Query API endpoint URLs: use only an explicit endpoint provided for the exact query needed; do not require or recommend `CH_QUERY_API_URL` for the default analyst workflow.
 - For local servers: no cloud credentials needed.
 - `clickhousectl cloud auth logout` clears saved clickhousectl OAuth tokens and API keys.
