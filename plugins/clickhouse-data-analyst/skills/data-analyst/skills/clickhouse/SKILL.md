@@ -5,14 +5,14 @@ description: Connect to and query ClickHouse (a local server or a ClickHouse Clo
 
 # ClickHouse Connection and Queries
 
-Two access paths — pick the right one for the target:
+Two access paths - pick the right one for the target:
 
 | Target | Path |
 | ------ | ---- |
-| ClickHouse Cloud (production analytics) | **Direct Query API** — `CH_API_KEY` / `CH_API_SECRET` via `curl` |
-| Local server or any host/port | **clickhousectl CLI** — `clickhousectl local client` |
+| ClickHouse Cloud (production analytics) | Direct Query API - `CH_API_KEY` / `CH_API_SECRET` via `curl` |
+| Local server or any host/port | clickhousectl CLI - `clickhousectl local client` |
 
-Do **not** use `clickhousectl cloud service query` for production analytics. It auto-provisions per-service query-endpoint keys on first use, which creates key sprawl and fails without local state.
+Do not use `clickhousectl cloud service query` for production analytics. It auto-provisions per-service query-endpoint keys on first use, which creates key sprawl and fails without local state.
 
 This skill does not use the ClickHouse MCP server.
 
@@ -29,16 +29,16 @@ These are vendored from https://github.com/ClickHouse/agent-skills (Apache-2.0).
 
 ---
 
-## Path A: ClickHouse Cloud — Direct Query API (production analytics)
+## Path A: ClickHouse Cloud - Direct Query API (production analytics)
 
 ### Credentials
 
 Read from the local environment:
 
 ```bash
-CH_API_KEY       # required — ClickHouse Cloud API key ID
-CH_API_SECRET    # required — ClickHouse Cloud API key secret
-CH_QUERY_API_URL # optional — override the default endpoint
+CH_API_KEY       # required - ClickHouse Cloud API key ID
+CH_API_SECRET    # required - ClickHouse Cloud API key secret
+CH_QUERY_API_URL # optional - override the default endpoint
 ```
 
 If `CH_API_KEY` or `CH_API_SECRET` is missing, stop and tell the user:
@@ -64,7 +64,7 @@ curl -X POST -s \
 
 > Replace `<your-query-api-endpoint>` with your org's ClickHouse Cloud Query API endpoint URL, or set `CH_QUERY_API_URL` in the environment.
 
-Output format: `JSONEachRow` — parse line-by-line; each non-empty line is a JSON object.
+Output format: `JSONEachRow` - parse line-by-line; each non-empty line is a JSON object.
 
 Connectivity check:
 
@@ -85,7 +85,7 @@ Before sending any query, check that the first SQL token is not one of:
 INSERT, ALTER, DROP, TRUNCATE, CREATE, DELETE, SYSTEM, OPTIMIZE, RENAME, GRANT, REVOKE
 ```
 
-If it is, refuse. The real enforcement layer is the read-only endpoint database role in ClickHouse Cloud — client-side checks are defense-in-depth only.
+If it is, refuse. The real enforcement layer is the read-only endpoint database role in ClickHouse Cloud - client-side checks are defense-in-depth only.
 
 ### Error handling
 
@@ -100,7 +100,7 @@ Surface the full HTTP status and response body on errors. Do not retry silently.
 
 ---
 
-## Path B: Local or host/port server — clickhousectl CLI
+## Path B: Local or host/port server - clickhousectl CLI
 
 ### Step 1: Ensure clickhousectl is installed
 
@@ -152,7 +152,7 @@ Prefer `--format` (e.g. `JSONEachRow`, `CSV`, `TabSeparated`) when you need to p
 
 ## Safe query practices
 
-Keep queries safe, explainable, and bounded — regardless of which path you use.
+Keep queries safe, explainable, and bounded - regardless of which path you use.
 
 1. Discover schema/table shape if unknown: `SHOW DATABASES`, `SHOW TABLES`, `DESCRIBE TABLE <t>`.
 2. Draft SQL using documented definitions when available (see `../reading-data-dict/`).
