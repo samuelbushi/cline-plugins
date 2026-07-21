@@ -22,6 +22,16 @@ import { isAbsolute, join, relative, resolve, sep } from "node:path";
 import ignore, { type Ignore } from "ignore";
 import type { AgentPlugin } from "@cline/core";
 
+/**
+ * The plugin sandbox's module interop can deliver the "ignore" package as a
+ * namespace object ({ default: factory }) instead of the factory function
+ * itself, so unwrap whichever shape arrives.
+ */
+const createIgnore: (options?: { ignorecase?: boolean }) => Ignore =
+	typeof ignore === "function"
+		? ignore
+		: (ignore as unknown as { default: typeof ignore }).default;
+
 const IGNORE_FILE_NAME = ".clineignore";
 const INCLUDE_DIRECTIVE = "!include ";
 const FILE_ACCESS_TOOL_NAMES = new Set(["read_files", "editor", "apply_patch"]);
@@ -89,7 +99,7 @@ function loadMatcher(): Ignore | undefined {
 		return cachedMatcher.matcher;
 	}
 	try {
-		const matcher = ignore();
+		const matcher = createIgnore();
 		matcher.add(resolveIncludes(readFileSync(ignorePath, "utf8")));
 		matcher.add(IGNORE_FILE_NAME);
 		cachedMatcher = { key, matcher };
@@ -323,7 +333,8 @@ function blockedReason(paths: string[]): string {
 	return (
 		`Access to ${list} is blocked by the ${IGNORE_FILE_NAME} file. ` +
 		"Continue the task without using these files, or ask the user to " +
-		`update ${IGNORE_FILE_NAME}.`
+		`update ${IGNORE_FILE_NAME}. If this call also included allowed ` +
+		"paths, request those again in a separate call."
 	);
 }
 
