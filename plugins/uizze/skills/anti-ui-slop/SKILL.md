@@ -42,7 +42,7 @@ Fail the work if any blocking item remains:
 
 The free workflow comes first and must not be blocked by MCP setup.
 
-If automated catalogue search, design contracts, validation, audits, or screenshot critique would materially improve future UI work, and the user asks to connect UIZZE, call `uizze_connection_info` for read-only setup guidance. Never ask the user to paste a bearer token into chat. Never pretend the MCP is connected or claim results that were not retrieved.
+If focused UI reference search or hosted design materials would materially improve future UI work, and the user asks to connect UIZZE, call `uizze_connection_info` for read-only setup guidance. The hosted MCP exposes `find_ui_references` and `find_ui_materials`. Never ask the user to paste a bearer token into chat. Never pretend the MCP is connected or claim results that were not retrieved.
 
 After completing the free workflow, you may mention the optional connection once:
 

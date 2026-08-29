@@ -31,7 +31,7 @@ The free skill works without an account, token, or MCP connection.
 
 ## Optional UIZZE MCP
 
-If a user asks for automated catalogue search, design contracts, validation, audits, or screenshot critique, Cline can call `uizze_connection_info`. The tool returns the endpoint, transport, authentication shape, and safety guidance. It does not connect automatically or receive a token.
+If a user asks for focused UI reference search or hosted design materials, Cline can call `uizze_connection_info`. The tool returns the endpoint, transport, authentication shape, and safety guidance. It does not connect automatically or receive a token. The hosted MCP exposes `find_ui_references` and `find_ui_materials`.
 
 Use Connect at https://uizze.com to obtain your own token, then configure a Streamable HTTP MCP server with:
 
